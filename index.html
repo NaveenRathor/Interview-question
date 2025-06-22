@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Questions Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <style>
+    body, header, aside, main, footer, h1, h2, h3, h4, h5, h6, p, div, span, li, button {
+      user-select: none;
+    }
+    .code-block, .code-block * {
+      user-select: text;
+    }
+    body { font-family: 'Inter', sans-serif; }
+    .code-block { position: relative; background-color: #f3f4f6; color: #111827; border-radius: 0.5rem; padding: 1rem; margin-top: 1.5rem; font-family: 'Fira Code', monospace; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .dark .code-block { background-color: #1f2937; color: #f9fafb; }
+    .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background-color: #4b5563; color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.75rem; }
+    .nav-button, .sub-button, $1
+  transition: all 0.3s ease-in-out;}
+    .dark .nav-button, .dark .sub-button, .dark $1
+.sub-child-container {
+  transition: all 0.3s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+.sub-child-container.open {
+  max-height: 500px;
+}
+    .nav-button:hover, .sub-button:hover, .sub-sub-button:hover { background-color: #e5e7eb; transform: translateX(5px); }
+    .dark .nav-button:hover, .dark .sub-button:hover, .dark .sub-sub-button:hover { background-color: #4b5563; }
+    .sub-button { margin-left: 1rem; font-size: 0.9rem; }
+    .sub-sub-button { margin-left: 2rem; font-size: 0.85rem; }
+    @media (max-width: 768px) {
+      .responsive-flex { flex-direction: column; }
+      aside { width: 100%; border-right: none; border-bottom: 1px solid #e5e7eb; }
+    }
+  
+
+</style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+  <header class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Interview Questions Hub</h1>
+      <div class="flex items-center space-x-4">
+        <input type="text" id="searchInput" placeholder="Search..." class="px-3 py-1 rounded border text-sm bg-white dark:bg-gray-700 dark:text-gray-100">
+        <button onclick="toggleTheme()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-2 py-1 rounded text-sm">Toggle Theme</button>
+      </div>
+    </div>
+  </header>
+  <div class="flex min-h-screen responsive-flex">
+    <aside class="w-64 bg-gray-100 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-6 space-y-6">
+      <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-100 border-b pb-2">Topics</h2>
+      <ul class="space-y-3" id="navTopics" class="grid gap-2"></ul>
+    </aside>
+    <main class="flex-1 p-10 bg-gray-50 dark:bg-gray-900">
+      <div id="content-area" class="max-w-3xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-6">Welcome 👋</h1>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">Select a topic from the left to view code snippets and practice questions. Built with 💙 for developers.</p>
+      </div>
+    </main>
+  </div>
+  <footer class="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-center p-4 text-sm text-gray-600 dark:text-gray-300">
+    <p>&copy; 2025 Interview Questions Hub. Designed with care and clean code.</p>
+  </footer>
+  <script>
+    const navStructure = {
+  Java: {
+    'Type of Executors': 'Type of Executors',
+    'Flat Map and Hashmap': 'Array Reverse'
+  },
+  Python: {
+    'List Comprehension': 'Array Reverse',
+    'Generators': 'Array Reverse'
+  },
+  JavaScript: {
+    'Closures': 'Array Reverse',
+    'Promises vs Async/Await': 'Array Reverse'
+  },
+  SQL: {
+    'Joins Explained': 'Array Reverse',
+    'Indexes': 'Array Reverse'
+  }
+};
+
+    function renderNavigation(structure, searchTerm = '') {
+  const nav = document.getElementById('navTopics');
+  nav.innerHTML = '';
+  for (const parent in structure) {
+    const showParent = parent.toLowerCase().includes(searchTerm);
+    const children = structure[parent];
+    let hasMatchingChild = false;
+    const childContainer = document.createElement('div');
+    childContainer.className = 'space-y-1 pl-4 mt-2 hidden';
+
+    for (const child in children) {
+      const match = child.toLowerCase().includes(searchTerm);
+      if (match || searchTerm === '') {
+        hasMatchingChild = true;
+        const childBtn = document.createElement('button');
+        childBtn.className = 'sub-button block w-full text-left bg-gray-50 dark:bg-gray-800 rounded px-3 py-1 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all';
+        childBtn.innerText = child;
+        childBtn.onclick = () => showContentByTitle(children[child]);
+        childContainer.appendChild(childBtn);
+      }
+    }
+
+    
+
+    if (showParent || hasMatchingChild) {
+      const parentWrapper = document.createElement('div');
+      const parentBtn = document.createElement('button');
+      parentBtn.className = 'nav-button block w-full text-left bg-white dark:bg-gray-700 rounded-lg shadow px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all';
+      parentBtn.innerText = parent;
+      parentBtn.onclick = () => {
+        document.querySelectorAll('#navTopics > div > div').forEach(el => el.classList.add('hidden'));
+        childContainer.classList.remove('hidden');
+        
+      };
+
+      
+      parentWrapper.appendChild(parentBtn);
+      parentWrapper.appendChild(childContainer);
+      nav.appendChild(parentWrapper);
+    }
+  }
+}
+
+    function showContentByTitle(title) {
+      const contentArea = document.getElementById('content-area');
+      const content = contentMap[title];
+      contentArea.innerHTML = content?.html || '<p class="text-gray-500">Content not available.</p>';
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const search = this.value.toLowerCase();
+      renderNavigation(navStructure, search);
+    });
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    const contentMap = {
+      'Array Reverse': {
+        id: 'array-reverse',
+        html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Array Reverse</h2>
+        <div class="code-block">
+          <button class="copy-btn">Copy</button>
+          <pre><code>function reverseArray(arr) {
+  return arr.reverse();
+}</code></pre>
+        </div>`
+      },
+      'Type of Executors': {
+        id: 'executor-types',
+        html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Types of Executors in Java</h2>
+        <p class="mt-4 text-gray-700 dark:text-gray-300">Java provides several types of executors to manage threads:</p>
+        <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+          <li><strong>SingleThreadExecutor</strong> – Executes tasks sequentially with a single thread.</li>
+          <li><strong>FixedThreadPool</strong> – Executes tasks using a fixed number of threads.</li>
+          <li><strong>CachedThreadPool</strong> – Creates new threads as needed and reuses previously constructed threads.</li>
+          <li><strong>ScheduledThreadPool</strong> – Executes tasks after a delay or periodically.</li>
+        </ul>
+        <div class="code-block">
+          <button class="copy-btn">Copy</button>
+          <pre><code>import java.util.concurrent.*;
+
+public class ExecutorExample {
+  public static void main(String[] args) {
+    ExecutorService executor = Executors.newFixedThreadPool(2);
+
+    Runnable task1 = () -> System.out.println("Task 1 executed");
+    Runnable task2 = () -> System.out.println("Task 2 executed");
+
+    executor.submit(task1);
+    executor.submit(task2);
+
+    executor.shutdown();
+  }
+}</code></pre>
+        </div>`
+      }
+    };
+
+    renderNavigation(navStructure);
+
+    document.addEventListener('click', function (e) {
+      if (e.target && e.target.classList.contains('copy-btn')) {
+        const pre = e.target.nextElementSibling;
+        const code = pre?.querySelector('code')?.innerText;
+        if (!code) {
+          alert('Failed to copy: No code found.');
+          return;
+        }
+        try {
+          navigator.clipboard.writeText(code).then(() => {
+            e.target.textContent = 'Copied!';
+            setTimeout(() => (e.target.textContent = 'Copy'), 1500);
+          }).catch(err => {
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            e.target.textContent = 'Copied!';
+            setTimeout(() => (e.target.textContent = 'Copy'), 1500);
+          });
+        } catch (err) {
+          alert('Copy is not supported in this environment.');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
