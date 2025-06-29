@@ -45,7 +45,7 @@
 <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
   <header class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Interview Questions Hub</h1>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Learning.In</h1>
       <div class="flex items-center space-x-4">
         <input type="text" id="searchInput" placeholder="Search..." class="px-3 py-1 rounded border text-sm bg-white dark:bg-gray-700 dark:text-gray-100">
         <button onclick="toggleTheme()" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-2 py-1 rounded text-sm">Toggle Theme</button>
@@ -71,11 +71,25 @@
     const navStructure = {
   Java: {
     'Type of Executors': 'Type of Executors',
-    'Flat Map and Hashmap': 'Array Reverse'
+	'Flat Map and Hashmap': 'Flat Map and Hashmap',
+  'Internal working of Hashmap': 'Internal working of Hashmap',
+  'Functional Interface': 'Functional Interface',
+  'How to create immutable class': 'How to create immutable class',
+  'ConcurrentHashMap': 'ConcurrentHashMap',
+  'What is ClassLoader': 'What is ClassLoader',
+  'Callable and Runnable': 'Callable and Runnable',
+  'Abstract vs Functional Interface': 'Abstract vs Functional Interface',
+  'Fail-Fast vs Fail-Safe': 'Fail-Fast vs Fail-Safe'
   },
-  Python: {
-    'List Comprehension': 'Array Reverse',
-    'Generators': 'Array Reverse'
+  Server: {
+    'Web Server Working': 'Web Server Working',
+  'Apache httpd.conf Example': 'Apache httpd.conf Example',
+  'Apache HTTPS SSL Configuration': 'Apache HTTPS SSL Configuration',
+  'Apache Security Hardening': 'Apache Security Hardening',
+  'Apache Performance Tuning': 'Apache Performance Tuning',
+  'Apache Reverse Proxy Configuration': 'Apache Reverse Proxy Configuration',
+  'Apache Load Balancing': 'Apache Load Balancing',
+  'Apache Log Rotation': 'Apache Log Rotation'
   },
   JavaScript: {
     'Closures': 'Array Reverse',
@@ -146,16 +160,6 @@
     }
 
     const contentMap = {
-      'Array Reverse': {
-        id: 'array-reverse',
-        html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Array Reverse</h2>
-        <div class="code-block">
-          <button class="copy-btn">Copy</button>
-          <pre><code>function reverseArray(arr) {
-  return arr.reverse();
-}</code></pre>
-        </div>`
-      },
       'Type of Executors': {
         id: 'executor-types',
         html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Types of Executors in Java</h2>
@@ -184,7 +188,754 @@ public class ExecutorExample {
   }
 }</code></pre>
         </div>`
-      }
+      },
+	  'Flat Map and Hashmap': {
+  id: 'flatmap-hashmap',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">FlatMap and HashMap</h2>
+  <p><strong>FlatMap:</strong> Used in Java Streams to flatten nested structures and transform elements. Example: converting List&lt;List&lt;String&gt;&gt; to List&lt;String&gt;.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>List&lt;String&gt; flat = nestedList.stream()
+  .flatMap(List::stream)
+  .collect(Collectors.toList());</code></pre>
+  </div>
+  <p><strong>HashMap:</strong> A key-value data structure allowing null keys/values, not thread-safe. Average time complexity O(1) for get/put operations.</p>`
+},
+
+'Internal working of Hashmap': {
+  id: 'internal-hashmap',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Internal Working of HashMap</h2>
+  <p>HashMap in Java uses an array of buckets to store key-value pairs. When you call <code>put()</code>, it computes the hash of the key and maps it to a bucket index using <code>hash & (n - 1)</code> where n is the capacity. Each bucket is initially a linked list of nodes. Java 8 optimizes performance by converting long chains of nodes into a balanced red-black tree when the number of entries in a bucket exceeds 8.</p>
+  <p>When adding a key-value pair:</p>
+  <ol class="list-decimal list-inside">
+    <li>Compute the hash of the key.</li>
+    <li>Use the hash to find the bucket index.</li>
+    <li>If the bucket is empty, insert the new node.</li>
+    <li>If a node with the same key exists, replace its value.</li>
+    <li>If there’s a collision, add the new node at the end (linked list or tree).</li>
+  </ol>
+  <p>During <code>get()</code>, the key's hash and <code>equals()</code> method are used to find the matching node in the bucket.</p>
+  <p><strong>Load factor</strong> (default 0.75) determines when to resize (rehash) the map by doubling the bucket array size, which helps keep lookup O(1) on average.</p>`
+},
+
+'Functional Interface': {
+  id: 'functional-interface-types',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Functional Interfaces in Java</h2>
+  <p>A <strong>functional interface</strong> is an interface with exactly one abstract method. They are key to Java's lambda expressions and method references, introduced in Java 8. Mark them with <code>@FunctionalInterface</code> to catch mistakes at compile-time.</p>
+
+  <h3 class="text-xl font-semibold mt-4">Built-in Functional Interfaces</h3>
+  <p>These interfaces are in <code>java.util.function</code> package:</p>
+
+  <h4 class="font-semibold mt-2">Function&lt;T, R&gt;</h4>
+  <p>Takes T, returns R:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Function&lt;String, Integer&gt; stringLength = str -&gt; str.length();
+System.out.println(stringLength.apply("Hello")); // 5</code></pre>
+  </div>
+
+  <h4 class="font-semibold mt-2">Predicate&lt;T&gt;</h4>
+  <p>Takes T, returns boolean:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Predicate&lt;Integer&gt; isEven = num -&gt; num % 2 == 0;
+System.out.println(isEven.test(4)); // true</code></pre>
+  </div>
+
+  <h4 class="font-semibold mt-2">Supplier&lt;T&gt;</h4>
+  <p>Returns T, takes nothing:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Supplier&lt;String&gt; greetingSupplier = () -&gt; "Hello World!";
+System.out.println(greetingSupplier.get());</code></pre>
+  </div>
+
+  <h4 class="font-semibold mt-2">Consumer&lt;T&gt;</h4>
+  <p>Takes T, returns nothing:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Consumer&lt;String&gt; printer = message -&gt; System.out.println("Printing: " + message);
+printer.accept("Hello Consumer!");</code></pre>
+  </div>
+
+  <h4 class="font-semibold mt-2">BiFunction&lt;T, U, R&gt;</h4>
+  <p>Takes T and U, returns R:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>BiFunction&lt;Integer, Integer, Integer&gt; adder = (a, b) -&gt; a + b;
+System.out.println(adder.apply(3, 4)); // 7</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Custom Functional Interface Example</h3>
+  <p>You can create your own functional interface with one abstract method:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@FunctionalInterface
+interface Calculator {
+  int calculate(int a, int b);
+}
+
+public class TestFunctional {
+  public static void main(String[] args) {
+    Calculator add = (x, y) -&gt; x + y;
+    System.out.println(add.calculate(5, 3)); // 8
+  }
+}</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Difference from Regular Interfaces</h3>
+  <table class="table-auto border mt-2">
+    <thead>
+      <tr><th class="border px-4 py-2">Aspect</th><th class="border px-4 py-2">Functional Interface</th><th class="border px-4 py-2">Regular Interface</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="border px-4 py-2">Abstract methods</td><td class="border px-4 py-2">Exactly one</td><td class="border px-4 py-2">One or more</td></tr>
+      <tr><td class="border px-4 py-2">Lambda compatible</td><td class="border px-4 py-2">Yes</td><td class="border px-4 py-2">No</td></tr>
+      <tr><td class="border px-4 py-2">Primary use</td><td class="border px-4 py-2">Functional programming</td><td class="border px-4 py-2">General abstraction</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="text-xl font-semibold mt-4">Common Interview Questions</h3>
+  <ul class="list-disc list-inside">
+    <li><strong>Q:</strong> What happens if you add a second abstract method in a functional interface?<br><strong>A:</strong> The compiler throws an error; it’s no longer functional.</li>
+    <li><strong>Q:</strong> Why use <code>@FunctionalInterface</code>?<br><strong>A:</strong> It enforces single-abstract-method rule and improves code clarity.</li>
+    <li><strong>Q:</strong> Can functional interfaces have default or static methods?<br><strong>A:</strong> Yes! They don’t count as abstract methods.</li>
+    <li><strong>Q:</strong> Is <code>Comparator</code> a functional interface?<br><strong>A:</strong> Yes; it has one abstract method: <code>compare(T o1, T o2)</code>.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Pro Tip:</strong> Use functional interfaces with streams to simplify data processing, like:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>List&lt;String&gt; names = Arrays.asList("Tom", "Jerry", "Spike");
+names.stream()
+  .filter(name -&gt; name.startsWith("J"))    // Predicate
+  .map(name -&gt; name.toUpperCase())         // Function
+  .forEach(System.out::println);           // Consumer</code></pre>
+  </div>`
+},
+'How to create immutable class': {
+  id: 'immutable-class',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">How to Create an Immutable Class</h2>
+  <p>Immutable classes prevent changes after creation. They are important for thread-safety and caching because they guarantee consistent state.</p>
+  <p><strong>Steps to create immutable class:</strong></p>
+  <ol class="list-decimal list-inside">
+    <li>Mark class as <code>final</code> to prevent subclassing.</li>
+    <li>Mark all fields <code>private final</code> so they can only be set once.</li>
+    <li>Initialize fields only through constructor.</li>
+    <li>Do not provide setters.</li>
+    <li>For mutable fields (e.g., collections), return defensive copies in getters.</li>
+  </ol>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>public final class Employee {
+  private final String name;
+  private final int id;
+
+  public Employee(String name, int id) {
+    this.name = name;
+    this.id = id;
+  }
+
+  public String getName() { return name; }
+  public int getId() { return id; }
+}</code></pre>
+  </div>
+  <p>Immutable objects are inherently thread-safe, simplify debugging, and reduce potential side effects.</p>`
+},
+
+'ConcurrentHashMap': {
+  id: 'concurrent-hashmap',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">ConcurrentHashMap</h2>
+  <p><strong>ConcurrentHashMap</strong> is a thread-safe alternative to HashMap, allowing concurrent access by multiple threads without external synchronization. Unlike Hashtable, it uses finer-grained locking or lock-free segments to improve scalability.</p>
+  <p>Java 7 used a segmented lock design — splitting the map into 16+ segments, each with its own lock. In Java 8+, it uses lock-free techniques like Compare-And-Swap (CAS) for buckets, avoiding coarse-grained locks and improving performance.</p>
+  <p>Key points in interviews:</p>
+  <ul class="list-disc list-inside">
+    <li>Reads don’t block; multiple threads can read safely at the same time.</li>
+    <li>Updates only lock affected bucket, minimizing contention.</li>
+    <li>No null keys or values allowed — prevents ambiguity in concurrent environments.</li>
+  </ul>`
+},
+
+'What is ClassLoader': {
+  id: 'classloader',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">What is ClassLoader</h2>
+  <p>ClassLoader in Java is part of the JVM responsible for loading .class files into memory. Every class in Java is loaded by a ClassLoader, which maintains a hierarchy:</p>
+  <ul class="list-disc list-inside">
+    <li><strong>Bootstrap ClassLoader:</strong> Loads core Java classes from <code>$JAVA_HOME/lib</code>.</li>
+    <li><strong>Extension ClassLoader:</strong> Loads classes from <code>lib/ext</code> directory.</li>
+    <li><strong>System ClassLoader:</strong> Loads classes from the application's classpath.</li>
+  </ul>
+  <p>Interview tips:</p>
+  <ul class="list-disc list-inside">
+    <li>Parents-first delegation: class loader delegates loading to its parent before trying itself.</li>
+    <li>Custom class loaders allow dynamic class loading, e.g., in frameworks or plugins.</li>
+  </ul>`
+},
+
+'Callable and Runnable': {
+  id: 'callable-runnable',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Callable vs Runnable</h2>
+  <p><strong>Runnable</strong> interface represents a task to execute on a thread without returning a result (void <code>run()</code> method).</p>
+  <p><strong>Callable</strong> interface allows tasks to return a result of type <code>T</code> and throw checked exceptions via the <code>call()</code> method. It is designed for tasks that need a response after execution.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>ExecutorService executor = Executors.newFixedThreadPool(1);
+Callable&lt;String&gt; callable = () -&gt; {
+  Thread.sleep(1000);
+  return "Callable Result";
+};
+Future&lt;String&gt; future = executor.submit(callable);
+String result = future.get(); // blocks until result available</code></pre>
+  </div>
+  <p><strong>Key differences for interviews:</strong></p>
+  <ul class="list-disc list-inside">
+    <li><code>Runnable.run()</code> returns void; <code>Callable.call()</code> returns a value.</li>
+    <li>Callable can throw checked exceptions.</li>
+    <li>Future stores and retrieves Callable’s result.</li>
+  </ul>`
+},
+'Abstract vs Functional Interface': {
+  id: 'abstract-vs-functional-interface',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Difference Between Abstract Class and Functional Interface</h2>
+
+  <p>An <strong>abstract class</strong> and a <strong>functional interface</strong> are both tools for abstraction in Java, but they are designed for very different use cases. Here’s a detailed comparison:</p>
+
+  <table class="table-auto border mt-4">
+    <thead>
+      <tr>
+        <th class="border px-4 py-2">Aspect</th>
+        <th class="border px-4 py-2">Abstract Class</th>
+        <th class="border px-4 py-2">Functional Interface</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">Abstract methods</td>
+        <td class="border px-4 py-2">Can have zero, one, or many abstract methods</td>
+        <td class="border px-4 py-2">Exactly one abstract method (SAM)</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">Concrete methods</td>
+        <td class="border px-4 py-2">Can have concrete methods with implementations</td>
+        <td class="border px-4 py-2">Can have default/static methods, but no concrete instance methods with fields</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">Fields and state</td>
+        <td class="border px-4 py-2">Can have instance fields and constructors</td>
+        <td class="border px-4 py-2">Cannot have instance fields or constructors</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">Inheritance</td>
+        <td class="border px-4 py-2">Single inheritance: a class can extend only one abstract class</td>
+        <td class="border px-4 py-2">Multiple inheritance: a class can implement multiple interfaces</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">Purpose</td>
+        <td class="border px-4 py-2">Provide shared state and behavior for subclasses</td>
+        <td class="border px-4 py-2">Enable functional programming (lambdas and method references)</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">Use case</td>
+        <td class="border px-4 py-2">When you need partial implementation and shared state</td>
+        <td class="border px-4 py-2">When you need a target for lambda expressions or method references</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points for Interviews</h3>
+  <ul class="list-disc list-inside">
+    <li>Functional interfaces are interfaces with exactly one abstract method, enabling usage with lambdas.</li>
+    <li>Abstract classes support sharing common behavior and state among related classes through inheritance.</li>
+    <li>You can add as many default or static methods to a functional interface as needed, but only one abstract method is allowed.</li>
+    <li>Using <code>@FunctionalInterface</code> annotation on an interface makes the compiler check that it’s truly functional.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Examples</h3>
+
+  <h4 class="font-semibold mt-2">Abstract Class Example</h4>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>abstract class Animal {
+  abstract void makeSound();
+  void breathe() { System.out.println("Breathing..."); }
+}</code></pre>
+  </div>
+
+  <h4 class="font-semibold mt-2">Functional Interface Example</h4>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@FunctionalInterface
+interface Calculator {
+  int calculate(int a, int b);
+}
+
+public class TestFunctional {
+  public static void main(String[] args) {
+    Calculator add = (x, y) -&gt; x + y;
+    System.out.println(add.calculate(5, 3)); // 8
+  }
+}</code></pre>
+  </div>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Remember: use abstract classes when you need fields or shared implementations. Use functional interfaces when you want to represent a single behavior and use lambdas or method references for concise code.</p>`
+},
+'Fail-Fast vs Fail-Safe': {
+  id: 'fail-fast-vs-fail-safe',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Fail-Fast vs Fail-Safe</h2>
+
+  <p>Understanding the difference between fail-fast and fail-safe is crucial when working with Java collections and concurrent programming. These concepts help you avoid or handle concurrent modifications correctly during iteration.</p>
+
+  <h3 class="text-xl font-semibold mt-4">Fail-Fast</h3>
+  <p>A <strong>fail-fast</strong> iterator throws a <code>ConcurrentModificationException</code> if the collection is structurally modified during iteration. It detects unexpected changes quickly to prevent inconsistent behavior.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+list.add(1);
+list.add(2);
+
+for (Integer i : list) {
+    list.add(3); // Causes ConcurrentModificationException (fail-fast)
+}</code></pre>
+  </div>
+
+  <ul class="list-disc list-inside ml-4">
+    <li>Fail-fast is implemented by checking the collection's modification count.</li>
+    <li>Examples: <code>ArrayList</code>, <code>HashMap</code> iterators.</li>
+    <li>Useful during development for early detection of concurrent modification issues.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Fail-Safe</h3>
+  <p>A <strong>fail-safe</strong> iterator works on a cloned snapshot of the collection, allowing modifications during iteration without throwing exceptions. It ensures safe iteration even when the collection changes.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>ConcurrentHashMap&lt;Integer, String&gt; map = new ConcurrentHashMap&lt;&gt;();
+map.put(1, "A");
+map.put(2, "B");
+
+for (Integer key : map.keySet()) {
+    map.put(3, "C"); // Allowed: no exception (fail-safe)
+}</code></pre>
+  </div>
+
+  <ul class="list-disc list-inside ml-4">
+    <li>Fail-safe iterators work on a copy of the collection.</li>
+    <li>Examples: <code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code>.</li>
+    <li>Preferred in concurrent environments needing modification during iteration.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Key Differences</h3>
+  <table class="table-auto w-full text-left mt-2 mb-4 border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-200 dark:bg-gray-700">
+        <th class="border border-gray-300 p-2">Feature</th>
+        <th class="border border-gray-300 p-2">Fail-Fast</th>
+        <th class="border border-gray-300 p-2">Fail-Safe</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border border-gray-300 p-2">Behavior on Modification</td>
+        <td class="border border-gray-300 p-2">Throws <code>ConcurrentModificationException</code></td>
+        <td class="border border-gray-300 p-2">No exception; iterates over snapshot</td>
+      </tr>
+      <tr>
+        <td class="border border-gray-300 p-2">Examples</td>
+        <td class="border border-gray-300 p-2"><code>ArrayList</code>, <code>HashMap</code></td>
+        <td class="border border-gray-300 p-2"><code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code></td>
+      </tr>
+      <tr>
+        <td class="border border-gray-300 p-2">Use Case</td>
+        <td class="border border-gray-300 p-2">Single-threaded or controlled modifications</td>
+        <td class="border border-gray-300 p-2">Concurrent modifications in multi-threaded environments</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Fail-fast detects problems early by failing on concurrent modification, while fail-safe allows modifications at the cost of iterating over a snapshot — know when to use which based on thread safety requirements.</p>`
+},
+'Web Server Working': {
+  id: 'web-server',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">What is a Web Server?</h2>
+
+  <p>A <strong>web server</strong> is a software (and sometimes hardware) component that:
+    <ul class="list-disc list-inside ml-4">
+      <li><strong>Receives HTTP requests</strong> from clients (like web browsers).</li>
+      <li><strong>Processes these requests</strong> — often by interacting with back-end apps or databases.</li>
+      <li><strong>Responds with HTTP responses</strong>, typically sending web pages, JSON, or other data formats.</li>
+    </ul>
+  </p>
+
+  <h3 class="text-xl font-semibold mt-4">How Does a Web Server Work?</h3>
+  <ol class="list-decimal list-inside ml-4">
+    <li>The browser (client) sends an HTTP request (e.g., <code>GET /index.html</code>) to the server.</li>
+    <li>The web server software (like Apache, Nginx, or Tomcat) listens on a port (usually 80 for HTTP, 443 for HTTPS).</li>
+    <li>The server processes the request:
+      <ul class="list-disc list-inside ml-6">
+        <li>If it’s a static file (HTML, CSS, image), it reads and sends it directly.</li>
+        <li>If dynamic content is needed (e.g., PHP, JSP), it forwards the request to an application server or runtime.</li>
+      </ul>
+    </li>
+    <li>The server sends back an HTTP response containing the requested data or an error.</li>
+  </ol>
+
+  <h3 class="text-xl font-semibold mt-4">Examples of Popular Web Servers</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li><strong>Apache HTTP Server</strong> — the most widely used open-source web server.</li>
+    <li><strong>Nginx</strong> — popular for high performance and reverse proxying.</li>
+    <li><strong>Microsoft IIS</strong> — web server for Windows systems.</li>
+    <li><strong>LiteSpeed</strong> — high-performance alternative for static and dynamic sites.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Web Server vs Application Server</h3>
+  <p>
+    A <strong>web server</strong> serves static content and can pass requests for dynamic content to an application server. An <strong>application server</strong> (like Tomcat, JBoss, WebLogic) can run business logic, handle APIs, and generate dynamic content.
+  </p>
+
+  <h3 class="text-xl font-semibold mt-4">Key Interview Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li>Web servers operate primarily over HTTP/HTTPS protocols.</li>
+    <li>They serve static files (HTML, CSS, JS, images) directly to clients.</li>
+    <li>They can handle authentication, logging, SSL termination, and compression.</li>
+    <li>Web servers are often used together with application servers for scalable web applications.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Example Scenario</h3>
+  <p>When you enter <code>https://example.com</code> in your browser:</p>
+  <ul class="list-disc list-inside ml-4">
+    <li>Your browser sends an HTTP GET request to the web server at example.com.</li>
+    <li>The web server processes the request and decides whether to serve static content or forward the request.</li>
+    <li>The server sends back an HTTP response with the requested page or data.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Remember that web servers like Apache and Nginx are optimized for serving static content and handling HTTP requests efficiently, while application servers are designed for executing dynamic business logic and generating responses on the fly.</p>`
+},
+'Apache httpd.conf Example': {
+  id: 'apache-httpd-conf-example',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache httpd.conf Example</h2>
+
+  <p>This example shows a minimal but practical <code>httpd.conf</code> configuration file for Apache HTTP Server, covering essential directives like ServerRoot, Listen, DocumentRoot, Directory permissions, logging, and a VirtualHost.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code># Set the directory where Apache config, logs, and modules live
+ServerRoot "/etc/httpd"
+
+# Listen on port 80 (HTTP)
+Listen 80
+
+# Load essential modules
+LoadModule mpm_event_module modules/mod_mpm_event.so
+LoadModule dir_module modules/mod_dir.so
+LoadModule mime_module modules/mod_mime.so
+LoadModule log_config_module modules/mod_log_config.so
+LoadModule alias_module modules/mod_alias.so
+LoadModule rewrite_module modules/mod_rewrite.so
+
+# User and group Apache runs as
+User apache
+Group apache
+
+# Server admin contact
+ServerAdmin webmaster@example.com
+
+# Set the fully qualified domain name of the server
+ServerName www.example.com
+
+# Document root: directory that serves files
+DocumentRoot "/var/www/html"
+
+# Directory permissions for DocumentRoot
+<Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# Default index files
+DirectoryIndex index.html index.htm
+
+# Error log and access log locations
+ErrorLog "logs/error_log"
+CustomLog "logs/access_log" combined
+
+# MIME types (optional but recommended)
+TypesConfig /etc/mime.types
+
+# Include additional config files (e.g., virtual hosts, SSL)
+IncludeOptional conf.d/*.conf
+
+# Example VirtualHost block for a single site
+<VirtualHost *:80>
+    ServerAdmin webmaster@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+
+    DocumentRoot "/var/www/html/example"
+    
+    ErrorLog logs/example-error.log
+    CustomLog logs/example-access.log combined
+
+    <Directory "/var/www/html/example">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost></code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li><strong>ServerRoot:</strong> Main Apache directory for configs and logs.</li>
+    <li><strong>Listen:</strong> Port Apache listens on (default 80 for HTTP).</li>
+    <li><strong>DocumentRoot:</strong> Path to website files served by Apache.</li>
+    <li><strong>Directory block:</strong> Controls permissions for file access.</li>
+    <li><strong>VirtualHost:</strong> Configure multiple websites or domains on the same server.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Always test changes to httpd.conf with <code>apachectl configtest</code> before restarting Apache with <code>sudo systemctl restart httpd</code> to avoid downtime.</p>`
+},
+'Apache HTTPS SSL Configuration': {
+  id: 'apache-https-ssl-configuration',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache HTTPS/SSL Configuration</h2>
+
+  <p>This example shows how to set up HTTPS with Apache using a self-signed or CA-signed certificate. Adjust paths and domain names for your environment.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>&lt;VirtualHost *:443&gt;
+    ServerAdmin webmaster@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+
+    DocumentRoot "/var/www/html/example"
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/example.crt
+    SSLCertificateKeyFile /etc/ssl/private/example.key
+    SSLCertificateChainFile /etc/ssl/certs/chain.crt
+
+    ErrorLog logs/ssl-example-error.log
+    CustomLog logs/ssl-example-access.log combined
+
+    &lt;Directory "/var/www/html/example"&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Steps</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li>Get an SSL certificate (self-signed for testing, or from a CA for production).</li>
+    <li>Configure <code>SSLEngine on</code> and point to your certificate and key files.</li>
+    <li>Ensure Apache's SSL module (<code>mod_ssl</code>) is installed and enabled.</li>
+    <li>Use <code>apachectl configtest</code> and restart Apache after configuration.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> HTTPS ensures data confidentiality and integrity between clients and your server. Always redirect HTTP to HTTPS in production environments.</p>`
+},
+'Apache Security Hardening': {
+  id: 'apache-security-hardening',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache Security Hardening</h2>
+
+  <p>Secure your Apache server by applying these recommended configurations and practices:</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code># Disable server signature in error pages
+ServerSignature Off
+
+# Hide Apache version info in HTTP headers
+ServerTokens Prod
+
+# Disable directory listing globally
+&lt;Directory /&gt;
+    Options -Indexes
+&lt;/Directory&gt;
+
+# Limit HTTP methods allowed
+&lt;LimitExcept GET POST HEAD&gt;
+    Deny from all
+&lt;/LimitExcept&gt;
+
+# Enable mod_security or mod_evasive if available for WAF/DDoS protection
+
+# Protect .htaccess and other sensitive files
+&lt;FilesMatch "^\\.ht"&gt;
+    Require all denied
+&lt;/FilesMatch&gt;
+</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li><strong>ServerSignature Off</strong> and <strong>ServerTokens Prod</strong> hide server details.</li>
+    <li>Disabling unnecessary HTTP methods reduces attack surface.</li>
+    <li>Restricting access to hidden or config files prevents leaks of sensitive information.</li>
+    <li>Consider enabling Web Application Firewall (WAF) modules like <code>mod_security</code>.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Always combine security hardening with proper patching and regular vulnerability scanning.</p>`
+},
+'Apache Performance Tuning': {
+  id: 'apache-performance-tuning',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache Performance Tuning</h2>
+
+  <p>Optimize Apache for better performance and resource usage by tweaking these settings in your <code>httpd.conf</code> or included files. Adapt values based on your server's memory and traffic profile.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code># Adjust the Multi-Processing Module (MPM) settings
+&lt;IfModule mpm_event_module&gt;
+    StartServers             2
+    MinSpareThreads         25
+    MaxSpareThreads         75
+    ThreadLimit            100
+    ThreadsPerChild         25
+    MaxRequestWorkers      400
+    MaxConnectionsPerChild 10000
+&lt;/IfModule&gt;
+
+# Enable compression for faster page load times
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript \n application/javascript
+
+# Enable browser caching for static assets
+&lt;IfModule mod_expires.c&gt;
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+&lt;/IfModule&gt;
+</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li>MPM tuning controls how many simultaneous requests Apache can handle.</li>
+    <li>Compression reduces bandwidth usage and improves client load times.</li>
+    <li>Caching static content reduces repeated requests to the server.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Tuning MPM settings is critical on high-traffic servers; too many workers can exhaust server memory and too few will cause request queues.</p>`
+},
+'Apache Reverse Proxy Configuration': {
+  id: 'apache-reverse-proxy-configuration',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache Reverse Proxy Configuration</h2>
+
+  <p>Use Apache as a reverse proxy to forward incoming requests to another backend server (e.g., Tomcat, Node.js) while controlling routing, caching, and SSL at Apache.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code># Enable required modules in httpd.conf or with a2enmod:
+# mod_proxy, mod_proxy_http, mod_proxy_balancer (optional for load balancing)
+
+# Basic reverse proxy configuration
+&lt;VirtualHost *:80&gt;
+    ServerName myapp.example.com
+
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:8080/
+    ProxyPassReverse / http://127.0.0.1:8080/
+
+    ErrorLog logs/reverse-proxy-error.log
+    CustomLog logs/reverse-proxy-access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li>Reverse proxies improve scalability by offloading SSL, compression, and caching.</li>
+    <li><strong>ProxyPass</strong> forwards incoming paths to backend servers.</li>
+    <li><strong>ProxyPassReverse</strong> rewrites backend responses to match the original request URLs.</li>
+    <li>Combine with load balancing for high availability using <code>mod_proxy_balancer</code>.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Reverse proxies are essential for microservices architectures, allowing secure, centralized routing and easier SSL management.</p>`
+},
+'Apache Load Balancing': {
+  id: 'apache-load-balancing',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache Load Balancing</h2>
+
+  <p>Use Apache's <code>mod_proxy_balancer</code> to distribute incoming traffic across multiple backend servers for better performance, redundancy, and scalability.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code># Enable required modules: mod_proxy, mod_proxy_http, mod_proxy_balancer, \n# mod_lbmethod_byrequests
+
+# Configure a balancer with two backend servers
+&lt;Proxy "balancer://mycluster"&gt;
+    BalancerMember http://192.168.1.101:8080
+    BalancerMember http://192.168.1.102:8080
+    ProxySet lbmethod=byrequests
+&lt;/Proxy&gt;
+
+# Virtual host that uses the balancer
+&lt;VirtualHost *:80&gt;
+    ServerName myapp.example.com
+
+    ProxyPreserveHost On
+    ProxyPass / balancer://mycluster/
+    ProxyPassReverse / balancer://mycluster/
+
+    ErrorLog logs/load-balancer-error.log
+    CustomLog logs/load-balancer-access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li>Balancer members define backend servers handling requests.</li>
+    <li>Load balancing methods include <code>byrequests</code>, <code>bytraffic</code>, and <code>bybusyness</code>.</li>
+    <li>Failover and session stickiness can be configured for high availability.</li>
+    <li>Use Apache as a frontend load balancer for apps running on multiple instances.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Apache's load balancing is perfect for simple setups or internal clusters, but for large-scale distributed systems, consider dedicated load balancers like HAProxy or cloud-based solutions.</p>`
+},
+'Apache Log Rotation': {
+  id: 'apache-log-rotation-best-practices',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Apache Log Rotation Best Practices</h2>
+
+  <p>Log rotation prevents server logs from growing indefinitely and consuming disk space. Use <code>logrotate</code> to manage Apache logs efficiently.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code># Typical /etc/logrotate.d/httpd configuration snippet for Apache
+
+/var/log/httpd/*log {
+    daily                  # Rotate logs daily
+    missingok              # Don't fail if logs are missing
+    rotate 14              # Keep 14 days of logs
+    compress               # Compress rotated logs
+    delaycompress          # Compress older logs, not the latest
+    notifempty             # Skip empty logs
+    sharedscripts          # Run scripts once per rotation
+    postrotate
+        /bin/systemctl reload httpd > /dev/null 2>/dev/null || true
+    endscript
+}
+</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Key Points</h3>
+  <ul class="list-disc list-inside ml-4">
+    <li>Use <code>logrotate</code> for automatic rotation, compression, and cleanup of logs.</li>
+    <li>Configure rotation frequency and retention period based on your audit and compliance needs.</li>
+    <li><code>postrotate</code> scripts reload Apache to reopen log files after rotation.</li>
+    <li>Compressing logs saves disk space and makes archiving easier.</li>
+  </ul>
+
+  <p class="mt-4"><strong>Interview Tip:</strong> Understanding log rotation is critical for production servers — mismanaged logs can fill disks and cause outages.</p>`
+}
+
     };
 
     renderNavigation(navStructure);
