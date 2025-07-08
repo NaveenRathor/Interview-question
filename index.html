@@ -91,9 +91,18 @@
   'Apache Load Balancing': 'Apache Load Balancing',
   'Apache Log Rotation': 'Apache Log Rotation'
   },
-  JavaScript: {
-    'Closures': 'Array Reverse',
-    'Promises vs Async/Await': 'Array Reverse'
+  Spring: {
+    'Spring Framework': 'Spring Framework',
+    'Spring IOC Container & Beans': 'Spring IOC Container & Beans',
+	'Dependency Injection': 'Dependency Injection',
+	'Bean Scope': 'Bean Scope',
+	'Bean Lifecycle': 'Bean Lifecycle',
+	'Spring Configuration: XML vs. Java-based': 'Spring Configuration: XML vs. Java-based',
+	'Spring Annotation': 'Spring Annotation',
+	'Spring Autowire': 'Spring Autowire',
+	'Read Property from File': 'Read Property from File',
+	'Profiles in Spring': 'Profiles in Spring'
+	
   },
   SQL: {
     'Joins Explained': 'Array Reverse',
@@ -934,7 +943,833 @@ AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javasc
   </ul>
 
   <p class="mt-4"><strong>Interview Tip:</strong> Understanding log rotation is critical for production servers — mismanaged logs can fill disks and cause outages.</p>`
+},'Spring Framework': {
+  id: 'spring-basics',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Framework Basics</h2>
+
+    <h3 class="text-xl font-semibold mt-4">What is the Spring Framework and why do we use it?</h3>
+    <p>Spring Framework is a powerful, lightweight, and open-source Java platform that simplifies building enterprise-grade applications. It provides comprehensive infrastructure support, including dependency injection (IoC), aspect-oriented programming (AOP), data access, transaction management, web MVC, security, and much more.</p>
+    <p><strong>Why we use it?</strong></p>
+    <ul class="list-disc list-inside">
+      <li>Simplifies application development by handling boilerplate code.</li>
+      <li>Encourages best practices like loose coupling, testability, and modular design.</li>
+      <li>Provides unified programming model across different tiers (web, business, data access).</li>
+      <li>Integrates seamlessly with other technologies like JPA, Hibernate, JMS, etc.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">How does Spring simplify Java development?</h3>
+    <p>Spring helps developers by:</p>
+    <ul class="list-disc list-inside">
+      <li>Managing object creation and dependencies using <strong>Dependency Injection (DI)</strong>, so you don’t need to manually instantiate or wire classes.</li>
+      <li>Providing <strong>Aspect-Oriented Programming (AOP)</strong> to separate cross-cutting concerns like logging, security, or transactions.</li>
+      <li>Reducing boilerplate code in JDBC, ORM, or JMS through simplified templates (e.g., <code>JdbcTemplate</code>).</li>
+      <li>Offering declarative <strong>transaction management</strong> with annotations like <code>@Transactional</code>.</li>
+      <li>Supporting annotations (<code>@Controller</code>, <code>@Service</code>, <code>@Repository</code>) to reduce XML configuration.</li>
+    </ul>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// With Spring Dependency Injection
+@Service
+public class UserService {
+  @Autowired
+  private UserRepository userRepository;
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">What are the key modules in the Spring Framework?</h3>
+    <p>Spring has many modules; some key ones are:</p>
+    <ul class="list-disc list-inside">
+      <li><strong>Core Container</strong> (Beans, Core, Context, Expression Language) – Base for DI and IoC.</li>
+      <li><strong>Spring AOP</strong> – Aspect-oriented programming support.</li>
+      <li><strong>Spring Data Access/Integration:</strong> JDBC, ORM (Hibernate/JPA), JMS.</li>
+      <li><strong>Web:</strong> Spring MVC, Spring Web WebFlux (Reactive), REST support.</li>
+      <li><strong>Testing:</strong> Utilities for unit and integration tests.</li>
+      <li><strong>Spring Security:</strong> Authentication, authorization, protection against common vulnerabilities.</li>
+      <li><strong>Spring Boot</strong> (separate project) – Rapid setup and convention-over-configuration.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">What are the advantages of using Spring over other frameworks?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>Loose coupling</strong> via dependency injection.</li>
+      <li><strong>Easy integration</strong> with third-party frameworks like Hibernate, MyBatis, Quartz, etc.</li>
+      <li><strong>POJO-based programming</strong> (no EJB or container restrictions).</li>
+      <li><strong>Comprehensive ecosystem,</strong> including Spring Boot, Spring Data, Spring Security, etc.</li>
+      <li><strong>Modular architecture:</strong> you can use only the modules you need.</li>
+      <li><strong>Wide community support</strong> and mature framework.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">How does Spring achieve loose coupling?</h3>
+    <p>Spring’s <strong>IoC container</strong> manages object creation and wiring, so objects don’t directly instantiate or depend on concrete implementations.</p>
+    <ul class="list-disc list-inside">
+      <li>Uses <strong>Dependency Injection</strong> (constructor or setter) to inject required dependencies.</li>
+      <li>Promotes <strong>interfaces over implementations</strong>.</li>
+      <li>Makes replacing or mocking dependencies easy for testing.</li>
+    </ul>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>public interface PaymentService {
+  void pay();
 }
+
+@Service
+public class CreditCardPaymentService implements PaymentService {
+  public void pay() { System.out.println("Paid by Credit Card"); }
+}
+
+@Service
+public class ShoppingCart {
+  private final PaymentService paymentService;
+
+  @Autowired
+  public ShoppingCart(PaymentService paymentService) {
+    this.paymentService = paymentService;
+  }
+
+  public void checkout() { paymentService.pay(); }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>Spring simplifies enterprise Java by reducing boilerplate and centralizing infrastructure concerns.</li>
+      <li>Key concepts to highlight: IoC, DI, AOP, modularity.</li>
+      <li>Always mention <strong>loose coupling</strong> and <strong>testability</strong> as benefits.</li>
+      <li>Be able to list <strong>key modules</strong> like Core, AOP, Data Access, Web, and Security.</li>
+      <li>Practice explaining how annotations like <code>@Service</code>, <code>@Autowired</code> make development faster.</li>
+    </ul>
+  `
+}, 'Spring IOC Container & Beans': {
+  id: 'spring-ioc-beans',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring IoC Container & Beans</h2>
+
+    <h3 class="text-xl font-semibold mt-4">What is the IoC container in Spring?</h3>
+    <p>The Inversion of Control (IoC) container is the core of the Spring Framework. It is responsible for:</p>
+    <ul class="list-disc list-inside">
+      <li>Creating, configuring, and managing the lifecycle of application objects (called beans).</li>
+      <li>Injecting dependencies into beans automatically.</li>
+      <li>Reading metadata (XML, annotations, or Java config) to understand how beans are wired.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">How does Spring IoC container manage beans?</h3>
+    <ul class="list-disc list-inside">
+      <li>Reads bean definitions from XML, annotations, or Java config classes.</li>
+      <li>Instantiates beans and manages their lifecycle (creation, initialization, destruction).</li>
+      <li>Injects required dependencies into beans.</li>
+      <li>Applies AOP proxies, manages scopes, and supports features like event propagation.</li>
+    </ul>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Component
+public class UserRepository { }
+
+@Component
+public class UserService {
+  private final UserRepository userRepository;
+
+  @Autowired
+  public UserService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">What are the different types of IoC containers in Spring?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>BeanFactory:</strong> The simplest container in Spring; provides basic dependency injection and creates beans lazily (on-demand).</li>
+      <li><strong>ApplicationContext:</strong> A more advanced container, built on top of BeanFactory; supports internationalization, event propagation, AOP, and bean post-processing, with eager bean creation at startup.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">What is the difference between ApplicationContext and BeanFactory?</h3>
+    <table class="table-auto w-full text-left mt-2 border border-gray-400">
+      <thead>
+        <tr class="bg-gray-200 dark:bg-gray-700">
+          <th class="border px-4 py-2">Feature</th>
+          <th class="border px-4 py-2">BeanFactory</th>
+          <th class="border px-4 py-2">ApplicationContext</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border px-4 py-2">Bean Initialization</td>
+          <td class="border px-4 py-2">Lazy (on-demand)</td>
+          <td class="border px-4 py-2">Eager (at startup)</td>
+        </tr>
+        <tr>
+          <td class="border px-4 py-2">Internationalization</td>
+          <td class="border px-4 py-2">Not supported</td>
+          <td class="border px-4 py-2">Supported</td>
+        </tr>
+        <tr>
+          <td class="border px-4 py-2">Event Publication</td>
+          <td class="border px-4 py-2">Not supported</td>
+          <td class="border px-4 py-2">Supported</td>
+        </tr>
+        <tr>
+          <td class="border px-4 py-2">Advanced Features (AOP)</td>
+          <td class="border px-4 py-2">Limited</td>
+          <td class="border px-4 py-2">Full support</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="text-xl font-semibold mt-4">How does ApplicationContext support internationalization?</h3>
+    <p>ApplicationContext supports internationalization by loading message resources from properties files. It uses the <strong>MessageSource</strong> interface to resolve messages for different locales at runtime.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Java Config Example
+@Bean
+public MessageSource messageSource() {
+  ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+  source.setBasename("messages");
+  source.setDefaultEncoding("UTF-8");
+  return source;
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Emphasize <strong>IoC and Dependency Injection</strong> as key Spring concepts.</li>
+      <li>✔ Highlight that <strong>BeanFactory</strong> is basic, while <strong>ApplicationContext</strong> supports advanced features.</li>
+      <li>✔ Mention how <strong>ApplicationContext</strong> enables internationalization and event handling.</li>
+      <li>✔ Be familiar with annotations like <code>@Component</code> and <code>@Autowired</code> as modern alternatives to XML configuration.</li>
+    </ul>
+  `
+}, 'Dependency Injection': {
+  id: 'dependency-injection',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Dependency Injection</h2>
+
+    <h3 class="text-xl font-semibold mt-4">What is dependency injection in Spring?</h3>
+    <p>Dependency Injection (DI) is a design pattern where an object's dependencies are provided by an external source (e.g., Spring IoC container) instead of the object creating them itself. This promotes loose coupling and easier testing.</p>
+    <p>In Spring, DI lets you declare what your class needs, and the container injects the dependencies at runtime.</p>
+
+    <h3 class="text-xl font-semibold mt-4">What are the types of dependency injection supported by Spring?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>Constructor Injection</strong> — Dependencies are provided through a class constructor.</li>
+      <li><strong>Setter Injection</strong> — Dependencies are injected via setter methods.</li>
+      <li><strong>Field Injection</strong> — Dependencies are injected directly into fields using <code>@Autowired</code> (not recommended for testing).</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">How is constructor injection different from setter injection?</h3>
+    <table class="table-auto w-full text-left mt-2 border border-gray-400">
+      <thead>
+        <tr class="bg-gray-200 dark:bg-gray-700">
+          <th class="border px-4 py-2">Aspect</th>
+          <th class="border px-4 py-2">Constructor Injection</th>
+          <th class="border px-4 py-2">Setter Injection</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border px-4 py-2">Required Dependencies</td>
+          <td class="border px-4 py-2">Enforced at object creation time</td>
+          <td class="border px-4 py-2">Optional; can be omitted</td>
+        </tr>
+        <tr>
+          <td class="border px-4 py-2">Immutability</td>
+          <td class="border px-4 py-2">Promotes immutable objects</td>
+          <td class="border px-4 py-2">Allows mutable objects</td>
+        </tr>
+        <tr>
+          <td class="border px-4 py-2">Partial Injection</td>
+          <td class="border px-4 py-2">Not possible; requires all constructor args</td>
+          <td class="border px-4 py-2">Allows partial injection</td>
+        </tr>
+        <tr>
+          <td class="border px-4 py-2">Circular Dependencies</td>
+          <td class="border px-4 py-2">May cause issues with circular references</td>
+          <td class="border px-4 py-2">Easier to resolve circular dependencies</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="text-xl font-semibold mt-4">Can Spring inject collections like List or Map into beans?</h3>
+    <p>Yes! Spring supports injecting collections like <code>List</code>, <code>Set</code>, <code>Map</code>, or arrays. You can define them in XML or Java config.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Bean
+public UserService userService() {
+  UserService service = new UserService();
+  List&lt;String&gt; roles = Arrays.asList("USER", "ADMIN");
+  service.setRoles(roles);
+  return service;
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">How do you inject a bean into another bean in Spring?</h3>
+    <p>By declaring the dependency as a parameter in the constructor with <code>@Autowired</code>:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Component
+public class OrderService {
+  private final PaymentService paymentService;
+
+  @Autowired
+  public OrderService(PaymentService paymentService) {
+    this.paymentService = paymentService;
+  }
+}</code></pre>
+    </div>
+
+    <p>Or by using setter-based injection:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Component
+public class OrderService {
+  private PaymentService paymentService;
+
+  @Autowired
+  public void setPaymentService(PaymentService paymentService) {
+    this.paymentService = paymentService;
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">🔎 Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Emphasize <strong>DI reduces coupling</strong> between classes, making code flexible and easier to test.</li>
+      <li>✔ Highlight <strong>constructor injection</strong> is preferred for mandatory dependencies.</li>
+      <li>✔ Be prepared to explain <strong>setter injection vs. constructor injection</strong> differences.</li>
+      <li>✔ Mention Spring supports <strong>collections injection</strong> and using <code>@Autowired</code> on constructors, setters, or fields.</li>
+    </ul>
+  `
+}, 'Bean Scope': {
+  id: 'bean-scopes',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Bean Scopes</h2>
+
+    <h3 class="text-xl font-semibold mt-4">What are the different bean scopes available in Spring?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>Singleton</strong> — Single shared instance per Spring container (default scope).</li>
+      <li><strong>Prototype</strong> — New instance each time the bean is requested.</li>
+      <li><strong>Request</strong> — Single bean instance per HTTP request (web apps).</li>
+      <li><strong>Session</strong> — Single bean instance per HTTP session (web apps).</li>
+      <li><strong>Application</strong> — Single bean instance per ServletContext lifecycle (web apps).</li>
+      <li><strong>Websocket</strong> — Single bean instance per WebSocket lifecycle (web apps).</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">How does the singleton scope work in Spring?</h3>
+    <p>Singleton scope means <strong>one shared bean instance per container</strong>. Spring creates the bean at container startup and reuses the same instance for every injection.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Scope("singleton")
+@Component
+public class MySingletonBean { }</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">What is the prototype scope, and when would you use it?</h3>
+    <p>Prototype scope creates a <strong>new bean instance every time it is requested</strong>. Useful for <strong>stateful beans that should not be shared</strong> between users, processes, or threads.</p>
+
+    <h4 class="text-lg font-semibold mt-3">📌 Why use prototype scope for stateful beans?</h4>
+    <p>Stateful beans <strong>hold data specific to a user or process</strong>. Using singleton for these leads to shared state → data corruption → bugs. Prototype ensures each injection gets its own instance, isolating state.</p>
+
+    <h4 class="text-lg font-semibold mt-3">🔹 Example use cases:</h4>
+    <ul class="list-disc list-inside">
+      <li>✅ <strong>Objects with user-specific state</strong>: Beans tracking temporary user data like shopping carts or form drafts.</li>
+      <li>✅ <strong>Beans representing UI components</strong>: UI windows or dialogs in apps requiring separate instances for each user interaction.</li>
+    </ul>
+
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Scope("prototype")
+@Component
+public class ShoppingCart {
+  private List&lt;Product&gt; items = new ArrayList<>();
+
+  public void addItem(Product p) {
+    items.add(p);
+  }
+
+  public List&lt;Product&gt; getItems() {
+    return items;
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">Can you explain request and session scopes in web applications?</h3>
+    <p><strong>Request scope:</strong> New bean instance per HTTP request → useful for request-specific data.</p>
+    <p><strong>Session scope:</strong> New bean instance per HTTP session → useful for storing user-specific session data.</p>
+
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Component
+public class RequestBean { }
+
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Component
+public class SessionBean { }</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">Are Spring beans thread-safe? Why or why not?</h3>
+    <p><strong>Singleton beans are not thread-safe by default</strong> — multiple threads share the same instance → potential race conditions. Thread safety depends on bean design → developers must handle synchronization explicitly.</p>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">🔎 Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Memorize the <strong>six scopes</strong> and their use cases.</li>
+      <li>✔ Highlight <strong>singleton</strong> as the default scope.</li>
+      <li>✔ Emphasize <strong>prototype</strong> creates a new instance every time → useful for <strong>stateful beans</strong>.</li>
+      <li>✔ Know <strong>request/session scopes</strong> are web-specific.</li>
+      <li>✔ Understand <strong>singleton beans are not thread-safe</strong> unless explicitly designed to be.</li>
+    </ul>
+  `
+},'Bean Lifecycle': {
+  id: 'bean-lifecycle',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Bean Lifecycle</h2>
+
+    <h3 class="text-xl font-semibold mt-4">What are the different stages in a Spring bean’s lifecycle?</h3>
+    <ol class="list-decimal list-inside">
+      <li><strong>Instantiation</strong> — Spring creates the bean instance.</li>
+      <li><strong>Populate Properties</strong> — Spring injects dependencies via constructor, setter, or field injection.</li>
+      <li><strong>Set Bean Name & Factory</strong> — Spring assigns the bean name and passes references to BeanFactory/Aware interfaces if implemented.</li>
+      <li><strong>Bean Post-Processing (before initialization)</strong> — Any registered BeanPostProcessor can modify the bean before initialization.</li>
+      <li><strong>Initialization</strong> — Custom init methods or lifecycle callbacks like afterPropertiesSet() or @PostConstruct are called.</li>
+      <li><strong>Bean Post-Processing (after initialization)</strong> — BeanPostProcessor can modify the bean after initialization.</li>
+      <li><strong>Ready for use</strong> — Bean is available for application logic.</li>
+      <li><strong>Destruction</strong> — When the container shuts down, Spring calls destroy methods like destroy() or @PreDestroy.</li>
+    </ol>
+
+    <h3 class="text-xl font-semibold mt-4">How do you hook into bean lifecycle events?</h3>
+    <p>You can hook into the lifecycle by:</p>
+    <ul class="list-disc list-inside">
+      <li>Implementing InitializingBean or DisposableBean.</li>
+      <li>Defining custom init/destroy methods with init-method/destroy-method (XML/Java config).</li>
+      <li>Using annotations: @PostConstruct for init logic and @PreDestroy for cleanup logic.</li>
+      <li>Registering BeanPostProcessor for advanced interception before/after init.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">What are InitializingBean and DisposableBean interfaces?</h3>
+    <p><strong>InitializingBean</strong> provides the <code>afterPropertiesSet()</code> method called after the bean’s properties are set.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>public class MyBean implements InitializingBean {
+  @Override
+  public void afterPropertiesSet() {
+    // initialization logic here
+  }
+}</code></pre>
+    </div>
+
+    <p class="mt-3"><strong>DisposableBean</strong> provides the <code>destroy()</code> method called when the container destroys the bean.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>public class MyBean implements DisposableBean {
+  @Override
+  public void destroy() {
+    // cleanup logic here
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">How do @PostConstruct and @PreDestroy annotations fit into the bean lifecycle?</h3>
+    <p><code>@PostConstruct</code> marks a method to run <strong>after dependency injection is done</strong> — for initialization.</p>
+    <p><code>@PreDestroy</code> marks a method to run <strong>before the bean is destroyed</strong> — for cleanup.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Component
+public class MyBean {
+  @PostConstruct
+  public void init() {
+    // initialization logic
+  }
+
+  @PreDestroy
+  public void cleanup() {
+    // cleanup logic
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">🔎 Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Understand <strong>bean lifecycle stages</strong>: instantiation → populate properties → init → ready → destroy.</li>
+      <li>✔ Know how to hook into lifecycle with InitializingBean, DisposableBean, @PostConstruct, and @PreDestroy.</li>
+      <li>✔ Remember <strong>BeanPostProcessor</strong> can intercept before/after initialization.</li>
+    </ul>
+  `
+},'Spring Configuration: XML vs. Java-based': {
+  id: 'spring-configuration',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Configuration: XML vs. Java-based</h2>
+
+    <h3 class="text-xl font-semibold mt-4">How do you configure Spring using XML?</h3>
+    <p>You define beans and their dependencies in XML files (e.g., applicationContext.xml):</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>&lt;bean id="myBean" class="com.example.MyBean"&gt;
+  &lt;property name="dependency" ref="anotherBean"/&gt;
+&lt;/bean&gt;</code></pre>
+    </div>
+    <p class="mt-2">Load the XML configuration:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">How do you configure Spring using Java-based @Configuration classes?</h3>
+    <p>Use @Configuration classes with @Bean methods:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Configuration
+public class AppConfig {
+  @Bean
+  public MyBean myBean() {
+    return new MyBean(anotherBean());
+  }
+
+  @Bean
+  public AnotherBean anotherBean() {
+    return new AnotherBean();
+  }
+}</code></pre>
+    </div>
+    <p class="mt-2">Load Java config:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">What are the pros and cons of XML vs. Java configuration?</h3>
+    <p><strong>XML configuration:</strong></p>
+    <ul class="list-disc list-inside">
+      <li>✅ <strong>Pros:</strong> Clear separation between configuration and code; easier to modify without changing Java classes.</li>
+      <li>❌ <strong>Cons:</strong> Verbose and harder to maintain for large projects; no type-safety (errors only at runtime).</li>
+    </ul>
+    <p class="mt-2"><strong>Java-based configuration:</strong></p>
+    <ul class="list-disc list-inside">
+      <li>✅ <strong>Pros:</strong> Type-safe; refactor-friendly; uses standard Java features (IDE autocomplete, compile-time checks); easier for Java developers.</li>
+      <li>❌ <strong>Cons:</strong> Configuration embedded in code, potentially mixing responsibilities.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">Can you mix XML and Java-based configuration in a Spring project?</h3>
+    <p>✅ Yes! You can import XML into Java config with @ImportResource, or import Java config into XML using &lt;context:component-scan&gt; or other tags.</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Configuration
+@ImportResource("classpath:legacy-config.xml")
+public class CombinedConfig { }</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">How does Spring Boot’s auto-configuration relate to Java-based configuration?</h3>
+    <p>Spring Boot uses Java-based configuration internally:</p>
+    <ul class="list-disc list-inside">
+      <li>Auto-configuration uses @Configuration classes with conditions (e.g., @ConditionalOnClass) to create beans automatically.</li>
+      <li>This enables rapid setup without manual XML or explicit Java bean declarations.</li>
+      <li>You can override or extend auto-configuration with your own @Configuration classes.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">🔎 Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Know how to declare beans in both XML and Java config.</li>
+      <li>✔ Java config is <strong>type-safe</strong> and easier to maintain.</li>
+      <li>✔ XML config is still useful for <strong>legacy systems</strong>.</li>
+      <li>✔ Spring Boot auto-configuration is built on Java-based configuration.</li>
+    </ul>
+  `
+},'Spring Annotation': {
+  id: 'spring-stereotypes',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">@Component, @Service, @Repository, @Controller</h2>
+
+    <h3 class="text-xl font-semibold mt-4">What is the difference between @Component, @Service, @Repository, and @Controller?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>@Component:</strong> Generic stereotype for Spring-managed components.</li>
+      <li><strong>@Service:</strong> Specialized for service-layer classes containing business logic.</li>
+      <li><strong>@Repository:</strong> Specialized for data-access layer; adds exception translation.</li>
+      <li><strong>@Controller:</strong> Specialized for Spring MVC controllers handling web requests.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">When should you use each of these stereotypes?</h3>
+    <ul class="list-disc list-inside">
+      <li>✅ Use <strong>@Component</strong> for general-purpose beans.</li>
+      <li>✅ Use <strong>@Service</strong> for service/business logic.</li>
+      <li>✅ Use <strong>@Repository</strong> for DAO/database logic.</li>
+      <li>✅ Use <strong>@Controller</strong> for handling HTTP requests in web apps.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">How do these annotations affect Spring’s component scanning?</h3>
+    <p>All four are discovered during component scanning (via @ComponentScan) and are meta-annotated with @Component, making them functionally similar for detection.</p>
+
+    <h3 class="text-xl font-semibold mt-4">How do these annotations impact exception translation in Spring?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>@Repository</strong> enables automatic exception translation via PersistenceExceptionTranslationPostProcessor, converting DB-specific exceptions into Spring’s DataAccessException.</li>
+      <li>The others (<strong>@Component</strong>, <strong>@Service</strong>, <strong>@Controller</strong>) do not provide exception translation.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">What is the difference between @Controller and @RestController?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>@Controller:</strong> Used in traditional web apps, returns views (e.g., JSP/Thymeleaf) or JSON manually with @ResponseBody.</li>
+      <li><strong>@RestController:</strong> Combines @Controller + @ResponseBody; simplifies RESTful services, returning JSON/XML directly.</li>
+    </ul>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Controller
+public class ViewController {
+  @GetMapping("/home")
+  public String homePage() {
+    return "home"; // Returns a view name
+  }
+}
+
+@RestController
+public class ApiController {
+  @GetMapping("/api/data")
+  public Data getData() {
+    return new Data("hello");
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">What is the difference between API and REST API?</h3>
+    <ul class="list-disc list-inside">
+      <li><strong>API (Application Programming Interface):</strong> General interface allowing communication between software components; not limited to web or HTTP.</li>
+      <li><strong>REST API:</strong> Specific type of API following REST principles — statelessness, resource URIs, standard HTTP methods, etc.</li>
+    </ul>
+    <p class="mt-2">✅ Example:</p>
+    <ul class="list-disc list-inside">
+      <li>A Java library offering methods to calculate interest is an API, but not a REST API.</li>
+      <li>An HTTP endpoint exposing <code>/customers/123</code> returning JSON is a REST API.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">🔎 Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Know the purpose of each stereotype: <strong>@Component, @Service, @Repository, @Controller</strong>.</li>
+      <li>✔ <strong>@Repository adds exception translation</strong>.</li>
+      <li>✔ <strong>@RestController = @Controller + @ResponseBody</strong> simplifies RESTful services.</li>
+      <li>✔ <strong>API ≠ REST API</strong> — REST API specifically follows REST constraints.</li>
+    </ul>
+  `
+},'Spring Autowire': {
+  id: 'spring-autowire',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">@Autowired, @Qualifier, @Primary</h2>
+
+    <h3 class="text-xl font-semibold mt-4">How does @Autowired work in Spring?</h3>
+    <p>@Autowired is Spring’s annotation for <strong>automatic dependency injection</strong>. When Spring sees @Autowired, it looks for a matching bean in the context and injects it automatically. By default, it injects by <strong>type</strong> (the class/interface).</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Autowired
+private UserService userService;</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">What happens if multiple beans match when using @Autowired?</h3>
+    <p>If multiple beans of the same type exist, Spring throws <code>NoUniqueBeanDefinitionException</code> because it doesn’t know which bean to inject. This is called <strong>bean ambiguity</strong>.</p>
+
+    <h3 class="text-xl font-semibold mt-4">How do @Qualifier and @Primary help resolve bean ambiguity?</h3>
+    <p><strong>@Qualifier</strong> explicitly tells Spring which bean to inject by specifying the bean’s name:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Autowired
+@Qualifier("emailService")
+private NotificationService notificationService;</code></pre>
+    </div>
+    <p class="mt-2"><strong>@Primary</strong> marks one bean as the default choice if multiple candidates exist:</p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Bean
+@Primary
+public NotificationService emailService() {
+  return new EmailNotificationService();
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4">Can you use @Autowired on constructors, setters, and fields? Which one is preferred?</h3>
+    <ul class="list-disc list-inside">
+      <li>Yes! Spring allows @Autowired on <strong>constructors</strong>, <strong>setters</strong>, and <strong>fields</strong>.</li>
+      <li><strong>Constructor injection is recommended</strong> because it makes dependencies explicit, encourages immutability, and is easier to test.</li>
+    </ul>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Component
+public class OrderService {
+  private final PaymentService paymentService;
+
+  @Autowired
+  public OrderService(PaymentService paymentService) {
+    this.paymentService = paymentService;
+  }
+}</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold mt-4 text-green-600">🔎 Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside">
+      <li>✔ Use <strong>@Autowired</strong> to inject dependencies automatically.</li>
+      <li>✔ Use <strong>@Qualifier</strong> or <strong>@Primary</strong> to resolve ambiguity when multiple beans exist.</li>
+      <li>✔ Prefer <strong>constructor injection</strong> for better design, immutability, and testability.</li>
+    </ul>
+  `
+},'Read Property from File': {
+  id: 'value-and-externalized-configuration',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">@Value and Externalized Configuration</h2>
+
+    <ul class="list-disc list-inside space-y-4">
+      <li>
+        <strong>How does @Value work in Spring?</strong>
+        <p>@Value is used to <em>inject values into fields, methods, or constructor parameters</em> from properties files, system properties, environment variables, or SpEL.</p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>@Value("\${app.name}")
+private String appName;</code></pre></div>
+      </li>
+
+      <li>
+        <strong>How can you inject values from properties files into Spring beans?</strong>
+        <p>Define properties in <code>application.properties</code> or <code>application.yml</code>, then inject them using @Value or @ConfigurationProperties.</p>
+        <p><strong>Example with @Value:</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>// application.properties
+app.version=1.0.0
+// Java
+@Value("\${app.version}")
+private String version;</code></pre></div>
+
+        <p><strong>Example with @ConfigurationProperties:</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>// application.properties
+app.name=MyApp
+app.timeout=5000
+
+// Java
+@Component
+@ConfigurationProperties(prefix = "app")
+public class AppConfig {
+  private String name;
+  private int timeout;
+  // getters and setters
+}</code></pre></div>
+      </li>
+
+      <li>
+        <strong>What is the use of application.properties or application.yml in Spring Boot?</strong>
+        <p>These files provide <em>centralized external configuration</em> for your application. Configure ports, DB URLs, security, and custom properties. Spring Boot reads them automatically from <code>src/main/resources</code>.</p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>server.port=8081
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb</code></pre></div>
+      </li>
+
+      <li>
+        <strong>How do you handle default values with @Value if the property isn’t set?</strong>
+        <p>Use <code>:</code> in the placeholder to define a <em>default value</em>.</p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>@Value("\${app.description:Default Description}")
+private String description;</code></pre></div>
+      </li>
+
+      <li>
+        <strong>How many ways are there to read properties from properties or YAML files?</strong>
+        <p>Spring provides several options:</p>
+        <ul class="list-disc ml-6">
+          <li>Using <code>@Value</code> for direct injection.</li>
+          <li>Using <code>@ConfigurationProperties</code> to map multiple properties into a POJO.</li>
+          <li>Using <code>Environment</code> object programmatically.</li>
+          <li>Using <code>PropertySourcesPlaceholderConfigurer</code> in older or XML-based configs.</li>
+        </ul>
+
+        <p><strong>Example with Environment:</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>@Autowired
+private Environment env;
+
+public void printProperty() {
+  System.out.println(env.getProperty("app.name"));
+}</code></pre></div>
+
+        <p><strong>Example with PropertySourcesPlaceholderConfigurer (Java Config):</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>@Configuration
+@PropertySource("classpath:application.properties")
+public class AppConfig {
+
+  @Bean
+  public static PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+    return new PropertySourcesPlaceholderConfigurer();
+  }
+
+  @Value("\${app.name}")
+  private String appName;
+
+  @PostConstruct
+  public void printProperty() {
+    System.out.println("App Name: " + appName);
+  }
+}</code></pre></div>
+
+        <p><strong>Example with PropertySourcesPlaceholderConfigurer (XML Config):</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>&lt;context:property-placeholder location="classpath:application.properties"/&gt;</code></pre></div>
+      </li>
+    </ul>
+
+    <h3 class="text-xl font-bold mt-6">✅ Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside space-y-2">
+      <li>Use <code>@Value</code> for simple, direct injections.</li>
+      <li>Use <code>@ConfigurationProperties</code> for grouping related configs.</li>
+      <li>Use <code>Environment</code> when you need dynamic or programmatic access to properties.</li>
+      <li><code>application.properties</code>/<code>application.yml</code> enable <em>externalized configuration</em> for flexibility across environments.</li>
+      <li>Remember <code>@Value("\${property:default}")</code> syntax for default values.</li>
+    </ul>
+  `
+},'Profiles in Spring': {
+  id: 'profiles-in-spring',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Profiles in Spring</h2>
+
+    <ul class="list-disc list-inside space-y-4">
+      <li>
+        <strong>What are Spring profiles?</strong>
+        <p>Profiles in Spring let you <em>define different beans and configurations</em> for different environments, like dev, test, or prod. You can enable or disable parts of your application context based on the active profile.</p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>@Profile("dev")
+@Bean
+public DataSource devDataSource() { ... }
+
+@Profile("prod")
+@Bean
+public DataSource prodDataSource() { ... }</code></pre></div>
+      </li>
+
+      <li>
+        <strong>How do you define and activate a profile in Spring Boot?</strong>
+        <p>Define profiles using <code>@Profile</code> on beans or configuration classes, and activate them by:</p>
+        <ul class="list-disc ml-6">
+          <li>Setting <code>spring.profiles.active</code> in <code>application.properties</code>:</li>
+          <div class="code-block"><button class="copy-btn">Copy</button><pre><code>spring.profiles.active=dev</code></pre></div>
+
+          <li>Using command-line arguments:</li>
+          <div class="code-block"><button class="copy-btn">Copy</button><pre><code>java -jar app.jar --spring.profiles.active=prod</code></pre></div>
+
+          <li>Setting an environment variable:</li>
+          <div class="code-block"><button class="copy-btn">Copy</button><pre><code>export SPRING_PROFILES_ACTIVE=prod</code></pre></div>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Why are profiles useful in application environments (e.g., dev, test, prod)?</strong>
+        <p>They let you maintain <em>separate configurations for different environments</em>, reducing the risk of mistakes when deploying. Examples include:</p>
+        <ul class="list-disc ml-6">
+          <li>Use an in-memory DB for <code>dev</code> and a real DB for <code>prod</code>.</li>
+          <li>Enable debug logging only in <code>dev</code>.</li>
+          <li>Configure different external APIs per environment.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Can you define multiple active profiles at once? How do you do it?</strong>
+        <p>Yes! Spring allows multiple profiles to be active simultaneously. Define them as a comma-separated list:</p>
+        <p><strong>In <code>application.properties</code>:</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>spring.profiles.active=dev,feature-x</code></pre></div>
+
+        <p><strong>Or via command-line:</strong></p>
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>java -jar app.jar --spring.profiles.active=dev,feature-x</code></pre></div>
+
+        <p>When multiple profiles are active, beans annotated with any of them will be included.</p>
+      </li>
+    </ul>
+
+    <h3 class="text-xl font-bold mt-6">✅ Interview Tips & Quick Summary</h3>
+    <ul class="list-disc list-inside space-y-2">
+      <li>Profiles enable <em>environment-specific configurations</em> with ease.</li>
+      <li>Use <code>@Profile</code> for conditional beans or config classes.</li>
+      <li>Activate profiles via properties, command-line arguments, or environment variables.</li>
+      <li>Combine multiple profiles for precise control over your application's behavior.</li>
+    </ul>
+  `
+}
+
 
     };
 
