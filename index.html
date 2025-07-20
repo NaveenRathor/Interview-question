@@ -104,9 +104,39 @@
 	'Profiles in Spring': 'Profiles in Spring'
 	
   },
-  SQL: {
-    'Joins Explained': 'Array Reverse',
-    'Indexes': 'Array Reverse'
+  'Spring Boot': {
+    'Spring Boot Intro': 'Spring Boot Intro',
+    'SpringBoot Configuration': 'SpringBoot Configuration',
+    'Spring Boot Advanced Topics 1': 'Spring Boot Advanced Topics 1',
+    'Spring Boot Advanced Topics 2': 'Spring Boot Advanced Topics 2',
+    'Spring Boot Advanced Topics 3': 'Spring Boot Advanced Topics 3'
+	
+  },'Spring MVC': {
+    'Spring MVC Core': 'Spring MVC Core',
+    'Dispatcher Servlet Architecture': 'Dispatcher Servlet Architecture',
+    'Controller vs Restcontroller': 'Controller vs Restcontroller',
+    'Spring Request Mapping': 'Spring Request Mapping',
+    'Path Variable': 'Path Variable',
+    'Response Entity': 'Response Entity',
+    'Global Exception Handling': 'Global Exception Handling',
+    'Data Binding Validation': 'Data Binding Validation',
+    'View Resolver and Template Engine': 'View Resolver and Template Engine'
+	
+  },
+  'Design Patterns': {
+    'Singleton Pattern': 'Singleton Pattern',
+	'Factory Method Pattern': 'Factory Method Pattern',
+	'Abstract Factory Pattern': 'Abstract Factory Pattern',
+	'Builder Pattern': 'Builder Pattern',
+	'Prototype Pattern': 'Prototype Pattern'
+  },
+  'SQL': {
+    'Sql Intro': 'Sql Intro',
+    'Type of Keys': 'Type of Keys',
+    'Delete Vs Truncate': 'Delete Vs Truncate',
+    'Subqueries vs Joins': 'Subqueries vs Joins',
+    'SQL Pagination': 'SQL Pagination',
+    'SQL Pagination Real World Ex': 'SQL Pagination Real World Ex'
   }
 };
 
@@ -1768,7 +1798,3054 @@ public DataSource prodDataSource() { ... }</code></pre></div>
       <li>Combine multiple profiles for precise control over your application's behavior.</li>
     </ul>
   `
+},'Singleton Pattern': {
+  id: 'singleton-pattern',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Singleton Pattern</h2>
+  <p class="mt-4 text-gray-700 dark:text-gray-300">The Singleton Pattern ensures a class has only one instance and provides a global point of access to it.</p>
+
+  <h3 class="text-xl font-semibold mt-4">Why Use Singleton?</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Shared resource management (e.g., configuration, logging)</li>
+    <li>Global access point</li>
+    <li>Controlled instantiation</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Different Ways to Implement Singleton</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li><strong>Eager Initialization</strong> – Instance is created at class loading time</li>
+    <li><strong>Lazy Initialization</strong> – Instance is created when needed</li>
+    <li><strong>Thread-safe Singleton</strong> – Use synchronized or double-checked locking</li>
+    <li><strong>Bill Pugh Singleton</strong> – Uses inner static helper class (Recommended)</li>
+    <li><strong>Enum Singleton</strong> – Simplest and most robust way</li>
+  </ul>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// Eager Initialization
+public class Singleton {
+  private static final Singleton INSTANCE = new Singleton();
+  private Singleton() {}
+  public static Singleton getInstance() {
+    return INSTANCE;
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// Lazy Initialization
+public class Singleton {
+  private static Singleton instance;
+  private Singleton() {}
+  public static Singleton getInstance() {
+    if (instance == null) {
+      instance = new Singleton();
+    }
+    return instance;
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// Thread-safe Singleton with Double-Checked Locking
+public class Singleton {
+  private static volatile Singleton instance;
+  private Singleton() {}
+  public static Singleton getInstance() {
+    if (instance == null) {
+      synchronized (Singleton.class) {
+        if (instance == null) {
+          instance = new Singleton();
+        }
+      }
+    }
+    return instance;
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// Bill Pugh Singleton
+public class Singleton {
+  private Singleton() {}
+  private static class Holder {
+    private static final Singleton INSTANCE = new Singleton();
+  }
+  public static Singleton getInstance() {
+    return Holder.INSTANCE;
+  }
+}</code></pre>
+  </div>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// Enum Singleton
+public enum Singleton {
+  INSTANCE;
+  public void doSomething() {
+    System.out.println("Using enum singleton");
+  }
 }
+
+// Usage
+Singleton.INSTANCE.doSomething();</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Interview Key Points</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Use Bill Pugh or Enum implementation for thread safety</li>
+    <li>Prevent reflection using enum or throwing exception in constructor</li>
+    <li>Prevent serialization issues by using <code>readResolve()</code> method</li>
+    <li>Singleton is useful for shared components like DB connections, loggers</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Common Interview Questions with Answers</h3>
+  <div class="text-gray-700 dark:text-gray-300 space-y-4">
+    <div>
+      <p><strong>1. What is the Singleton Pattern? Where have you used it?</strong></p>
+      <p>The Singleton pattern ensures a class has only one instance and provides a global access point to it. It is used in logging, caching, configuration, and database connection objects.</p>
+    </div>
+
+    <div>
+      <p><strong>2. How do you ensure thread safety in Singleton?</strong></p>
+      <p>By using synchronized blocks, double-checked locking, static blocks, or inner static helper classes like in Bill Pugh Singleton.</p>
+    </div>
+
+    <div>
+      <p><strong>3. What's the difference between eager and lazy initialization?</strong></p>
+      <p>Eager initialization creates the instance at class load time, while lazy initialization defers it until the first request, saving resources if unused.</p>
+    </div>
+
+    <div>
+      <p><strong>4. Why is Bill Pugh Singleton preferred in Java?</strong></p>
+      <p>It offers lazy initialization and is thread-safe without synchronization overhead. JVM ensures the static inner class is loaded only once.</p>
+    </div>
+
+    <div>
+      <p><strong>5. Can Enum be used to implement Singleton in Java?</strong></p>
+      <p>Yes, Enum is the most secure and recommended way to implement Singleton as it handles serialization and protects against reflection.</p>
+
+      <div class="code-block mt-2 mb-2">
+        <button class="copy-btn">Copy</button>
+        <pre><code>public enum Singleton {
+  INSTANCE;
+  public void doSomething() {
+    System.out.println("Using enum singleton");
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <div>
+      <p><strong>6. How do you prevent reflection from breaking Singleton?</strong></p>
+      <p>By throwing an exception if the constructor is already used once, or use Enum which inherently protects against reflection attacks.</p>
+    </div>
+
+    <div>
+      <p><strong>7. How would you test a Singleton class in a multi-threaded environment?</strong></p>
+      <p>Spawn multiple threads calling <code>getInstance()</code> and assert all return the same reference using assertions or comparing hash codes.</p>
+    </div>
+  </div>
+<h3 class="text-xl font-semibold mt-6">Advanced Interview Questions</h3>
+<div class="text-gray-700 dark:text-gray-300 space-y-4">
+
+  <div>
+    <p><strong>1. How can you break a Singleton pattern?</strong></p>
+    <p>Singleton can be broken via reflection, serialization, or cloning. Reflection can invoke the private constructor; serialization can create a new object during deserialization unless <code>readResolve()</code> is implemented.</p>
+  </div>
+
+  <div>
+    <p><strong>2. How do you prevent Singleton from being broken via serialization?</strong></p>
+    <p>Implement <code>readResolve()</code> method in your class to return the same instance during deserialization.</p>
+    <div class="code-block mt-2 mb-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>protected Object readResolve() {
+  return getInstance();
+}</code></pre>
+    </div>
+  </div>
+
+  <div>
+    <p><strong>3. Can Singleton be lazy-loaded without synchronization overhead?</strong></p>
+    <p>Yes, the Bill Pugh Singleton uses an inner static class that leverages JVM classloader behavior to ensure thread-safe lazy initialization without locking.</p>
+  </div>
+
+  <div>
+    <p><strong>4. What are the drawbacks of Singleton?</strong></p>
+    <ul class="list-disc list-inside ml-4">
+      <li>Hidden dependencies (acts as global state)</li>
+      <li>Hard to unit test due to tight coupling</li>
+      <li>Can lead to memory leaks if not managed properly</li>
+    </ul>
+  </div>
+
+  <div>
+    <p><strong>5. How does Singleton affect testing and DI frameworks like Spring?</strong></p>
+    <p>Singleton makes unit testing harder due to its global state. DI frameworks prefer to manage Singleton scope themselves to allow test injection and control lifecycle.</p>
+  </div>
+
+  <div>
+    <p><strong>6. How is Singleton different from a static class?</strong></p>
+    <ul class="list-disc list-inside ml-4">
+      <li>Singleton can implement interfaces and be passed around as an object</li>
+      <li>Static class cannot be instantiated or extended</li>
+      <li>Singleton supports lazy initialization, static class does not</li>
+    </ul>
+  </div>
+
+</div>
+
+  <h3 class="text-xl font-semibold mt-4">Quick Summary Before Interview</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Singleton limits instantiation to one object only</li>
+    <li>Bill Pugh and Enum are the best implementations</li>
+    <li>Protect against multithreading, serialization, and reflection issues</li>
+    <li>Great for shared configurations and stateless services</li>
+  </ul>`
+},'Abstract Factory Pattern': {
+  id: 'abstract-factory-pattern',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Abstract Factory Pattern</h2>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">The Abstract Factory Pattern provides an interface for creating families of related objects without specifying their concrete classes. It is a powerful creational pattern used to enforce consistency and flexibility in object creation.</p>
+
+  <h3 class="text-xl font-semibold mt-4">Core Concepts</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li><strong>What is the Abstract Factory Pattern?</strong> – A pattern that provides an interface to create families of related or dependent objects.</li>
+    <li><strong>How is it different from the Factory Method Pattern?</strong> – Factory Method creates a single object, Abstract Factory creates families of related objects.</li>
+    <li><strong>When should you use the Abstract Factory Pattern?</strong> – When you need a system that is independent of the way its objects are created and need to enforce consistency.</li>
+    <li><strong>What are real-world use cases?</strong> – UI toolkits (buttons, checkboxes), database drivers, cross-platform systems.</li>
+    <li><strong>What components are involved?</strong> – AbstractFactory, ConcreteFactory, AbstractProduct, ConcreteProduct, Client.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Code Example</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">This is a complete implementation of Abstract Factory Pattern in Java:</p>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// Abstract Products
+interface Button {
+  void render();
+}
+interface Checkbox {
+  void render();
+}
+
+// Concrete Products
+class WinButton implements Button {
+  public void render() {
+    System.out.println("Windows Button");
+  }
+}
+class MacButton implements Button {
+  public void render() {
+    System.out.println("Mac Button");
+  }
+}
+class WinCheckbox implements Checkbox {
+  public void render() {
+    System.out.println("Windows Checkbox");
+  }
+}
+class MacCheckbox implements Checkbox {
+  public void render() {
+    System.out.println("Mac Checkbox");
+  }
+}
+
+// Abstract Factory
+interface GUIFactory {
+  Button createButton();
+  Checkbox createCheckbox();
+}
+
+// Concrete Factories
+class WinFactory implements GUIFactory {
+  public Button createButton() { return new WinButton(); }
+  public Checkbox createCheckbox() { return new WinCheckbox(); }
+}
+class MacFactory implements GUIFactory {
+  public Button createButton() { return new MacButton(); }
+  public Checkbox createCheckbox() { return new MacCheckbox(); }
+}
+
+// Client
+class Application {
+  private Button button;
+  private Checkbox checkbox;
+  public Application(GUIFactory factory) {
+    button = factory.createButton();
+    checkbox = factory.createCheckbox();
+  }
+  public void render() {
+    button.render();
+    checkbox.render();
+  }
+}
+
+// Demo
+public class Demo {
+  public static void main(String[] args) {
+    GUIFactory factory = new WinFactory(); // or new MacFactory()
+    Application app = new Application(factory);
+    app.render();
+  }
+}</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Advanced Interview Questions</h3>
+  <div class="text-gray-700 dark:text-gray-300 space-y-4">
+
+    <div>
+      <p><strong>How does Abstract Factory promote consistency among products?</strong></p>
+      <p>It ensures all created objects are from the same family, avoiding mismatched components like mixing Windows buttons with Mac checkboxes.</p>
+    </div>
+
+    <div>
+      <p><strong>What are the pros and cons of Abstract Factory?</strong></p>
+      <ul class="list-disc list-inside">
+        <li>✔ Promotes consistency and scalability</li>
+        <li>✔ Decouples client from concrete implementations</li>
+        <li>❌ Adding new product types requires changing all factories</li>
+        <li>❌ Adds complexity due to multiple layers of abstraction</li>
+      </ul>
+    </div>
+
+    <div>
+      <p><strong>How does it follow the Open-Closed and Dependency Inversion Principles?</strong></p>
+      <p>Clients depend on abstractions (not concrete classes), and new families can be introduced without changing existing code.</p>
+    </div>
+
+    <div>
+      <p><strong>How does Abstract Factory fit with Dependency Injection frameworks like Spring?</strong></p>
+      <p>Spring promotes injecting abstract factories or interfaces, allowing seamless swapping of implementations and making code testable, configurable, and flexible.</p>
+    </div>
+
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Quick Summary Before Interview</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Used for creating families of related objects</li>
+    <li>Ensures consistent use of product families (e.g., UI components)</li>
+    <li>Decouples object creation from usage</li>
+    <li>Best paired with frameworks that support Dependency Injection</li>
+    <li>Trade-off: higher complexity but greater flexibility</li>
+  </ul>`
+},'Factory Method Pattern': {
+    id: 'design-pattern-factory-method',
+    html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Design Pattern: Factory Method Pattern</h2>
+    <p class="mt-4 text-gray-700 dark:text-gray-300">The <strong>Factory Method Pattern</strong> is a creational design pattern that defines an interface for creating an object, but lets subclasses alter the type of objects that will be created. It essentially defers the instantiation of an object to its subclasses.</p>
+    <p class="mt-2 text-gray-700 dark:text-gray-300"><strong>Core Idea:</strong> Instead of directly creating objects using the <code>new</code> keyword, you use a special "factory method" (defined in an interface or abstract class) which concrete subclasses then implement to produce specific types of objects. This decouples the client code from the concrete classes it instantiates, promoting flexibility and extensibility.</p>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Code Example: Notification Factory</h3>
+    <p class="mt-4 text-gray-700 dark:text-gray-300">Here's a Java example demonstrating the Factory Method Pattern for creating different types of notifications.</p>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">1. Product Interface: <code>Notification</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Defines the common interface for all products that the factory method will create.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Product Interface
+interface Notification {
+    void notifyUser();
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">2. Concrete Products: <code>EmailNotification</code>, <code>SMSNotification</code>, <code>PushNotification</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Concrete implementations of the <code>Notification</code> interface.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Concrete Products
+class EmailNotification implements Notification {
+    @Override
+    public void notifyUser() {
+        System.out.println("Sending an Email notification.");
+    }
+}
+
+class SMSNotification implements Notification {
+    @Override
+    public void notifyUser() {
+        System.out.println("Sending an SMS notification.");
+    }
+}
+
+class PushNotification implements Notification {
+    @Override
+    public void notifyUser() {
+        System.out.println("Sending a Push notification.");
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">3. Creator Abstract Class: <code>NotificationCreator</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Declares the factory method (<code>createNotification()</code>), which returns an object of type <code>Notification</code>. It can also define default behavior or operations that use the factory method.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Creator Abstract Class
+abstract class NotificationCreator {
+    public abstract Notification createNotification();
+
+    // An operation that might use the factory method
+    public void sendNotificationMessage() {
+        Notification notification = createNotification(); // Calls the factory method
+        notification.notifyUser();
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">4. Concrete Creators: <code>EmailNotificationCreator</code>, <code>SMSNotificationCreator</code>, <code>PushNotificationCreator</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Subclasses that implement the factory method to return specific concrete product instances.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Concrete Creators
+class EmailNotificationCreator extends NotificationCreator {
+    @Override
+    public Notification createNotification() {
+        return new EmailNotification();
+    }
+}
+
+class SMSNotificationCreator extends NotificationCreator {
+    @Override
+    public Notification createNotification() {
+        return new SMSNotification();
+    }
+}
+
+class PushNotificationCreator extends NotificationCreator {
+    @Override
+    public Notification createNotification() {
+        return new PushNotification();
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">5. Client Usage: <code>Main</code> Class</h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">The client code interacts with the <code>NotificationCreator</code> and <code>Notification</code> interfaces, remaining unaware of the concrete product types.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Client Usage
+public class Main {
+    public static void main(String[] args) {
+        NotificationCreator emailCreator = new EmailNotificationCreator();
+        emailCreator.sendNotificationMessage(); // Sends an Email notification
+
+        NotificationCreator smsCreator = new SMSNotificationCreator();
+        smsCreator.sendNotificationMessage(); // Sends an SMS notification
+
+        NotificationCreator pushCreator = new PushNotificationCreator();
+        pushCreator.sendNotificationMessage(); // Sends a Push notification
+
+        // Adding a new notification type (e.g., InAppNotification)
+        // would only require new InAppNotification and InAppNotificationCreator classes,
+        // without modifying existing code that uses NotificationCreator.
+    }
+}
+</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Interview Questions: Factory Method Pattern</h3>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Basic Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>What is the primary purpose of the Factory Method Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: To define an interface for creating an object, but let subclasses decide which class to instantiate. It defers instantiation to subclasses.</em></p>
+      </li>
+      <li>
+        <p><strong>In simple terms, how does the Factory Method Pattern help in creating objects?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Instead of directly calling <code>new</code> to create an object, you call a "factory method" which then handles the creation process, often returning an interface or abstract class type.</em></p>
+      </li>
+      <li>
+        <p><strong>Can you name a common use case where you might apply the Factory Method Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: When a class can't anticipate the class of objects it needs to create, or when a library needs to provide a standard way to create objects where the exact type is determined by client code (e.g., parsers for different file types).</em></p>
+      </li>
+      <li>
+        <p><strong>What is the main benefit of using a Factory Method over direct object instantiation?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: It promotes loose coupling by decoupling the client code from the concrete classes it instantiates. It also makes the system more flexible and extensible.</em></p>
+      </li>
+    </ul>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Intermediate Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>Describe the key components (participants) of the Factory Method Pattern.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Product:</strong> The interface or abstract class of the objects the factory method creates.</li>
+            <li><strong>Concrete Product:</strong> Concrete implementations of the Product interface.</li>
+            <li><strong>Creator:</strong> The abstract class or interface that declares the factory method, which returns an object of type Product.</li>
+            <li><strong>Concrete Creator:</strong> Subclasses that implement the factory method to return specific Concrete Product instances.</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>How does the Factory Method Pattern adhere to the Open/Closed Principle?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: It allows you to introduce new product types (new concrete products and concrete creators) without modifying the client code that uses the factory method. The system is "open for extension" but "closed for modification."</em></p>
+      </li>
+      <li>
+        <p><strong>What is the difference between the Factory Method Pattern and the Abstract Factory Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Factory Method:</strong> Deals with creating <em>one</em> product family (or a single product type) through a method defined in an abstract creator class.</li>
+            <li><strong>Abstract Factory:</strong> Deals with creating <em>families of related or dependent objects</em> without specifying their concrete classes. It's a "factory of factories."</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>When might you choose <em>not</em> to use the Factory Method Pattern, and what are potential downsides?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Overhead/Complexity:</strong> For very simple object creation, it might introduce unnecessary interfaces and classes, increasing complexity.</li>
+            <li><strong>Increased Classes:</strong> It leads to more classes in the design (e.g., a Concrete Creator for each Concrete Product), which can be overkill for small projects.</li>
+            <li><strong>When Creation Logic is Trivial:</strong> If the object creation logic is always straightforward and never changes, direct instantiation might be fine.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Advanced Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>Can you describe a real-world scenario where you've personally implemented or seen the Factory Method Pattern in a complex system, and explain its benefits in that context?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Look for examples beyond simple "Car Factory." Good examples might include: Logger Frameworks (different loggers based on config), UI Frameworks (platform-specific UI elements), Document/File Format Handling (different parsers for file types), Database Connection Pools (different DB connections).</em></p>
+      </li>
+      <li>
+        <p><strong>How can the Factory Method Pattern be extended or combined with other patterns to address more sophisticated creational needs or architectural challenges?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Can be combined with Abstract Factory (factory method returns an Abstract Factory), Template Method (factory method as a step), Dependency Injection (factory methods registered with DI container), Strategy Pattern (factory creates different strategy objects).</em></p>
+      </li>
+      <li>
+        <p><strong>Discuss the challenges or pitfalls when evolving a system that heavily relies on the Factory Method Pattern, especially when dealing with product hierarchies or cross-cutting concerns during creation.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Deep class hierarchies (explosion of concrete creator classes), maintenance overhead, refactoring complexity, configuration management (complex runtime decisions for which creator to use).</em></p>
+      </li>
+      <li>
+        <p><strong>Consider a scenario where you have a legacy system with tightly coupled object creation. How would you incrementally refactor it using the Factory Method Pattern without a complete rewrite, and what are the steps involved?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Steps involve identifying direct instantiations, defining Product interface, creating Abstract Creator, introducing Concrete Creator(s), replacing <code>new</code> calls with factory method calls, and testing incrementally. Might start with a simple factory first.</em></p>
+      </li>
+    </ul>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Summary Points:</h3>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li><strong>Purpose:</strong> Provides an interface for creating objects, but lets subclasses decide which class to instantiate.</li>
+      <li><strong>Key Principle:</strong> "Program to an interface, not an implementation." It relies heavily on polymorphism.</li>
+      <li><strong>Decoupling:</strong> Decouples the client code from the concrete product classes.</li>
+      <li><strong>Extensibility:</strong> Makes it easy to introduce new product types without altering existing client code (adheres to Open/Closed Principle).</li>
+      <li><strong>Components:</strong> Product, Concrete Product, Creator, Concrete Creator.</li>
+      <li><strong>Usage:</strong> Useful when a class cannot anticipate the type of objects it must create, or when a framework needs to standardize object creation.</li>
+    </ul>`
+},'Abstract Factory Pattern': {
+    id: 'design-pattern-abstract-factory',
+    html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Design Pattern: Abstract Factory Pattern</h2>
+    <p class="mt-4 text-gray-700 dark:text-gray-300">The <strong>Abstract Factory Pattern</strong> is a creational design pattern that provides an interface for creating families of related or dependent objects without specifying their concrete classes.</p>
+    <p class="mt-2 text-gray-700 dark:text-gray-300"><strong>Core Idea:</strong> It acts as a "factory of factories." You define an abstract factory that declares methods for creating a set of related products (e.g., creating a Button AND a Checkbox). Concrete factories then implement these methods to create specific variations of these product families (e.g., Windows Button and Windows Checkbox, or Mac Button and Mac Checkbox). The client interacts only with the abstract factory and abstract products, ensuring consistency across a product family.</p>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Code Example: GUI Factory</h3>
+    <p class="mt-4 text-gray-700 dark:text-gray-300">Let's illustrate the Abstract Factory Pattern with a GUI example where we create different UI elements (Button, Checkbox) for different operating systems (Windows, macOS).</p>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">1. Abstract Products: <code>Button</code> and <code>Checkbox</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Interfaces for a family of related products (UI elements).</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Abstract Products
+interface Button {
+    void paint();
+}
+
+interface Checkbox {
+    void paint();
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">2. Concrete Products: Windows and Mac UI Elements</h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Specific implementations of the abstract products for different platforms.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Concrete Products for Windows
+class WinButton implements Button {
+    @Override
+    public void paint() {
+        System.out.println("Rendering a button in Windows style.");
+    }
+}
+
+class WinCheckbox implements Checkbox {
+    @Override
+    public void paint() {
+        System.out.println("Rendering a checkbox in Windows style.");
+    }
+}
+
+// Concrete Products for macOS
+class MacButton implements Button {
+    @Override
+    public void paint() {
+        System.out.println("Rendering a button in Mac style.");
+    }
+}
+
+class MacCheckbox implements Checkbox {
+    @Override
+    public void paint() {
+        System.out.println("Rendering a checkbox in Mac style.");
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">3. Abstract Factory: <code>GUIFactory</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Declares creation methods for each abstract product in the family.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Abstract Factory
+interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">4. Concrete Factories: <code>WinFactory</code> and <code>MacFactory</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Implement the abstract factory methods to create specific concrete product families.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Concrete Factories
+class WinFactory implements GUIFactory {
+    @Override
+    public Button createButton() {
+        return new WinButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new WinCheckbox();
+    }
+}
+
+class MacFactory implements GUIFactory {
+    @Override
+    public Button createButton() {
+        return new MacButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new MacCheckbox();
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">5. Client Usage: <code>Application</code> Class</h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">The client code uses the abstract factory and abstract product interfaces. It doesn't know the concrete types being created.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Client (Application)
+public class Application {
+    private Button button;
+    private Checkbox checkbox;
+
+    public Application(GUIFactory factory) {
+        this.button = factory.createButton();
+        this.checkbox = factory.createCheckbox();
+    }
+
+    public void paint() {
+        button.paint();
+        checkbox.paint();
+    }
+
+    public static void main(String[] args) {
+        // Create a Windows UI
+        System.out.println("Creating Windows UI:");
+        GUIFactory winFactory = new WinFactory();
+        Application winApp = new Application(winFactory);
+        winApp.paint();
+        System.out.println("---");
+
+        // Create a Mac UI
+        System.out.println("Creating Mac UI:");
+        GUIFactory macFactory = new MacFactory();
+        Application macApp = new Application(macFactory);
+        macApp.paint();
+    }
+}
+</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Interview Questions: Abstract Factory Pattern</h3>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Basic Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>What is the primary goal of the Abstract Factory Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: To provide an interface for creating families of related or dependent objects without specifying their concrete classes.</em></p>
+      </li>
+      <li>
+        <p><strong>In simple terms, how is the Abstract Factory different from directly creating objects using 'new'?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: It creates entire families of objects through a factory interface, rather than directly creating individual objects. This allows you to swap out whole families of objects without changing client code.</em></p>
+      </li>
+      <li>
+        <p><strong>Can you provide a simple example of where you might use an Abstract Factory?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Creating UI components for different operating systems (e.g., Windows UI vs. Mac UI), or creating different database types (e.g., SQL Server objects vs. Oracle objects).
+        <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Simple usage example
+GUIFactory factory = new WinFactory(); // or new MacFactory()
+Button btn = factory.createButton();
+Checkbox cb = factory.createCheckbox();
+btn.paint(); // Renders Windows Button
+</code></pre>
+        </em></p>
+      </li>
+    </ul>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Intermediate Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>Describe the key components (participants) of the Abstract Factory Pattern.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Abstract Factory:</strong> Declares an interface for creating abstract products.</li>
+            <li><strong>Concrete Factory:</strong> Implements the abstract factory methods to create concrete products.</li>
+            <li><strong>Abstract Product:</strong> Declares an interface for a type of product object.</li>
+            <li><strong>Concrete Product:</strong> Defines a product object to be created by the corresponding concrete factory.</li>
+            <li><strong>Client:</strong> Uses interfaces declared by Abstract Factory and Abstract Product classes.</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>How does the Abstract Factory Pattern promote consistency among related products?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Each concrete factory is responsible for creating a complete set of compatible products. By using a single concrete factory, you guarantee that all products created within that factory belong to the same family and are compatible with each other. For example, a <code>WinFactory</code> will only produce <code>WinButton</code> and <code>WinCheckbox</code>, never a mix.</em></p>
+      </li>
+      <li>
+        <p><strong>What are the main advantages and disadvantages of using the Abstract Factory Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Advantages:</strong> Isolates concrete classes from the client, easy to exchange product families (e.g., switch from <code>new WinFactory()</code> to <code>new MacFactory()</code> to change entire UI look and feel), promotes consistency among products.</li>
+            <li><strong>Disadvantages:</strong> Adding new types of products (new abstract products) is difficult because it requires changing the Abstract Factory interface and all its Concrete Factory implementations.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Adding a new product (e.g., TextField) requires:
+// 1. Modifying GUIFactory interface:
+//    interface GUIFactory { ... TextField createTextField(); }
+// 2. Modifying ALL Concrete Factories (WinFactory, MacFactory) to implement createTextField().
+// This is the "new product" problem.
+</code></pre>
+            </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Advanced Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>When would you choose Abstract Factory over Factory Method, and vice-versa? Illustrate with a concrete example.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Abstract Factory:</strong> Use when you need to create <em>families</em> of related objects.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Abstract Factory example:
+interface CarFactory {
+    Engine createEngine();
+    Tire createTire();
+}
+class SportsCarFactory implements CarFactory { ... }
+class EconomyCarFactory implements CarFactory { ... }
+</code></pre>
+            </li>
+            <li><strong>Factory Method:</strong> Use when a class can't anticipate the class of objects it needs to create, or when a library wants to let subclasses define the type of object (creates *one* product).
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Factory Method example:
+abstract class DocumentConverter {
+    abstract Document createDocument(String type); // Factory method
+}
+class PDFConverter extends DocumentConverter { ... }
+class DOCXConverter extends DocumentConverter { ... }
+</code></pre>
+            Factory Method creates a single type of product, while Abstract Factory creates a set of compatible products.
+            </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>Discuss how the Abstract Factory Pattern can be implemented using reflection or dependency injection frameworks to overcome the "new product" problem (difficulty in adding new abstract products).</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Reflection or DI can reduce the need to modify the Abstract Factory interface itself. Instead of fixed creation methods like <code>createButton()</code>, the factory might take a string identifier or a class type and use reflection to instantiate the appropriate concrete product.
+        <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Reflection-based factory method (simplified):
+public &#60;T&#62; T createProduct(Class&#60;T&#62; productType) {
+    // Logic to find and instantiate correct implementation
+    if (productType == Button.class) return (T) new WinButton();
+    // ... or use a map/reflection
+}
+// This shifts the "new product" burden from interface changes to mapping/configuration.
+</code></pre>
+        DI containers can manage the mapping of interfaces to concrete implementations dynamically (e.g., binding <code>Button.class</code> to <code>WinButton.class</code>), making it easier to introduce new product types without direct factory code changes in compiled code. However, this often shifts complexity to configuration files or DI module setup.
+        </em></p>
+      </li>
+      <li>
+        <p><strong>Consider a scenario where you have a highly configurable system that needs to support various product configurations at runtime. How would you leverage the Abstract Factory Pattern to manage these configurations effectively?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Each configuration (e.g., "High-Performance", "Low-Power", "Cloud-Optimized") could be represented by a specific Concrete Factory. At application startup, based on a configuration setting (e.g., from a properties file, environment variable, or user choice), the appropriate Concrete Factory instance would be created and injected into the client code.
+        <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Runtime configuration example
+String config = System.getProperty("app.mode"); // "HighPerformance" or "LowPower"
+GUIFactory factory;
+if ("HighPerformance".equals(config)) {
+    factory = new HighPerformanceUIFactory(); // Concrete Factory for high-perf UI family
+} else {
+    factory = new LowPowerUIFactory();       // Concrete Factory for low-power UI family
+}
+Application app = new Application(factory);
+app.paint(); // Renders UI based on selected configuration
+</code></pre>
+        This allows the application to dynamically switch between entire sets of compatible components (e.g., different UI styles, different logging implementations, different data storage mechanisms) without modifying core business logic.
+        </em></p>
+      </li>
+    </ul>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Summary Points:</h3>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li><strong>Purpose:</strong> Creates families of related or dependent objects without specifying their concrete classes.</li>
+      <li><strong>Key Principle:</strong> "Factory of factories." Ensures compatibility among objects within a family.</li>
+      <li><strong>Decoupling:</strong> Isolates client code from concrete product classes and concrete factories.</li>
+      <li><strong>Consistency:</strong> Guarantees that products created by a factory are compatible with each other.</li>
+      <li><strong>Components:</strong> Abstract Factory, Concrete Factory, Abstract Product, Concrete Product, Client.</li>
+      <li><strong>Usage:</strong> Ideal when a system needs to be independent of how its products are created, composed, and represented, and when you need to ensure a client uses products only from one family.</li>
+    </ul>`
+},'Builder Pattern': {
+    id: 'design-pattern-builder',
+    html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Design Pattern: Builder Pattern</h2>
+    <p class="mt-4 text-gray-700 dark:text-gray-300">The <strong>Builder Pattern</strong> is a creational design pattern that allows for the step-by-step construction of a complex object. The pattern separates the construction of a complex object from its representation, enabling the same construction process to create different representations.</p>
+    <p class="mt-2 text-gray-700 dark:text-gray-300"><strong>Core Idea:</strong> Instead of creating a complex object with a long, confusing constructor (often called "telescoping constructors" when there are many optional parameters), you use a "builder" object. This builder provides methods to set various parts or configurations of the object. Once all desired parts are set, a final <code>build()</code> or <code>getResult()</code> method is called on the builder to return the fully constructed object.</p>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Code Example: Car Builder</h3>
+    <p class="mt-4 text-gray-700 dark:text-gray-300">Let's illustrate the Builder Pattern with an example of building different types of cars with various configurations.</p>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">1. Product: <code>Car</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">The complex object being built.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Product: Car
+class Car {
+    private String engine;
+    private int seats;
+    private String color;
+    private boolean hasGPS;
+    private String type; // e.g., "Sports Car", "SUV"
+
+    // Constructor is often private or package-private,
+    // only accessible by the Builder.
+    public Car(String type, String engine, int seats, String color, boolean hasGPS) {
+        this.type = type;
+        this.engine = engine;
+        this.seats = seats;
+        this.color = color;
+        this.hasGPS = hasGPS;
+    }
+
+    // Getters
+    public String getEngine() { return engine; }
+    public int getSeats() { return seats; }
+    public String getColor() { return color; }
+    public boolean hasGPS() { return hasGPS; }
+    public String getType() { return type; }
+
+    @Override
+    public String toString() {
+        return "Car Type: " + type +
+               "\\n  Engine: " + engine +
+               "\\n  Seats: " + seats +
+               "\\n  Color: " + color +
+               "\\n  GPS: " + (hasGPS ? "Yes" : "No");
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">2. Builder Interface: <code>CarBuilder</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Declares the methods for building parts of the <code>Car</code> object.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Builder Interface
+interface CarBuilder {
+    CarBuilder setEngine(String engine);
+    CarBuilder setSeats(int seats);
+    CarBuilder setColor(String color);
+    CarBuilder setGPS(boolean hasGPS);
+    Car build(); // Returns the final Car object
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">3. Concrete Builders: <code>SportsCarBuilder</code> and <code>SUVBuilder</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Implement the Builder interface to construct and assemble parts, and provide the method for retrieving the final product.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Concrete Builder: Sports Car
+class SportsCarBuilder implements CarBuilder {
+    private String engine = "V8"; // Default
+    private int seats = 2; // Default
+    private String color = "Red";
+    private boolean hasGPS = true;
+
+    @Override
+    public CarBuilder setEngine(String engine) {
+        this.engine = engine;
+        return this;
+    }
+
+    @Override
+    public CarBuilder setSeats(int seats) {
+        this.seats = seats;
+        return this;
+    }
+
+    @Override
+    public CarBuilder setColor(String color) {
+        this.color = color;
+        return this;
+    }
+
+    @Override
+    public CarBuilder setGPS(boolean hasGPS) {
+        this.hasGPS = hasGPS;
+        return this;
+    }
+
+    @Override
+    public Car build() {
+        return new Car("Sports Car", engine, seats, color, hasGPS);
+    }
+}
+
+// Concrete Builder: SUV
+class SUVBuilder implements CarBuilder {
+    private String engine = "V6"; // Default
+    private int seats = 5; // Default
+    private String color = "Black";
+    private boolean hasGPS = false; // Default
+
+    @Override
+    public CarBuilder setEngine(String engine) {
+        this.engine = engine;
+        return this;
+    }
+
+    @Override
+    public CarBuilder setSeats(int seats) {
+        this.seats = seats;
+        return this;
+    }
+
+    @Override
+    public CarBuilder setColor(String color) {
+        this.color = color;
+        return this;
+    }
+
+    @Override
+    public CarBuilder setGPS(boolean hasGPS) {
+        this.hasGPS = hasGPS;
+        return this;
+    }
+
+    @Override
+    public Car build() {
+        return new Car("SUV", engine, seats, color, hasGPS);
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">4. Director (Optional): <code>CarManufacturer</code></h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">Constructs an object using the Builder interface. Encapsulates common building sequences.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Director (Optional)
+class CarManufacturer {
+    public Car buildLuxurySportsCar(CarBuilder builder) {
+        return builder.setEngine("V12")
+                      .setSeats(2)
+                      .setColor("White")
+                      .setGPS(true)
+                      .build();
+    }
+
+    public Car buildStandardSUV(CarBuilder builder) {
+        return builder.setEngine("V6")
+                      .setSeats(7)
+                      .setColor("Gray")
+                      .setGPS(false)
+                      .build();
+    }
+}
+</code></pre>
+    </div>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">5. Client Usage: <code>Main</code> Class</h4>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">The client interacts with the builder to construct various car configurations.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>// Client Usage
+public class Main {
+    public static void main(String[] args) {
+        CarManufacturer manufacturer = new CarManufacturer();
+
+        // Build a custom Sports Car directly using the builder
+        System.out.println("Building Custom Sports Car:");
+        CarBuilder sportsCarBuilder = new SportsCarBuilder();
+        Car customSportsCar = sportsCarBuilder.setEngine("Turbo V6")
+                                              .setColor("Blue")
+                                              .setGPS(true)
+                                              .build();
+        System.out.println(customSportsCar);
+        System.out.println("---");
+
+        // Build a Luxury Sports Car using the Director
+        System.out.println("Building Luxury Sports Car via Director:");
+        Car luxurySportsCar = manufacturer.buildLuxurySportsCar(new SportsCarBuilder());
+        System.out.println(luxurySportsCar);
+        System.out.println("---");
+
+        // Build a Standard SUV using the Director
+        System.out.println("Building Standard SUV via Director:");
+        CarBuilder suvBuilder = new SUVBuilder(); // Can use a fresh builder
+        Car standardSUV = manufacturer.buildStandardSUV(suvBuilder);
+        System.out.println(standardSUV);
+        System.out.println("---");
+
+        // Build a basic SUV with minimal configuration
+        System.out.println("Building Basic SUV:");
+        Car basicSUV = new SUVBuilder().build(); // Uses default values
+        System.out.println(basicSUV);
+    }
+}
+</code></pre>
+    </div>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Interview Questions: Builder Pattern</h3>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Basic Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>What is the main purpose of the Builder Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: To construct a complex object step-by-step. It's used when an object has many optional parameters or different ways it can be initialized, making its constructor unwieldy.</em></p>
+      </li>
+      <li>
+        <p><strong>When should you consider using the Builder Pattern over a traditional constructor?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: When an object has a large number of optional parameters (to avoid "telescoping constructors"), when creating immutable objects, or when the object's construction process involves multiple steps that need to be followed in a specific order.</em></p>
+      </li>
+      <li>
+        <p><strong>What are the key benefits of using the Builder Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Improves readability of object creation code, provides a clear separation between construction logic and the object itself, allows for the creation of immutable objects, and reduces the number of constructors.</em></p>
+      </li>
+      <li>
+        <p><strong>Can you briefly describe the main components of the Builder Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Product:</strong> The complex object that is being built.</li>
+            <li><strong>Builder:</strong> An abstract interface or class that declares the methods for building parts of the Product object.</li>
+            <li><strong>Concrete Builder:</strong> Implements the Builder interface to construct and assemble parts of the product, and provides a method for retrieving the final product.</li>
+            <li><strong>Director (Optional):</strong> Constructs an object using the Builder interface. It's optional as the client can directly use the builder.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Intermediate Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>How does the Builder Pattern address the problem of "telescoping constructors"? Provide a small code snippet.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: "Telescoping constructors" occur when you have multiple constructors, each with more parameters than the last, to handle optional fields. The Builder Pattern replaces these with a single constructor taking a builder object (or no parameters, relying on builder methods).
+        <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Without Builder (Telescoping Constructor example)
+public class User {
+    public User(String name) { ... }
+    public User(String name, int age) { ... }
+    public User(String name, int age, String email) { ... }
+    // ... many more constructors for combinations of optional fields
+}
+
+// With Builder (Cleaner instantiation)
+User user = new UserBuilder("Alice")
+                .withAge(30)
+                .withEmail("alice@example.com")
+                .build();
+</code></pre>
+        </em></p>
+      </li>
+      <li>
+        <p><strong>Explain the role of the Director in the Builder Pattern. Is it always necessary?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: The Director's role is to encapsulate the logic for constructing a product with a particular configuration or sequence of steps. It works with a Builder object to create the Product. It is <strong>not</strong> always necessary; clients can directly interact with the Concrete Builder if the construction sequence is simple or varied for each client. It becomes useful when you have common, complex construction algorithms (e.g., building a "standard car" or "luxury car" with predefined sets of features).</em></p>
+      </li>
+      <li>
+        <p><strong>How does the Builder Pattern contribute to making objects immutable?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Since all properties of the object are set through the builder's methods before the <code>build()</code> method is called, the Product object itself can be created with all its fields set via its constructor, and those fields can be made <code>final</code>. Once the object is built, its state cannot be changed, ensuring immutability.
+        <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Product class designed for immutability with Builder
+public class ImmutableProduct {
+    private final String partA;
+    private final int partB;
+
+    // Private constructor, only called by the builder
+    private ImmutableProduct(String partA, int partB) {
+        this.partA = partA;
+        this.partB = partB;
+    }
+
+    // No setters; all fields are final
+    public String getPartA() { return partA; }
+    public int getPartB() { return partB; }
+
+    // Nested Builder class for constructing ImmutableProduct
+    public static class Builder {
+        private String partA;
+        private int partB;
+
+        public Builder setPartA(String partA) { this.partA = partA; return this; }
+        public Builder setPartB(int partB) { this.partB = partB; return this; }
+
+        public ImmutableProduct build() {
+            // Optional: validation before building
+            if (partA == null || partB == 0) {
+                throw new IllegalStateException("Required parts not set.");
+            }
+            return new ImmutableProduct(partA, partB);
+        }
+    }
+}
+</code></pre>
+        </em></p>
+      </li>
+      <li>
+        <p><strong>Compare and contrast the Builder Pattern with the Factory Method Pattern.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Factory Method:</strong> Focuses on creating <em>one</em> type of object, deferring the exact subclass to be instantiated to subclasses. It's about <em>what</em> object to create.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Factory Method: decides WHICH ConcreteProduct to create
+interface Product { void operation(); }
+class ConcreteProductA implements Product { ... }
+abstract class Creator { abstract Product createProduct(); }
+class ConcreteCreatorA extends Creator { Product createProduct() { return new ConcreteProductA(); } }
+</code></pre>
+            </li>
+            <li><strong>Builder Pattern:</strong> Focuses on constructing a <em>complex</em> object step-by-step, allowing different representations of the <em>same</em> product type. It's about <em>how</em> to build an object.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Builder: defines HOW a complex Product is assembled
+class ComplexProduct { String p1; int p2; }
+interface ProductBuilder { ProductBuilder withP1(String p1); ProductBuilder withP2(int p2); ComplexProduct build(); }
+class ConcreteProductBuilder implements ProductBuilder { ... }
+</code></pre>
+            *Analogy:* A Factory Method might decide to build a "Car" vs. a "Motorcycle." A Builder would take that "Car" and build it as a "Sports Car" or an "SUV" by configuring its specific parts (engine, seats, color, etc.).
+            </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100 mt-4">Advanced Level Questions:</h4>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li>
+        <p><strong>Describe a real-world scenario (beyond simple car/pizza) where the Builder Pattern would be highly beneficial in a complex software system you've encountered or designed.</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer: Look for scenarios with many configuration options. Good examples include:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Query Builders:</strong> Building complex SQL queries with multiple <code>WHERE</code>, <code>JOIN</code>, <code>ORDER BY</code> clauses dynamically.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// SQL Query Builder snippet
+String query = new SqlQueryBuilder()
+                    .select("id", "name")
+                    .from("users")
+                    .where("age > ?", 25)
+                    .orderBy("name ASC")
+                    .build();
+</code></pre>
+            </li>
+            <li><strong>Configuration Objects:</strong> Creating configuration objects for services (e.g., <code>HttpClientConfig</code> with timeouts, headers, authentication details).</li>
+            <li><strong>Report Generation:</strong> Building reports with various sections, filters, and output formats.</li>
+            <li><strong>Complex Message/Request Objects:</strong> Constructing detailed API request objects with numerous optional headers, body elements, and query parameters.</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>How can you ensure that a complex object built using the Builder Pattern is always in a valid state? What mechanisms would you employ?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Builder-level Validation:</strong> Validate inputs to the builder's <code>withX()</code>/<code>setX()</code> methods immediately.</li>
+            <li><strong><code>build()</code> Method Validation:</strong> Perform final, comprehensive validation inside the <code>build()</code> method of the Concrete Builder before returning the Product. Throw an <code>IllegalStateException</code> or <code>IllegalArgumentException</code> if the state is invalid (e.g., required fields are missing, or incompatible options are selected).
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Validation in build() method
+public Product build() {
+    if (this.requiredField == null) {
+        throw new IllegalStateException("Required 'requiredField' is not set.");
+    }
+    if (this.partA != null && this.partB == null) {
+        throw new IllegalArgumentException("Cannot have PartA without PartB.");
+    }
+    return new Product(this); // Pass builder state to Product constructor
+}
+</code></pre>
+            </li>
+            <li><strong>Fluent Interface Design:</strong> Design builder methods to return <code>this</code> to allow chaining, but ensure the <code>build()</code> method is distinct and performs the final construction.</li>
+            <li><strong>Type Safety (Advanced):</strong> For very complex builders, one might use a type-safe builder pattern (e.g., using enums or sealed interfaces in Kotlin/Java) where the type system guides you through the necessary steps and prevents invalid states at compile time.</li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>Discuss the advantages and disadvantages of making the Director class optional in the Builder Pattern. When would you prefer to omit it?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Advantages of Omitting Director:</strong> Simplifies the pattern for less complex constructions, client has full control over the building process, less classes in the design.</li>
+            <li><strong>Disadvantages of Omitting Director:</strong> Client code might become repetitive if common construction sequences exist across different parts of the application. Lack of a central place to define standard build configurations (e.g., "standard gaming PC build").</li>
+            <li><strong>When to Omit:</strong> When the construction process is simple and doesn't require predefined steps, or when the client itself needs maximum flexibility to define unique construction sequences on a case-by-case basis. If you don't have multiple "recipes" for building the product that you want to centralize, the Director adds unnecessary overhead. The client can directly use the builder's fluent interface.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Direct client usage without Director
+Car basicSUV = new SUVBuilder()
+                    .setSeats(5)
+                    .setColor("Green")
+                    .build();
+// This is fine if there's no complex, reusable build 'recipe'.
+</code></pre>
+            </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>How does the Builder Pattern relate to or differ from the Prototype Pattern?</strong></p>
+        <p class="ml-4 italic text-gray-600 dark:text-gray-400"><em>Expected Answer:</em></p>
+        <ul class="list-circle list-inside ml-8 text-gray-600 dark:text-gray-400">
+            <li><strong>Builder:</strong> Focuses on constructing a new complex object step-by-step, often from scratch or from various components, and separates construction from representation. It's about creating <em>new</em> instances with <em>different configurations</em>.</li>
+            <li><strong>Prototype:</strong> Focuses on creating new objects by <em>cloning</em> an existing object (the prototype). It's about creating <em>new</em> instances that are <em>copies</em> of an existing one, often with slight modifications.
+            <pre class="bg-gray-700 p-2 rounded text-sm mt-2"><code>// Prototype example:
+Product original = new Product("A", "B");
+Product clone = original.clone(); // Creates a copy
+clone.modifyPartA("C"); // Then modifies the copy
+</code></pre>
+            </li>
+        </ul>
+        <em>Key difference:</em> Builder constructs a new object from its components. Prototype clones an existing object. Builder is for varied, step-by-step creation. Prototype is for efficient copying of existing, possibly already complex, objects.
+      </li>
+    </ul>
+
+    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Summary Points:</h3>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li><strong>Purpose:</strong> Constructs a complex object step-by-step, separating construction from representation.</li>
+      <li><strong>Key Principle:</strong> Avoids "telescoping constructors" and improves object creation readability.</li>
+      <li><strong>Benefits:</strong> Cleaner code, supports immutable objects, provides fine-grained control, flexible.</li>
+      <li><strong>Components:</strong> Product, Builder (interface/abstract class), Concrete Builder, Director (optional).</li>
+      <li><strong>Usage:</strong> Ideal when an object has many optional parameters, requires a specific construction sequence, or needs to produce different representations of the same object.</li>
+    </ul>`
+},'Spring Boot Intro': {
+  id: 'spring-boot-intro',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot Introduction</h2>
+
+  <h3 class="text-xl font-semibold mt-4">✅ What is Spring Boot? Why was it created?</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Spring Boot is a framework built on top of the Spring Framework that simplifies the setup, development, and deployment of Spring applications.
+    It was created to eliminate boilerplate configurations and reduce development time by providing production-ready defaults.
+  </p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Auto-configuration for Spring projects</li>
+    <li>Embedded servers (Tomcat, Jetty)</li>
+    <li>Minimal Spring configuration</li>
+    <li>Opinionated starter dependencies</li>
+  </ul>
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@SpringBootApplication
+public class HelloApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(HelloApplication.class, args);
+  }
+}</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">✅ Spring Boot Starters — what are they and why are they useful?</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Starters are a set of convenient dependency descriptors provided by Spring Boot to include all required libraries for a specific functionality.
+    They reduce the need to search for compatible libraries manually.
+  </p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li><code>spring-boot-starter-web</code> – For building web applications</li>
+    <li><code>spring-boot-starter-data-jpa</code> – For Spring Data JPA</li>
+    <li><code>spring-boot-starter-security</code> – For authentication/authorization</li>
+  </ul>
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">✅ Spring Boot Auto-configuration — how does it work?</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Auto-configuration attempts to automatically configure your Spring application based on the libraries in your classpath.
+    It uses <code>@Conditional</code> annotations and metadata under <code>META-INF/spring.factories</code> to conditionally enable beans.
+  </p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Triggered by <code>@SpringBootApplication</code></li>
+    <li>Customizable via <code>application.properties</code> or <code>application.yml</code></li>
+    <li>Internally uses annotations like <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code></li>
+  </ul>
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@Bean
+@ConditionalOnMissingBean(DispatcherServlet.class)
+public DispatcherServlet dispatcherServlet() {
+  return new DispatcherServlet();
+}</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-4">Interview Tips</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Explain the benefits of convention over configuration.</li>
+    <li>Mention embedded server support and reduced boilerplate.</li>
+    <li>Be ready to explain how auto-configuration works internally.</li>
+    <li>Compare starters with traditional Maven dependency management.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4">Quick Summary Before Interview</h3>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Spring Boot simplifies development and promotes best practices.</li>
+    <li>Starters bundle compatible libraries together.</li>
+    <li>Auto-configuration leverages classpath scanning and conditions.</li>
+  </ul>`
+},'SpringBoot Configuration':{
+  id: 'spring-boot-configurations',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot: Key Configuration Concepts</h2>
+
+  <h3 class="text-xl font-semibold mt-4">application.properties vs. application.yml</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Spring Boot allows external configuration via <code>application.properties</code> and <code>application.yml</code> files. Both serve the same purpose, and you can use either based on preference.
+  </p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li><strong>application.properties</strong> uses key-value pair format.</li>
+    <li><strong>application.yml</strong> uses YAML syntax which supports hierarchical data better.</li>
+  </ul>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// application.properties
+server.port=8081
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb</code></pre>
+  </div>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code># application.yml
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-6">Spring Boot Profiles</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Spring Boot supports multiple environments using <strong>profiles</strong>. You can define environment-specific configurations like <code>application-dev.yml</code>, <code>application-prod.yml</code>.
+  </p>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Activate a profile using:
+  </p>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>// in application.properties
+spring.profiles.active=dev</code></pre>
+  </div>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code># or via command line
+java -jar myapp.jar --spring.profiles.active=prod</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-6">Spring Boot Actuator</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Spring Boot Actuator</strong> provides production-ready features like health checks, metrics, environment, thread dumps, etc.
+  </p>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    To enable Actuator, add the dependency:
+  </p>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Access endpoints:
+  </p>
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>http://localhost:8080/actuator/health
+http://localhost:8080/actuator/info</code></pre>
+  </div>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    You can customize exposed endpoints in <code>application.properties</code>:
+  </p>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>management.endpoints.web.exposure.include=*</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-6">Spring Boot CLI</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    The <strong>Spring Boot CLI</strong> is a command-line tool to quickly run Spring applications using Groovy. It’s great for prototyping and fast testing.
+  </p>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Install CLI from SDKMAN or direct download.</p>
+
+  <div class="code-block mt-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>spring run app.groovy</code></pre>
+  </div>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Pros of Spring Boot CLI:
+  </p>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li>Rapid application prototyping.</li>
+    <li>No boilerplate — less setup.</li>
+    <li>Auto-import of Spring starters.</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-6">Interview Tips</h3>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li>Be ready to compare <code>.properties</code> vs <code>.yml</code> — advantages, readability, and environment-specific configuration.</li>
+    <li>Explain how profiles simplify deployment for multiple environments.</li>
+    <li>Mention Actuator endpoints for health monitoring, and how they help in production readiness.</li>
+    <li>Clarify when you would use Spring Boot CLI over Maven or Gradle (mainly for demos and POCs).</li>
+  </ul>`
+},'Spring Boot Advanced Topics 1': {
+  id: 'spring-boot-advanced-topics',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot Advanced Topics</h2>
+
+    <h3 class="mt-4 text-xl font-semibold text-gray-800 dark:text-gray-100">✅ Spring Boot Initializr — how does it simplify project setup?</h3>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">
+      Spring Initializr is a web-based tool (also available in IDEs) that helps developers quickly bootstrap a new Spring Boot project.
+      It allows you to select the Spring Boot version, dependencies, metadata, and build tool (Maven or Gradle), and generates a starter project with all configurations.
+    </p>
+    <p class="mt-1 text-gray-700 dark:text-gray-300">
+      🔗 URL: <a href="https://start.spring.io" target="_blank" class="text-blue-600 dark:text-blue-400">https://start.spring.io</a>
+    </p>
+
+    <h3 class="mt-6 text-xl font-semibold text-gray-800 dark:text-gray-100">✅ Customizing Spring Boot Banner</h3>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">
+      Spring Boot shows a default banner at startup. You can customize it by adding a <code>banner.txt</code> file under <code>src/main/resources</code>.
+      You can include ASCII art or placeholders like <code>\${spring.boot.version}</code>, <code>\${java.version}</code>, etc.
+    </p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>__       __     ____        _ __            
+/ /___  _/ /_   / __ )____  (_) /_____  _____ 
+/ / __ \\/ __/  / __  / __ \\/ / __/ __ \\/ ___/
+/ / /_/ / /_   / /_/ / /_/ / / /_/ /_/ (__  ) 
+\\____/\\__/  /_____/ .___/_/\\__/\\____/____/  
+                /_/ Spring Boot \${spring.boot.version}</code></pre>
+    </div>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">
+      To disable the banner, set the following in <code>application.properties</code>:
+    </p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>spring.main.banner-mode=off</code></pre>
+    </div>
+
+    <h3 class="mt-6 text-xl font-semibold text-gray-800 dark:text-gray-100">✅ Overriding Default Spring Boot Configurations</h3>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">
+      You can override Spring Boot's auto-configured beans and properties in multiple ways:
+    </p>
+    <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+      <li><strong>application.properties:</strong> For example, override the server port using <code>server.port=9090</code></li>
+      <li><strong>Java Config:</strong> You can provide your own bean to replace the default one.</li>
+      <li><strong>Conditional Configuration:</strong> Use <code>@ConditionalOnMissingBean</code> to define beans only if one doesn't already exist.</li>
+    </ul>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>@Bean
+@ConditionalOnMissingBean
+public DataSource dataSource() {
+  return new HikariDataSource();
+}</code></pre>
+    </div>
+
+    <h3 class="mt-6 text-xl font-semibold text-gray-800 dark:text-gray-100">✅ How to Enable HTTPS in Spring Boot Applications</h3>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">
+      To enable HTTPS, generate a Java KeyStore (.jks) file and update your <code>application.properties</code> like so:
+    </p>
+    <div class="code-block mt-2">
+      <button class="copy-btn">Copy</button>
+      <pre><code>server.port=8443
+server.ssl.enabled=true
+server.ssl.key-store=classpath:keystore.jks
+server.ssl.key-store-password=yourpassword
+server.ssl.key-store-type=JKS
+server.ssl.key-alias=tomcat</code></pre>
+    </div>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">
+      Now your app is accessible securely via <code>https://localhost:8443</code>
+    </p>
+  `
+},'Spring Boot Advanced Topics 2': {
+  id: 'spring-boot-advanced-runtime',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot Advanced Runtime Features</h2>
+
+  <h3 class="text-xl font-semibold mt-4 text-gray-800 dark:text-gray-100">✅ Spring Boot DevTools — What Are Its Benefits?</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Spring Boot DevTools enhances the developer experience with:</p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Automatic restart of the application on classpath changes.</li>
+    <li>LiveReload support for automatic browser refresh.</li>
+    <li>Disables template and static resource caching in dev.</li>
+    <li>Enables remote debugging via secure connection.</li>
+  </ul>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">To include it in Maven:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+  &lt;scope&gt;runtime&lt;/scope&gt;
+  &lt;optional&gt;true&lt;/optional&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-6 text-gray-800 dark:text-gray-100">✅ Spring Boot Embedded Servers</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Spring Boot includes embedded servers (Tomcat by default) allowing standalone deployment:</p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li>Supports Tomcat, Jetty, and Undertow.</li>
+    <li>No need to deploy WAR to an external server.</li>
+    <li>Switch server by changing dependencies.</li>
+  </ul>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">To switch from Tomcat to Jetty:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;exclusions&gt;
+    &lt;exclusion&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+    &lt;/exclusion&gt;
+  &lt;/exclusions&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-jetty&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+  </div>
+
+  <h3 class="text-xl font-semibold mt-6 text-gray-800 dark:text-gray-100">✅ Externalized Configuration — Advanced Options</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Spring Boot supports advanced configuration strategies:</p>
+  <ul class="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+    <li><strong>Command-line args</strong>: <code>--server.port=8081</code></li>
+    <li><strong>Environment variables</strong>: <code>SPRING_PROFILES_ACTIVE=prod</code></li>
+    <li><strong>JVM args</strong>: <code>-Dserver.port=9090</code></li>
+    <li><strong>External files</strong>: <code>--spring.config.location=/opt/configs/</code></li>
+    <li><strong>Spring Cloud Config Server</strong> for centralized config</li>
+  </ul>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Order of precedence ensures values are overridden from top priority source.</p>
+
+  <h3 class="text-xl font-semibold mt-6 text-gray-800 dark:text-gray-100">✅ How to Build and Run a Spring Boot Executable JAR</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">You can package a Spring Boot application as a self-contained executable JAR:</p>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Build the JAR:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>mvn clean package</code></pre>
+  </div>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Run the JAR:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>java -jar target/myapp-0.0.1-SNAPSHOT.jar</code></pre>
+  </div>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">Make sure this plugin is in your <code>pom.xml</code>:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
+  </div>`
+}
+,'Spring Boot Advanced Topics 3': {
+  id: 'spring-boot-deployment-testing',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot Deployment, Testing, Security & Logging</h2>
+
+  <h3 class="mt-4 text-xl font-semibold text-gray-800 dark:text-gray-100">Differences between traditional WAR deployment vs. executable JAR in Spring Boot</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300"><strong>WAR Deployment:</strong></p>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li>Requires an external servlet container (like Tomcat, JBoss, WebLogic).</li>
+    <li>More setup-heavy: application is packaged as a .war and deployed manually.</li>
+    <li>Common in older Java EE environments or large enterprise setups.</li>
+  </ul>
+  <p class="mt-2 text-gray-700 dark:text-gray-300"><strong>Executable JAR:</strong></p>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li>Self-contained: includes embedded server (Tomcat/Jetty/Undertow).</li>
+    <li>Easier to deploy: just run with <code>java -jar myapp.jar</code>.</li>
+    <li>Simpler CI/CD and containerization.</li>
+  </ul>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Spring Boot Advantage:</strong> Favors executable JARs for faster development and fewer deployment dependencies.
+  </p>
+
+  <h3 class="mt-6 text-xl font-semibold text-gray-800 dark:text-gray-100">@SpringBootTest, @DataJpaTest and Spring Boot Testing</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Spring Boot offers powerful testing annotations:
+  </p>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li><code>@SpringBootTest</code>: Loads full application context, used for integration tests.</li>
+    <li><code>@DataJpaTest</code>: Configures in-memory database, scans repositories only — good for JPA tests.</li>
+    <li><code>@WebMvcTest</code>: Focuses only on controller layer, mocking other components.</li>
+    <li><code>@MockBean</code>: Replaces a bean in the application context with a Mockito mock.</li>
+  </ul>
+
+  <h3 class="mt-6 text-xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot Security Basics</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Spring Boot uses Spring Security under the hood. Out-of-the-box it secures all endpoints with basic authentication.
+  </p>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li>Default credentials: <code>user</code> with auto-generated password (printed in console).</li>
+    <li>Configure custom login in <code>application.properties</code> or use a <code>SecurityFilterChain</code> bean.</li>
+    <li>To disable security (for development): <code>spring.security.enabled=false</code> or configure permitted endpoints.</li>
+  </ul>
+
+  <h3 class="mt-6 text-xl font-semibold text-gray-800 dark:text-gray-100">Spring Boot Logging Configuration</h3>
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Spring Boot uses Logback as the default logging framework.
+  </p>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+    <li>Default log level is <code>INFO</code>. Configure via <code>application.properties</code>:</li>
+  </ul>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>logging.level.org.springframework=DEBUG
+logging.level.com.yourapp=TRACE</code></pre>
+  </div>
+  <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 mt-2">
+    <li>Use <code>logback-spring.xml</code> for advanced logging configurations.</li>
+    <li>Log to file by adding: <code>logging.file.name=app.log</code></li>
+  </ul>`
+},'Spring MVC Core': {
+  id: 'spring-mvc-overview',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Spring MVC Overview: Core Concepts with Enhanced Insight</h2>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>1. What is Spring MVC and how does it work?</strong><br><br>
+    <strong>Enhanced Answer:</strong><br>
+    Spring MVC (Model-View-Controller) is a web framework that separates the application logic (Model), UI (View), and request handling (Controller) to promote decoupled development.
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Request Lifecycle:</strong><br>
+    Client sends an HTTP request → routed through DispatcherServlet.<br>
+    DispatcherServlet delegates to HandlerMapping to find the right @Controller.<br>
+    The selected controller executes and returns a ModelAndView or ResponseEntity.<br>
+    The ViewResolver (for HTML) or HttpMessageConverter (for JSON/XML) renders the response.
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Senior Insight:</strong><br>
+    Spring MVC works seamlessly with IoC Container, AOP, and Bean Validation.<br>
+    Integrates well with Thymeleaf, Freemarker, or REST APIs via @RestController.<br>
+    You can intercept requests globally via HandlerInterceptor or filter responses.
+  </p>
+
+  <p class="mt-6 text-gray-700 dark:text-gray-300">
+    <strong>2. How is Spring MVC different from other MVC frameworks?</strong><br><br>
+    <strong>Enhanced Answer:</strong><br>
+    <table class="table-auto border border-collapse border-gray-400 dark:border-gray-600 text-sm mt-2">
+      <thead>
+        <tr>
+          <th class="border border-gray-400 dark:border-gray-600 px-2 py-1">Feature</th>
+          <th class="border border-gray-400 dark:border-gray-600 px-2 py-1">Spring MVC</th>
+          <th class="border border-gray-400 dark:border-gray-600 px-2 py-1">Other Frameworks (e.g., Struts, JSF)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Loose coupling</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Favors POJO-based development</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">May require framework-specific base classes</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">REST Support</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Built-in with annotations like @RestController</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Often requires add-ons or plugins</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Integration</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Seamless with Spring Boot, Security, Data</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Integration is more manual</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Extensibility</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Easily extend HandlerInterceptor, ViewResolver, etc.</td>
+          <td class="border border-gray-400 dark:border-gray-600 px-2 py-1">Limited or complex</td>
+        </tr>
+      </tbody>
+    </table>
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Real-world Edge:</strong><br>
+    Spring MVC allows granular customization without overriding the entire flow — e.g., plug in custom HttpMessageConverter for protobuf or CSV.
+  </p>
+
+  <p class="mt-6 text-gray-700 dark:text-gray-300">
+    <strong>3. What are the main components of Spring MVC architecture?</strong><br><br>
+    <strong>Enhanced Answer:</strong><br>
+    - <code>DispatcherServlet</code> – Front controller that handles all requests.<br>
+    - <code>HandlerMapping</code> – Maps requests to controllers.<br>
+    - <code>Controller</code> (@Controller/@RestController) – Handles business logic.<br>
+    - <code>Model</code> – Data passed to views or JSON response.<br>
+    - <code>ViewResolver</code> – Resolves logical view names to actual templates (HTML/Thymeleaf).<br>
+    - <code>HttpMessageConverter</code> – Converts objects to JSON/XML for REST APIs.<br>
+    - <code>HandlerInterceptor</code> – Pre-/post-processing logic (e.g., logging, auth).
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Bonus:</strong><br>
+    You can register custom components via <code>WebMvcConfigurer</code>.
+  </p>
+
+  <p class="mt-6 text-gray-700 dark:text-gray-300">
+    <strong>4. What happens if you don’t annotate your class with @Controller or @RestController?</strong><br><br>
+    <strong>Enhanced Answer:</strong><br>
+    Spring won't detect it during component scanning, so:<br>
+    - It won't be registered as a Spring Bean.<br>
+    - No request mapping will be processed for that class.<br>
+    - You'll likely get a 404 Not Found.
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Tip:</strong><br>
+    Ensure the class is in a package scanned by Spring Boot (<code>@SpringBootApplication</code> does component scanning on its package and subpackages).
+  </p>
+
+  <p class="mt-6 text-gray-700 dark:text-gray-300">
+    <strong>5. Can Spring MVC be used without Spring Boot?</strong><br><br>
+    <strong>Enhanced Answer:</strong><br>
+    Yes, Spring MVC can be used standalone by manually configuring:<br>
+    - <code>DispatcherServlet</code> in <code>web.xml</code> (or via JavaConfig in Servlet 3.0+).<br>
+    - View resolvers, handler mappings, component scanning.<br>
+    - Requires setting up a servlet container (e.g., Tomcat, Jetty).
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Real-world usage:</strong><br>
+    This was common in legacy apps pre-Spring Boot. Today, Spring Boot handles all that via <code>@SpringBootApplication</code> and <code>application.properties</code>, making configuration minimal.
+  </p>
+
+  <p class="mt-6 text-gray-700 dark:text-gray-300">
+    <strong>Trap: Is Spring MVC a full-stack framework like Angular?</strong><br><br>
+    <strong>Enhanced Answer:</strong><br>
+    No. Spring MVC is server-side. It handles:<br>
+    - Backend logic<br>
+    - Data persistence<br>
+    - Request/response handling<br><br>
+    Frameworks like Angular/React are client-side — responsible for rendering UI in browsers and interacting with backend APIs.
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Interviewer Expectation:</strong><br>
+    They want to see if you confuse frontend-backend responsibilities. A strong answer includes how they can integrate via REST APIs (e.g., Angular consumes Spring MVC’s JSON APIs).
+  </p>`
+}
+,'Dispatcher Servlet Architecture': {
+  id: 'dispatcher-servlet-architecture',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">DispatcherServlet Architecture in Spring MVC</h2>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>1. What is the role of DispatcherServlet in Spring MVC?</strong><br>
+    <strong>Enhanced Answer:</strong><br>
+    <code>DispatcherServlet</code> is the front controller in Spring MVC. It receives all incoming HTTP requests and delegates them to appropriate components such as controllers, handler mappings, and view resolvers.<br><br>
+
+    <strong>Responsibilities:</strong><br>
+    - Intercepts incoming requests.<br>
+    - Delegates to HandlerMapping to identify the controller.<br>
+    - Delegates to a suitable HandlerAdapter to invoke the controller.<br>
+    - Processes response via ViewResolver or HttpMessageConverter.<br><br>
+
+    <strong>Analogy:</strong> Think of DispatcherServlet as the “traffic cop” that routes web traffic inside the Spring MVC application.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>2. Can you explain the request flow handled by DispatcherServlet?</strong><br>
+    <strong>Enhanced Answer:</strong><br>
+    1. <strong>Client</strong> sends a request → <code>DispatcherServlet</code> receives it.<br>
+    2. It consults <strong>HandlerMapping</strong> to find the controller (<code>@Controller</code>, <code>@RestController</code>).<br>
+    3. <strong>HandlerAdapter</strong> is used to execute the controller method.<br>
+    4. The method returns a <strong>ModelAndView</strong> (for UI) or <strong>ResponseEntity</strong> (for REST).<br>
+    5. <strong>ViewResolver</strong> or <strong>HttpMessageConverter</strong> processes the response.<br>
+    6. Response is returned to the client.<br><br>
+
+    <strong>Senior Tip:</strong> Internally, it uses the Strategy Design Pattern for handler mapping, view resolution, etc.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>3. How does DispatcherServlet interact with handler mappings and view resolvers?</strong><br>
+    <strong>Enhanced Answer:</strong><br>
+    - <code>DispatcherServlet</code> consults <strong>HandlerMapping</strong> to identify the controller method.<br>
+    - After controller execution, it consults <strong>ViewResolver</strong> to map logical view names to actual templates like Thymeleaf or JSP.<br>
+    - For REST APIs, it uses <strong>HttpMessageConverter</strong> to convert Java objects to JSON/XML.<br><br>
+
+    <strong>Flexibility:</strong> You can register custom HandlerMappings or ViewResolvers using <code>WebMvcConfigurer</code>.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>4. Can you override the default DispatcherServlet?</strong><br>
+    <strong>Enhanced Answer:</strong><br>
+    Yes. In Spring Boot:<br>
+    - The default servlet is registered automatically, but you can define your own <code>DispatcherServlet</code> bean in configuration.
+  </p>
+
+  <div class="code-block my-2">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@Bean
+public DispatcherServlet dispatcherServlet() {
+    DispatcherServlet servlet = new DispatcherServlet();
+    servlet.setThrowExceptionIfNoHandlerFound(true);
+    return servlet;
+}</code></pre>
+  </div>
+
+  <p class="text-gray-700 dark:text-gray-300">
+    <strong>Why override it?</strong><br>
+    - Custom error handling<br>
+    - Modify dispatching behavior (e.g., throw 404 if no handler found)
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>5. What would happen if there are multiple DispatcherServlets in a Spring Boot app?</strong><br>
+    <strong>Enhanced Answer:</strong><br>
+    Each <code>DispatcherServlet</code> handles requests with its own URL mapping and application context.<br>
+    - Useful for modular apps where different modules have separate request flows.<br>
+    - But it increases configuration complexity.<br><br>
+
+    <strong>Tip:</strong> Use multiple DispatcherServlets only when isolation of configuration/flows is needed. Otherwise, a single DispatcherServlet is sufficient.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>Trap: Is DispatcherServlet a filter or a servlet?</strong><br>
+    <strong>Enhanced Answer:</strong><br>
+    It is a <strong>servlet</strong>, not a filter.<br>
+    - It extends <code>HttpServlet</code> and is registered like any servlet.<br>
+    - Filters (like <code>OncePerRequestFilter</code>) can sit <strong>before</strong> DispatcherServlet in the filter chain.<br><br>
+
+    <strong>Interviewer Trap:</strong><br>
+    They want to check if you understand the difference in lifecycle. Filters intercept all requests at the container level; DispatcherServlet is a part of Spring’s MVC framework and starts handling after filters.
+  </p>`
+},'Controller vs Restcontroller': {
+  id: 'controller-vs-restcontroller',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Controller vs RestController</h2>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>1. What is the difference between @Controller and @RestController?</strong><br>
+    <strong>@Controller:</strong> Returns a view (HTML/jsp/Thymeleaf). Used in traditional MVC web applications.<br>
+    <strong>@RestController:</strong> A combination of @Controller + @ResponseBody. Returns data (usually JSON) directly.<br>
+    <strong>Use Case:</strong> Use @Controller for web pages, @RestController for REST APIs.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>2. When should you use @RestController over @Controller?</strong><br>
+    Use @RestController when building REST APIs that return JSON/XML.<br>
+    Use @Controller when rendering HTML views using templates like Thymeleaf or JSP.<br>
+    <em>Tip:</em> Returning complex data from @Controller without @ResponseBody will cause view resolution errors.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>3. How do you return JSON or view pages from a controller?</strong><br>
+    <strong>Returning JSON:</strong>
+  </p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@RestController
+public class ApiController {
+    @GetMapping("/user")
+    public User getUser() {
+        return new User("John", 30);
+    }
+}</code></pre>
+  </div>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    <strong>Returning View:</strong>
+  </p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@Controller
+public class PageController {
+    @GetMapping("/home")
+    public String homePage(Model model) {
+        model.addAttribute("name", "John");
+        return "home"; // resolved by ViewResolver
+    }
+}</code></pre>
+  </div>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>4. What if you use both @ResponseBody and @RestController?</strong><br>
+    It’s redundant. @RestController already includes @ResponseBody on all methods.<br>
+    No harm, but unnecessary duplication.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>5. Is it okay to mix @Controller and @RestController in the same class?</strong><br>
+    Technically possible, but not recommended.<br>
+    It may confuse developers about the return type — view vs JSON.<br>
+    <strong>Best Practice:</strong> Keep them separate to maintain clean architecture.
+  </p>
+
+  <p class="mt-4 text-gray-700 dark:text-gray-300">
+    <strong>6. Trap: Can @RestController return a view name?</strong><br>
+    No. @RestController serializes the return value as JSON or string.<br>
+    Returning "home" will literally respond with "home", not a view.<br>
+    <strong>Tip:</strong> Use @Controller if you need view rendering.
+  </p>`
+}
+,'Spring Request Mapping': {
+  id: 'spring-mvc-request-mapping-annotations',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Request Mapping Annotations in Spring MVC</h2>
+
+  <p><strong>1. What is the purpose of @RequestMapping?</strong> @RequestMapping is a Spring annotation used to map web requests to handler methods based on URL patterns, HTTP methods, headers, and more. It’s highly flexible and can be placed at both class and method levels. It supports a wide range of attributes such as method, consumes, produces, params, and headers, giving fine-grained control over routing. It's the foundation for all request mapping in Spring MVC, including REST APIs.</p>
+
+  <p><strong>2. How do @GetMapping and @PostMapping differ from @RequestMapping?</strong> @GetMapping and @PostMapping are specialized annotations introduced in Spring 4.3 that act as shortcuts for @RequestMapping(method = RequestMethod.GET) and @RequestMapping(method = RequestMethod.POST) respectively. They provide more readable and intention-revealing code, aligning well with RESTful principles.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@GetMapping("/users") // clearer than @RequestMapping(method = GET)
+@PostMapping("/users")</code></pre>
+  </div>
+
+  <p>These annotations improve clarity and are preferred in most modern Spring Boot apps unless complex mapping is needed.</p>
+
+  <p><strong>3. Can you define multiple mappings for the same controller method?</strong> Yes, Spring allows multiple URL paths to be mapped to a single method using an array:</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@GetMapping({"/home", "/index"})
+public String home() { return "home"; }</code></pre>
+  </div>
+
+  <p>This is useful when you want backward compatibility (e.g., /dashboard and /admin/dashboard) or when supporting aliases. But overusing it may reduce clarity and cause ambiguity.</p>
+
+  <p><strong>4. What’s the difference between @RequestMapping(method = RequestMethod.GET) and @GetMapping?</strong> Functionally, both are the same. @GetMapping is a meta-annotation that simplifies @RequestMapping(method = RequestMethod.GET). While both generate the same behavior at runtime, @GetMapping is more expressive and concise. Use @RequestMapping only when you need extra attributes like headers or multiple methods.</p>
+
+  <p><strong>5. What happens if two methods are mapped to the same URL path?</strong> Spring will throw a runtime error (IllegalStateException) indicating ambiguous mapping if two controller methods handle the same URL and HTTP method. This is checked during application startup. To avoid this, always ensure unique combinations of URL path and HTTP method across all controllers.</p>
+
+  <p><strong>Trap: Can you map multiple HTTP methods using @GetMapping?</strong> No, @GetMapping only supports the GET method. If you want to map multiple methods like GET and POST to a single handler, use:</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@RequestMapping(value = "/multi", method = {RequestMethod.GET, RequestMethod.POST})</code></pre>
+  </div>
+
+  <p>Trying to do this with @GetMapping will result in a compile-time limitation — it's purpose-built for only one method.</p>`
+}
+
+,'Path Variable': {
+  id: 'path-variable-request-param',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">@PathVariable and @RequestParam in Spring MVC</h2>
+
+  <p><strong>1. What is the difference between path variables and request parameters?</strong> Path variables are part of the URL path (e.g., /user/42), while request parameters are passed as query strings (e.g., ?id=42). Path variables are typically used for identifying resources, whereas request parameters are for filtering or additional input.</p>
+
+  <p><strong>2. How do you bind a path variable using @PathVariable?</strong> You can bind a path segment directly to a method argument using @PathVariable.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@GetMapping("/user/{id}")
+public String getUser(@PathVariable("id") int userId) {
+    return "User ID: " + userId;
+}</code></pre>
+  </div>
+
+  <p><strong>3. How do you access query parameters using @RequestParam?</strong> Use @RequestParam to extract query parameters from the request URL.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@GetMapping("/search")
+public String search(@RequestParam("q") String query) {
+    return "Query: " + query;
+}</code></pre>
+  </div>
+
+  <p><strong>4. What happens if a required @RequestParam is missing?</strong> If @RequestParam is required (default behavior) and not present, Spring will throw a MissingServletRequestParameterException.</p>
+
+  <p><strong>5. How do you provide default values to request parameters?</strong> You can provide a default value using the defaultValue attribute to avoid errors when a parameter is missing.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@GetMapping("/page")
+public String page(@RequestParam(defaultValue = "1") int number) {
+    return "Page number: " + number;
+}</code></pre>
+  </div>
+
+  <p><strong>6. Trap: Can you use both @PathVariable and @RequestParam for the same value?</strong> No. @PathVariable is used for binding from the URI path, while @RequestParam extracts from query parameters. They are distinct and cannot be used interchangeably for the same input.</p>`
+}
+,'Response Entity': {
+  "id": "responseentity-http-status",
+  "html": `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">ResponseEntity and HTTP Status Handling in Spring MVC</h2>
+
+<p><strong>1. What is ResponseEntity and when should you use it?</strong><br>
+<code>ResponseEntity&lt;T&gt;</code> is a Spring class used to represent the full HTTP response, including the response body, HTTP status code, and headers like <code>Location</code> or <code>ETag</code>. Unlike simply returning a POJO (which becomes just the body), <code>ResponseEntity</code> gives complete control over the response. Use it in REST APIs when you need to:<br>
+- Return custom HTTP status codes<br>
+- Add headers like <code>Cache-Control</code>, <code>ETag</code>, etc.<br>
+- Return empty body for <code>204 No Content</code><br>
+- Handle conditional logic within a method<br>
+It's especially useful in RESTful services, error handling, and when clear HTTP semantics are needed.</p>
+
+<p><strong>2. How do you customize HTTP status codes in Spring MVC responses?</strong><br>
+You can set status codes using either constructors or static builder methods:</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>return new ResponseEntity&lt;&gt;(data, HttpStatus.CREATED);</code></pre>
+</div>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>return ResponseEntity.status(HttpStatus.ACCEPTED).body(data);
+return ResponseEntity.status(422).body("Validation failed");</code></pre>
+</div>
+<p>This allows more precise responses than the default <code>200 OK</code>, such as <code>201 Created</code>, <code>204 No Content</code>, or <code>400 Bad Request</code>.</p>
+
+<p><strong>3. What’s the difference between returning a POJO vs. using ResponseEntity?</strong><br>
+Returning a POJO (e.g., <code>User</code>) causes Spring to serialize it to JSON and wrap it with a <code>200 OK</code> and <code>Content-Type: application/json</code>. However, you can't customize headers or status easily. With <code>ResponseEntity</code>, you gain full control over:<br>
+- Status code<br>
+- Headers<br>
+- Conditional or error responses<br>
+It's more suitable when flexibility and RESTful behavior is needed.</p>
+
+<p><strong>4. When should you prefer ResponseEntity over directly returning a DTO?</strong><br>
+Use <code>ResponseEntity</code> when:<br>
+- You want to return <code>201 Created</code> after saving<br>
+- You need <code>204 No Content</code> for empty responses<br>
+- You want to include headers like <code>Location</code>, <code>ETag</code>, or <code>Cache-Control</code><br>
+- You're handling exceptions with custom status codes like <code>400</code> or <code>500</code><br>
+Use direct DTOs when you're returning simple data with no need for special headers or status customization.</p>
+
+<p><strong>5. How can you send a 204 No Content response?</strong><br>
+A <code>204 No Content</code> status indicates the request was successful but there’s no response body (common in <code>DELETE</code> or <code>PUT</code> endpoints). Use:</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>return ResponseEntity.noContent().build();</code></pre>
+</div>
+<p>This sends a 204 response with an empty body and appropriate headers. It saves bandwidth and communicates intent clearly to the client.</p>
+
+<p><strong>6. Trap: Does returning ResponseEntity.ok() always imply status 200?</strong><br>
+Yes. <code>ResponseEntity.ok()</code> is a shortcut for <code>ResponseEntity.status(HttpStatus.OK)</code> and always results in <code>200 OK</code>. If a different status is needed, use:</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>ResponseEntity.status(HttpStatus.CREATED).body(data);</code></pre>
+</div>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>ResponseEntity.accepted().body(data);</code></pre>
+</div>
+<p>While convenient, <code>ok()</code> is not appropriate when semantic clarity (e.g., <code>201 Created</code> for POST) is important.</p>`
+}
+,'Global Exception Handling': {
+  id: 'spring-mvc-global-exception-handling',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Global Exception Handling in Spring MVC</h2>
+
+  <p><strong>1. How does Spring MVC handle exceptions globally?</strong><br>
+  Spring MVC allows centralized exception handling using <code>@ControllerAdvice</code>, <code>@RestControllerAdvice</code>, and <code>@ExceptionHandler</code>. When a controller throws an exception, Spring first checks for a matching <code>@ExceptionHandler</code> in the controller. If not found, it checks globally in any class annotated with <code>@ControllerAdvice</code>. If still not found, it falls back to default exception resolvers which may result in a 500 error or default error view/JSON.</p>
+
+  <p><strong>2. What is @ControllerAdvice and how does it work?</strong><br>
+  <code>@ControllerAdvice</code> is a specialization of <code>@Component</code> used to define global exception handlers, model attributes, or data binding logic. At runtime, Spring scans and wires all <code>@ControllerAdvice</code> classes and invokes their <code>@ExceptionHandler</code> methods when matching exceptions occur.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@ControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity&lt;String&gt; handleIllegalArgument(IllegalArgumentException ex) {
+    return ResponseEntity.badRequest().body("Invalid input: " + ex.getMessage());
+  }
+}</code></pre>
+  </div>
+
+  <p><strong>3. How do you define custom exception handlers with @ExceptionHandler?</strong><br>
+  You can define a method annotated with <code>@ExceptionHandler</code> to catch and process specific exceptions locally (within a controller) or globally (within <code>@ControllerAdvice</code>).</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@ExceptionHandler(SomeException.class)
+public ResponseEntity&lt;ErrorResponse&gt; handleSomeException(SomeException ex) {
+  ErrorResponse error = new ErrorResponse("Failed", ex.getMessage());
+  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+}</code></pre>
+  </div>
+
+  <p><strong>4. How is @ControllerAdvice different from @RestControllerAdvice?</strong><br>
+  <code>@RestControllerAdvice</code> is a shortcut for <code>@ControllerAdvice</code> + <code>@ResponseBody</code>. It’s meant for REST APIs where you want JSON responses by default. In contrast, <code>@ControllerAdvice</code> is used in web applications where views (like Thymeleaf) are returned.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@RestControllerAdvice
+public class ApiExceptionHandler {
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity&lt;String&gt; handleNotFound(ResourceNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found: " + ex.getMessage());
+  }
+}</code></pre>
+  </div>
+
+  <p><strong>5. What happens if no exception handler is found?</strong><br>
+  If Spring doesn't find a matching <code>@ExceptionHandler</code>, it uses internal resolvers (like <code>DefaultHandlerExceptionResolver</code>). This may result in a default error page (for web apps) or JSON error response (in REST APIs). In Spring Boot, it may fall back to the <code>BasicErrorController</code> and map the error to the <code>/error</code> endpoint.</p>
+
+  <p><strong>6. Trap: Can one controller override the global exception handler?</strong><br>
+  Yes. A controller’s local <code>@ExceptionHandler</code> method takes precedence over a global one defined in <code>@ControllerAdvice</code>. This allows specific exception behavior in one controller while maintaining generic behavior globally.</p>`
+}
+,'Data Binding Validation': {
+  "id": "springmvc-data-binding-validation",
+  "html": `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Data Binding and Validation in Spring MVC</h2>
+
+<p><strong>1. How does Spring MVC perform data binding from request to object?</strong><br>
+Spring MVC uses its data binding mechanism to automatically map incoming request parameters to Java object properties. This is handled by <code>WebDataBinder</code>. 
+<br><br>
+When you use <code>@ModelAttribute</code>, Spring reads form parameters like <code>name=John&amp;age=30</code> and maps them to fields of the corresponding object.
+<br><br>
+When you use <code>@RequestBody</code>, Spring maps the JSON payload (e.g., <code>{"name":"John","age":30}</code>) to a Java object using <code>HttpMessageConverters</code> (Jackson for JSON).
+<br><br>
+It supports field-name matching, public setters, or constructor binding using records or <code>@ConstructorBinding</code>. Nested objects and lists are recursively bound when request structure matches the Java class hierarchy.
+</p>
+
+<p><strong>2. What is the purpose of the @Valid or @Validated annotations?</strong><br>
+<code>@Valid</code> (javax.validation) and <code>@Validated</code> (Spring-specific) are used to trigger bean validation on objects after binding.
+They check constraints like:
+<ul class="list-disc list-inside">
+  <li><code>@NotNull</code></li>
+  <li><code>@Size</code></li>
+  <li><code>@Email</code></li>
+  <li><code>@Min</code>, <code>@Pattern</code>, etc.</li>
+</ul>
+Violations are captured in <code>BindingResult</code> or thrown as <code>MethodArgumentNotValidException</code>.<br>
+<code>@Validated</code> also supports validation groups: <code>@Validated(GroupA.class)</code>. Use them to enforce constraints automatically during request binding.
+</p>
+
+<p><strong>3. How do you handle validation errors in controllers?</strong><br>
+Use <code>BindingResult</code> immediately after the <code>@Valid</code> or <code>@Validated</code> argument. Spring populates it with validation errors.
+</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>@PostMapping("/submit")
+public String handleForm(@Valid User user, BindingResult result) {
+    if (result.hasErrors()) {
+        return "form-view";
+    }
+    return "success";
+}</code></pre>
+</div>
+<p>This allows you to return the form again with field-level messages or return structured errors in REST APIs.</p>
+
+<p><strong>4. How does Spring MVC bind nested objects and lists?</strong><br>
+Spring supports nested object binding using matching field names. For example:
+</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>public class User {
+    private Address address;
+    private List&lt;Phone&gt; phones;
+}</code></pre>
+</div>
+<p>Spring can bind:
+<ul class="list-disc list-inside">
+  <li><code>address.city=Delhi</code></li>
+  <li><code>phones[0].number=1234</code></li>
+  <li><code>phones[1].number=5678</code></li>
+</ul>
+As long as setters exist and the structure matches, Spring binds nested fields recursively—useful for complex forms or JSON payloads.
+</p>
+
+<p><strong>5. How do you return field-specific validation messages?</strong><br>
+After validation, use <code>bindingResult.getFieldErrors()</code> to access each field-level error. You can return JSON like:
+</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>{
+  "email": "must not be empty",
+  "age": "must be greater than 18"
+}</code></pre>
+</div>
+<p>You can also map messages to input fields in your UI. Spring integrates with <code>MessageSource</code> to externalize validation messages.</p>
+
+<p><strong>6. Trap: Will validation annotations like @NotNull work without @Valid?</strong><br>
+No. If you skip <code>@Valid</code> or <code>@Validated</code>, Spring binds the data but skips validation—annotations like <code>@NotNull</code> are ignored. Always annotate your method parameters to trigger validation checks.</p>
+`
+}
+,'View Resolver and Template Engine': {
+  "id": "spring-mvc-view-resolvers-and-template-engines",
+  "html": `<h2 class='text-2xl font-semibold text-gray-800 dark:text-gray-100'>Spring MVC View Resolvers and Template Engines</h2>
+
+<p><strong>What is a view resolver in Spring MVC?</strong> In Spring MVC, a <code>ViewResolver</code> is a component that maps a <em>logical view name</em> returned by a controller to a <em>physical view template</em>. For example:</p>
+<div class='code-block'>
+  <button class='copy-btn'>Copy</button>
+  <pre><code>return "home";</code></pre>
+</div>
+<p>Spring uses the configured <code>ViewResolver</code> to resolve "home" to:</p>
+<ul class='list-disc list-inside'>
+  <li><code>home.jsp</code></li>
+  <li><code>home.html</code></li>
+  <li><code>/WEB-INF/views/home.jsp</code> (based on config)</li>
+</ul>
+<p>Common ViewResolvers:</p>
+<ul class='list-disc list-inside'>
+  <li><code>InternalResourceViewResolver</code> – for JSP</li>
+  <li><code>ThymeleafViewResolver</code> – for Thymeleaf</li>
+  <li><code>FreeMarkerViewResolver</code> – for Freemarker</li>
+</ul>
+<p>This decouples controller logic from view rendering and enables flexible templating.</p>
+
+<p><strong>How do you configure and use Thymeleaf in Spring MVC?</strong> To use Thymeleaf:</p>
+<ul class='list-disc list-inside'>
+  <li>Add dependency:
+<div class='code-block'>
+  <button class='copy-btn'>Copy</button>
+  <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div></li>
+  <li>Place templates in <code>src/main/resources/templates/</code></li>
+  <li>Spring Boot auto-configures the resolver:
+<div class='code-block'>
+  <button class='copy-btn'>Copy</button>
+  <pre><code>spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false</code></pre>
+</div></li>
+  <li>Controller usage:
+<div class='code-block'>
+  <button class='copy-btn'>Copy</button>
+  <pre><code>@GetMapping("/greet")
+public String greet(Model model) {
+    model.addAttribute("name", "John");
+    return "greeting";
+}</code></pre>
+</div></li>
+  <li>Template (greeting.html):
+<div class='code-block'>
+  <button class='copy-btn'>Copy</button>
+  <pre><code>&lt;p&gt;Hello, &lt;span th:text="\${name}"&gt;User&lt;/span&gt;!&lt;/p&gt;</code></pre>
+</div></li>
+</ul>
+
+<p><strong>What’s the difference between Thymeleaf and Freemarker in Spring?</strong></p>
+<div class='overflow-x-auto'>
+  <table class='table-auto border border-collapse border-gray-400 text-sm'>
+    <thead class='bg-gray-100 dark:bg-gray-700'>
+      <tr>
+        <th class='border px-2 py-1'>Feature</th>
+        <th class='border px-2 py-1'>Thymeleaf</th>
+        <th class='border px-2 py-1'>Freemarker</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class='border px-2 py-1'>Syntax</td>
+        <td class='border px-2 py-1'>HTML5-friendly</td>
+        <td class='border px-2 py-1'>Custom tag-based</td>
+      </tr>
+      <tr>
+        <td class='border px-2 py-1'>Previewable</td>
+        <td class='border px-2 py-1'>Yes (pure HTML)</td>
+        <td class='border px-2 py-1'>No</td>
+      </tr>
+      <tr>
+        <td class='border px-2 py-1'>Integration</td>
+        <td class='border px-2 py-1'>Tight Spring Boot support</td>
+        <td class='border px-2 py-1'>Manual setup</td>
+      </tr>
+      <tr>
+        <td class='border px-2 py-1'>Use-case</td>
+        <td class='border px-2 py-1'>Web apps, HTML</td>
+        <td class='border px-2 py-1'>Documents, emails</td>
+      </tr>
+      <tr>
+        <td class='border px-2 py-1'>Learning curve</td>
+        <td class='border px-2 py-1'>Easy for frontend devs</td>
+        <td class='border px-2 py-1'>Steeper</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p><strong>What happens if multiple view resolvers are configured?</strong> Spring uses ViewResolvers in the order of their <code>order</code> property. First that can resolve the view is used. Example:</p>
+<div class='code-block'>
+  <button class='copy-btn'>Copy</button>
+  <pre><code>resolver.setOrder(1); // Thymeleaf
+resolver.setOrder(2); // JSP</code></pre>
+</div>
+<p>If none can resolve, Spring throws an error: <code>HTTP 500 - View [xyz] could not be resolved</code>.</p>
+
+<p><strong>How does Spring decide which template engine to use?</strong> Spring picks the first registered ViewResolver that can handle the view name. It uses:</p>
+<ul class='list-disc list-inside'>
+  <li>View name patterns (prefix/suffix)</li>
+  <li>File extensions (e.g. .html, .ftl)</li>
+</ul>
+<p>Order matters. You must prioritize resolvers using <code>setOrder()</code>.</p>
+
+<p><strong>Trap: Can you use both Thymeleaf and Freemarker together?</strong> Yes, Spring allows multiple template engines. But:</p>
+<ul class='list-disc list-inside'>
+  <li>You must configure ViewResolvers with different <code>order</code></li>
+  <li>Ensure no view name conflicts</li>
+</ul>
+<p>Although technically supported, it's recommended to stick to one engine for consistency unless there's a specific use case like migration.</p>`
+}
+
+,'Sql Intro': {
+  id: 'sql-overview-and-types',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">What is SQL?</h2>
+    <p><strong>SQL (Structured Query Language):</strong> A standard language used to interact with relational databases. It is primarily used to perform <strong>CRUD</strong> operations: Create, Read, Update, and Delete data.</p>
+
+    <h2 class="text-2xl font-semibold mt-6 text-gray-800 dark:text-gray-100">Types of SQL Statements</h2>
+    <p>SQL statements are classified into five main types:</p>
+
+    <h3 class="mt-4 font-bold text-lg text-gray-700 dark:text-gray-200">1. DDL (Data Definition Language)</h3>
+    <ul class="list-disc pl-5">
+      <li><strong>CREATE:</strong> Creates a new table or database.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE students (id INT, name VARCHAR(50));</code></pre></div>
+      </li>
+      <li><strong>ALTER:</strong> Modifies an existing table.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>ALTER TABLE students ADD age INT;</code></pre></div>
+      </li>
+      <li><strong>DROP:</strong> Deletes a table or database.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>DROP TABLE students;</code></pre></div>
+      </li>
+      <li><strong>TRUNCATE:</strong> Removes all rows from a table.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>TRUNCATE TABLE students;</code></pre></div>
+      </li>
+    </ul>
+
+    <h3 class="mt-4 font-bold text-lg text-gray-700 dark:text-gray-200">2. DML (Data Manipulation Language)</h3>
+    <ul class="list-disc pl-5">
+      <li><strong>INSERT:</strong> Adds new records.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>INSERT INTO students VALUES (1, 'John');</code></pre></div>
+      </li>
+      <li><strong>UPDATE:</strong> Modifies existing records.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>UPDATE students SET name = 'Jane' WHERE id = 1;</code></pre></div>
+      </li>
+      <li><strong>DELETE:</strong> Deletes records.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>DELETE FROM students WHERE id = 1;</code></pre></div>
+      </li>
+    </ul>
+
+    <h3 class="mt-4 font-bold text-lg text-gray-700 dark:text-gray-200">3. DQL (Data Query Language)</h3>
+    <ul class="list-disc pl-5">
+      <li><strong>SELECT:</strong> Retrieves data from the database.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT * FROM students;</code></pre></div>
+      </li>
+    </ul>
+
+    <h3 class="mt-4 font-bold text-lg text-gray-700 dark:text-gray-200">4. DCL (Data Control Language)</h3>
+    <ul class="list-disc pl-5">
+      <li><strong>GRANT:</strong> Provides access rights.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>GRANT SELECT ON students TO user1;</code></pre></div>
+      </li>
+      <li><strong>REVOKE:</strong> Removes access rights.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>REVOKE SELECT ON students FROM user1;</code></pre></div>
+      </li>
+    </ul>
+
+    <h3 class="mt-4 font-bold text-lg text-gray-700 dark:text-gray-200">5. TCL (Transaction Control Language)</h3>
+    <ul class="list-disc pl-5">
+      <li><strong>COMMIT:</strong> Saves changes.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>COMMIT;</code></pre></div>
+      </li>
+      <li><strong>ROLLBACK:</strong> Undoes changes.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>ROLLBACK;</code></pre></div>
+      </li>
+      <li><strong>SAVEPOINT:</strong> Sets a save point.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>SAVEPOINT sp1;</code></pre></div>
+      </li>
+      <li><strong>SET TRANSACTION:</strong> Sets properties.
+        <div class="code-block"><button class="copy-btn">Copy</button><pre><code>SET TRANSACTION READ ONLY;</code></pre></div>
+      </li>
+    </ul>
+  `
+},'Type of Keys': {
+  id: 'types-of-keys-sql',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">🔑 Types of Keys in SQL (With Examples & Differences)</h2>
+
+    <p><strong>Keys</strong> are used to uniquely identify records and manage relationships between tables.</p>
+
+    <h3 class="text-xl font-semibold mt-4">1. Primary Key</h3>
+    <p><strong>Definition:</strong> Uniquely identifies each row in a table. Cannot be NULL or duplicate. One per table.</p>
+    <p><strong>Use Case:</strong> Used in joins, indexing, and unique row access.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50)
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Unique, ❌ Not Null, ⚠️ Only one per table</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Can a table have two primary keys? ❌ No</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">2. Candidate Key</h3>
+    <p><strong>Definition:</strong> A column or combination of columns that can uniquely identify rows. Multiple allowed.</p>
+    <p><strong>Use Case:</strong> Acts as potential primary key. One becomes PK, rest alternate keys.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE users (
+  user_id INT,
+  email VARCHAR(100),
+  phone VARCHAR(15),
+  PRIMARY KEY (user_id),
+  UNIQUE (email),
+  UNIQUE (phone)
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Unique, ❌ Not Null (if PK)</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Are all candidate keys super keys? ✅ Yes</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">3. Alternate Key</h3>
+    <p><strong>Definition:</strong> A candidate key not chosen as the primary key. Must still be unique and non-null.</p>
+    <p><strong>Use Case:</strong> Acts as fallback for unique record identification.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE users (
+  id INT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Unique, ❌ Not Null (logically)</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Can alternate key be null? ❌ No</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">4. Foreign Key</h3>
+    <p><strong>Definition:</strong> A key used to reference a column in another table.</p>
+    <p><strong>Use Case:</strong> Enforces referential integrity between parent-child tables.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE orders (
+  order_id INT,
+  user_id INT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Can be null, ✅ Can be duplicate</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Can a foreign key reference a unique key? ✅ Yes</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">5. Composite Key</h3>
+    <p><strong>Definition:</strong> A key formed by combining multiple columns to uniquely identify a row.</p>
+    <p><strong>Use Case:</strong> Many-to-many relationship resolution</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE enrollments (
+  student_id INT,
+  course_id INT,
+  PRIMARY KEY (student_id, course_id)
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Unique together, ❌ Not Null</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Can composite key have nulls? ❌ No</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">6. Super Key</h3>
+    <p><strong>Definition:</strong> Any combination of columns that can uniquely identify a record. Includes candidate keys and extra columns.</p>
+    <p><strong>Use Case:</strong> Uniqueness check with redundant fields</p>
+    <p>Example: (id), (id, email), (id, email, phone)</p>
+    <p><strong>Constraints:</strong> ✅ Unique, ⚠️ Not minimal</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Are super keys minimal? ❌ Not always</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">7. Surrogate Key</h3>
+    <p><strong>Definition:</strong> Artificial key with no business meaning. Auto-generated.</p>
+    <p><strong>Use Case:</strong> Best for performance and consistent indexing</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE employees (
+  emp_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(100),
+  ssn VARCHAR(20)
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Unique, ❌ Not Null, ⚠️ Auto-generated</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Is surrogate key reusable? ❌ No</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-4">8. Natural Key</h3>
+    <p><strong>Definition:</strong> A meaningful key from real-world data (e.g., email, ssn, country_code).</p>
+    <p><strong>Use Case:</strong> When business logic allows stable, unique identifiers.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE TABLE countries (
+  country_code CHAR(2) PRIMARY KEY,
+  country_name VARCHAR(50)
+);</code></pre>
+    </div>
+    <p><strong>Constraints:</strong> ✅ Unique, ❌ Can’t be null if used as PK, ⚠️ Can be sensitive to business changes</p>
+    <p><strong>Interview Trap Qs:</strong></p>
+    <ul class="list-disc ml-6">
+      <li>Which is better: natural or surrogate key? ✅ Depends (natural if stable, surrogate if not)</li>
+      <li>Can natural keys change? ✅ Sometimes, which may cause issues</li>
+    </ul>
+  `
+},'Delete Vs Truncate': {
+  id: 'delete-vs-truncate-oracle',
+  html: `
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">🧹 DELETE vs TRUNCATE in Oracle DB</h2>
+    <p><strong>Definition:</strong> Both remove data, but behave differently in terms of performance, rollback, and logging.</p>
+
+    <h4 class="text-lg font-semibold mt-4">1. DELETE</h4>
+    <p><strong>Behavior:</strong> Removes rows based on condition or all rows if no WHERE clause.</p>
+    <p><strong>Rollback:</strong> ✅ Yes, it's DML and supports ROLLBACK.</p>
+    <p><strong>Triggers:</strong> ✅ Fires DELETE triggers.</p>
+    <p><strong>Performance:</strong> Slower due to logging and row-level operations.</p>
+    <p><strong>Use Case:</strong> Conditional deletion or when triggers/audit is needed.</p>
+    <p><strong>Constraints:</strong> Respects all constraints; can fail if FK constraints exist.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>DELETE FROM employees WHERE department_id = 10;</code></pre>
+    </div>
+    <p><strong>Example with FK:</strong></p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>DELETE FROM employees WHERE employee_id = 101;
+-- ❌ This will fail if FK in attendance table exists and ON DELETE CASCADE is not set.</code></pre>
+    </div>
+
+    <h4 class="text-lg font-semibold mt-4">2. TRUNCATE</h4>
+    <p><strong>Behavior:</strong> Removes all rows from a table instantly.</p>
+    <p><strong>Rollback:</strong> ❌ No, it's DDL and cannot be rolled back.</p>
+    <p><strong>Triggers:</strong> ❌ Does not fire DELETE triggers.</p>
+    <p><strong>Performance:</strong> ✅ Faster — deallocates data pages directly.</p>
+    <p><strong>Use Case:</strong> When full table cleanup is required for staging/log tables.</p>
+    <p><strong>Constraints:</strong> Fails if child FK exists, unless disabled or ON DELETE CASCADE is defined.</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>TRUNCATE TABLE employees;</code></pre>
+    </div>
+    <p><strong>Example with FK:</strong></p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>TRUNCATE TABLE employees;
+-- ❌ This will fail unless FK constraint is disabled or uses ON DELETE CASCADE</code></pre>
+    </div>
+
+    <h4 class="text-md font-semibold mt-4">Interview Trap Qs:</h4>
+    <ul class="list-disc ml-6">
+      <li>Can DELETE be rolled back in Oracle? ✅ Yes</li>
+      <li>Can TRUNCATE be rolled back? ❌ No</li>
+      <li>Will TRUNCATE fire triggers? ❌ No</li>
+      <li>Which is faster: DELETE or TRUNCATE? ✅ TRUNCATE</li>
+      <li>Can we use WHERE clause with TRUNCATE? ❌ No</li>
+      <li>Can TRUNCATE be used on a table with FK constraint? ❌ No, unless FK is disabled</li>
+      <li>Can DELETE violate constraints? ✅ Yes, if referential integrity is broken</li>
+    </ul>
+
+    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🔔 Triggers in Oracle DB</h2>
+    <p><strong>Definition:</strong> A trigger is a stored PL/SQL block that automatically executes when a specific event occurs on a table or view.</p>
+
+    <h4 class="text-lg font-semibold mt-4">Types of Triggers</h4>
+    <ul class="list-disc ml-6">
+      <li><strong>BEFORE Trigger:</strong> Executes before the DML operation.</li>
+      <li><strong>AFTER Trigger:</strong> Executes after the DML operation.</li>
+      <li><strong>INSTEAD OF Trigger:</strong> Used for views to allow DML indirectly.</li>
+      <li><strong>ROW-level Trigger:</strong> Executes once per affected row.</li>
+      <li><strong>STATEMENT-level Trigger:</strong> Executes once per SQL statement.</li>
+    </ul>
+
+    <p class="mt-4 font-semibold">Example: BEFORE DELETE Trigger</p>
+    <div class="code-block">
+      <button class="copy-btn">Copy</button>
+      <pre><code>CREATE OR REPLACE TRIGGER emp_delete_log
+BEFORE DELETE ON employees
+FOR EACH ROW
+BEGIN
+  INSERT INTO emp_delete_audit(emp_id, deleted_on)
+  VALUES (:OLD.emp_id, SYSDATE);
+END;</code></pre>
+    </div>
+
+    <h4 class="text-md font-semibold mt-4">Use Cases:</h4>
+    <ul class="list-disc ml-6">
+      <li>Enforce business logic</li>
+      <li>Maintain audit logs</li>
+      <li>Sync data to backup/history tables</li>
+      <li>Validate or block unwanted data changes</li>
+    </ul>
+
+    <h4 class="text-md font-semibold mt-4">Constraints/Notes:</h4>
+    <ul class="list-disc ml-6">
+      <li>Cannot use COMMIT/ROLLBACK inside trigger</li>
+      <li>Do not fire on TRUNCATE</li>
+      <li>May cause performance overhead if overused</li>
+    </ul>
+
+    <h4 class="text-md font-semibold mt-4">Interview Trap Qs:</h4>
+    <ul class="list-disc ml-6">
+      <li>Do triggers fire on TRUNCATE? ❌ No</li>
+      <li>Can we use triggers on views? ✅ Yes, with INSTEAD OF</li>
+      <li>What’s the difference between row-level and statement-level? ✅ One per row vs one per statement</li>
+      <li>Can we block updates using triggers? ✅ Yes, using BEFORE triggers with exception</li>
+    </ul>
+  `
+},'Subqueries vs Joins':  {
+  id: 'subqueries-vs-joins',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🔀 Subqueries vs Joins</h2>
+
+<p><strong>Tables used:</strong></p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE TABLE departments (
+  dept_id NUMBER PRIMARY KEY,
+  dept_name VARCHAR2(50)
+);
+
+CREATE TABLE employees (
+  emp_id NUMBER PRIMARY KEY,
+  emp_name VARCHAR2(50),
+  dept_id NUMBER,
+  salary NUMBER,
+  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+
+-- Sample Data Insert
+INSERT INTO departments VALUES (10, 'HR');
+INSERT INTO departments VALUES (20, 'IT');
+INSERT INTO departments VALUES (30, 'Finance');
+
+INSERT INTO employees VALUES (1, 'Alice', 10, 50000);
+INSERT INTO employees VALUES (2, 'Bob', 20, 60000);
+INSERT INTO employees VALUES (3, 'Carol', 30, 55000);
+INSERT INTO employees VALUES (4, 'Dave', 10, 52000);
+</code></pre>
+</div>
+
+<p><strong>Expected Table Data:</strong></p>
+
+<p><strong>departments</strong></p>
+<table border="1" cellpadding="6">
+  <thead><tr><th>dept_id</th><th>dept_name</th></tr></thead>
+  <tbody>
+    <tr><td>10</td><td>HR</td></tr>
+    <tr><td>20</td><td>IT</td></tr>
+    <tr><td>30</td><td>Finance</td></tr>
+  </tbody>
+</table>
+
+<p><strong>employees</strong></p>
+<table border="1" cellpadding="6">
+  <thead><tr><th>emp_id</th><th>emp_name</th><th>dept_id</th><th>salary</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Alice</td><td>10</td><td>50000</td></tr>
+    <tr><td>2</td><td>Bob</td><td>20</td><td>60000</td></tr>
+    <tr><td>3</td><td>Carol</td><td>30</td><td>55000</td></tr>
+    <tr><td>4</td><td>Dave</td><td>10</td><td>52000</td></tr>
+  </tbody>
+</table>
+
+<h3 class="text-lg font-semibold mt-4">Subqueries</h3>
+<p>A subquery is a query inside another SQL query and is used for intermediate filtering or aggregation.</p>
+
+<p><strong>Example 1:</strong> Get employees in HR department</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT emp_name
+FROM employees
+WHERE dept_id = (
+  SELECT dept_id FROM departments WHERE dept_name = 'HR'
+);</code></pre>
+</div>
+<p><strong>Output:</strong> Alice, Dave — Subquery fetches dept_id 10 for HR and the outer query fetches employees with that dept_id.</p>
+<p><strong>Explanation:</strong> The subquery runs first and finds dept_id of HR. Then outer query checks employees with dept_id = 10.</p>
+
+<p><strong>Example 2:</strong> Employees earning above average salary</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT emp_name, salary
+FROM employees
+WHERE salary > (
+  SELECT AVG(salary) FROM employees
+);</code></pre>
+</div>
+<p><strong>Output:</strong> Bob (60000), Carol (55000) — The subquery calculates the average salary and the outer query filters employees above that value.</p>
+<p><strong>Explanation:</strong> First, the average salary is calculated. Then all employees earning more than that value are returned.</p>
+
+<p><strong>When to use subqueries over joins:</strong> Subqueries are preferred when filtering or aggregating data before comparing, especially when nested logic is involved. JOINs are better when combining rows across related tables.</p>
+
+<h3 class="text-lg font-semibold mt-4">Joins</h3>
+<p>Joins combine data from multiple tables using a related column.</p>
+
+<p><strong>INNER JOIN:</strong> Returns only matching rows from both tables.</p>
+<p><em>Use case:</em> Show employees with valid departments only.</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT e.emp_name, d.dept_name
+FROM employees e
+JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
+</div>
+<p><strong>Output:</strong></p>
+<table border="1" cellpadding="6">
+  <thead><tr><th>emp_name</th><th>dept_name</th></tr></thead>
+  <tbody>
+    <tr><td>Alice</td><td>HR</td></tr>
+    <tr><td>Bob</td><td>IT</td></tr>
+    <tr><td>Carol</td><td>Finance</td></tr>
+    <tr><td>Dave</td><td>HR</td></tr>
+  </tbody>
+</table>
+<p><strong>Explanation:</strong> Only rows with matching dept_id in both tables are shown. All employees here have valid departments.</p>
+
+<p><strong>LEFT JOIN:</strong> Returns all rows from the left table and matched rows from the right table. Nulls if no match.</p>
+<p><em>Use case:</em> Show all employees even if their department is missing.</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT e.emp_name, d.dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
+</div>
+<p><strong>Output:</strong> Same as INNER JOIN (all employees have departments). If any employee lacks dept_id, their dept_name would be NULL.</p>
+<p><strong>Explanation:</strong> All employees are returned. If dept_id has no match, dept_name will be NULL.</p>
+
+<p><strong>RIGHT JOIN:</strong> Returns all rows from the right table and matched rows from the left table. Nulls if no match.</p>
+<p><em>Use case:</em> Show all departments even if they have no employees.</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT e.emp_name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
+</div>
+<p><strong>Output:</strong> All departments listed, with employees shown where available. If a department has no employees, emp_name will be NULL.</p>
+<p><strong>Explanation:</strong> All departments are returned. If dept_id has no matching employee, emp_name will be NULL.</p>
+
+<p><strong>FULL OUTER JOIN:</strong> Returns all rows from both tables. If no match, shows NULLs.</p>
+<p><em>Use case:</em> List all employees and departments with match or mismatch.</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT e.emp_name, d.dept_name
+FROM employees e
+FULL OUTER JOIN departments d ON e.dept_id = d.dept_id;</code></pre>
+</div>
+<p><strong>Output:</strong> Same as RIGHT JOIN + unmatched employees and departments (if any). Each row has employee or department info or both.</p>
+<p><strong>Explanation:</strong> Combines LEFT and RIGHT JOINs. All unmatched rows are shown with NULLs in corresponding columns.</p>
+
+<p><strong>CROSS JOIN:</strong> Returns Cartesian product (every row of first table with every row of second table).</p>
+<p><em>Use case:</em> Pair each employee with every department (rarely used in real apps).</p>
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT e.emp_name, d.dept_name
+FROM employees e
+CROSS JOIN departments d;</code></pre>
+</div>
+<p><strong>Output:</strong> 12 rows — Each of 4 employees is paired with 3 departments.</p>
+<table border="1" cellpadding="6">
+  <thead><tr><th>emp_name</th><th>dept_name</th></tr></thead>
+  <tbody>
+    <tr><td>Alice</td><td>HR</td></tr>
+    <tr><td>Alice</td><td>IT</td></tr>
+    <tr><td>Alice</td><td>Finance</td></tr>
+    <tr><td>Bob</td><td>HR</td></tr>
+    <tr><td>Bob</td><td>IT</td></tr>
+    <tr><td>Bob</td><td>Finance</td></tr>
+    <tr><td>Carol</td><td>HR</td></tr>
+    <tr><td>Carol</td><td>IT</td></tr>
+    <tr><td>Carol</td><td>Finance</td></tr>
+    <tr><td>Dave</td><td>HR</td></tr>
+    <tr><td>Dave</td><td>IT</td></tr>
+    <tr><td>Dave</td><td>Finance</td></tr>
+  </tbody>
+</table>
+<p><strong>Explanation:</strong> CROSS JOIN creates all possible combinations between employees and departments. Useful in scenarios like product bundles, testing. Results in N x M rows where N = number of rows in first table, M = in second.</p>
+
+<p>Understanding these types of JOINs is crucial for crafting accurate and efficient SQL queries during interviews.</p>
+<h4 class="text-md font-semibold mt-4">Interview Trap Qs:</h4>
+<ul class="list-disc ml-6">
+  <li>Which is better: JOIN or Subquery? 👉 Depends on use case — JOINs are generally more readable and efficient for related data.</li>
+  <li>Can subqueries be used in FROM clause? ✅ Yes, called inline views.</li>
+  <li>Will JOINs return unmatched data? ❌ Not unless LEFT/RIGHT/FULL JOIN is used.</li>
+  <li>What if both tables have same column name? 👉 Use alias or qualify with table name.</li>
+  <li>Can we use JOIN inside subquery? ✅ Yes, nesting is allowed.</li>
+  <li>Can subquery return multiple rows? 👉 Only in IN/EXISTS, not in = unless scalar.</li>
+  <li>Can subqueries be used in SELECT clause? ✅ Yes, useful for scalar lookups.</li>
+  <li>Is CROSS JOIN same as FULL JOIN? ❌ No, CROSS JOIN returns cartesian product, FULL JOIN combines LEFT + RIGHT JOINs.</li>
+</ul>
+`
+},'SQL Pagination': {
+  id: 'pagination-spring-oracle',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Pagination in Oracle and Spring Data JPA</h2>
+
+  <p><strong>1. What is pagination and why is it important?</strong></p>
+  <p>Pagination breaks large datasets into smaller chunks (pages) to improve performance, reduce memory load, and enhance user experience.</p>
+
+  <p><strong>2. How do you implement pagination in Oracle SQL?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>SELECT * FROM employee
+ORDER BY id
+OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;</code></pre>
+  </div>
+
+  <p><strong>3. How is pagination done in Spring Data JPA?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Pageable pageable = PageRequest.of(0, 10);
+Page&lt;Employee&gt; page = repo.findAll(pageable);</code></pre>
+  </div>
+
+  <p><strong>4. What are the different interfaces used for pagination in Spring Data JPA?</strong></p>
+  <p>- <code>Pageable</code>: defines page number, size, sort <br>
+  - <code>Page&lt;T&gt;</code>: contains data and metadata <br>
+  - <code>Slice&lt;T&gt;</code>: like Page but no total count</p>
+
+  <p><strong>5. What is the difference between Page&lt;T&gt; and Slice&lt;T&gt;?</strong></p>
+  <table>
+    <tr><th>Page&lt;T&gt;</th><th>Slice&lt;T&gt;</th></tr>
+    <tr><td>Has total count</td><td>No total count</td></tr>
+    <tr><td>Heavier</td><td>Lighter</td></tr>
+    <tr><td>.getTotalPages() available</td><td>Not available</td></tr>
+  </table>
+
+  <p><strong>6. Can you write a method for paginated search in JPA?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Page&lt;Employee&gt; findByDepartmentId(Long deptId, Pageable pageable);</code></pre>
+  </div>
+
+  <p><strong>7. Trap: What happens if ORDER BY is missed in paginated query?</strong></p>
+  <p>Results may be inconsistent between pages. ORDER BY is mandatory for stable pagination.</p>
+
+  <p><strong>8. Trap: For millions of rows, OFFSET-FETCH vs keyset pagination?</strong></p>
+  <p>Keyset pagination is better. It avoids full scan and improves performance.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>SELECT * FROM employee 
+WHERE id &gt; :lastSeenId 
+ORDER BY id 
+FETCH NEXT 10 ROWS ONLY;</code></pre>
+  </div>
+
+  <p><strong>9. How to implement pagination using native SQL in Spring JPA?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>@Query(value = "SELECT * FROM employee ORDER BY id OFFSET ?1 ROWS FETCH NEXT ?2 ROWS ONLY", nativeQuery = true)
+List&lt;Employee&gt; getEmployees(int offset, int size);</code></pre>
+  </div>
+
+  <p><strong>10. How do you send pagination data to frontend?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>{
+  "content": [ { ... }, { ... } ],
+  "totalElements": 128,
+  "totalPages": 13,
+  "size": 10,
+  "number": 0
+}</code></pre>
+  </div>
+
+  <hr class="my-4">
+
+  <p><strong>11. Pagination using ROWNUM (Oracle 11g)</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>SELECT * FROM (
+  SELECT e.*, ROWNUM rn FROM (
+    SELECT * FROM employee ORDER BY id
+  ) e WHERE ROWNUM &lt;= 20
+) WHERE rn &gt; 10;</code></pre>
+  </div>
+
+  <p><strong>12. Oracle 12c Pagination with Filter + Sorting</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>SELECT * FROM employee
+WHERE department = 'SALES'
+ORDER BY salary DESC
+OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;</code></pre>
+  </div>
+
+  <p><strong>13. How to filter + paginate in JPA query?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Page&lt;Employee&gt; findByDepartmentIdAndStatus(Long deptId, String status, Pageable pageable);</code></pre>
+  </div>
+
+  <p><strong>14. Dynamic filtering + pagination?</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>Specification&lt;Employee&gt; spec = (root, query, cb) -&gt;
+  cb.equal(root.get("status"), "ACTIVE");
+
+Page&lt;Employee&gt; result = repo.findAll(spec, PageRequest.of(0, 10));</code></pre>
+  </div>
+
+  <p><strong>15. Trap: Unknown total count — Page or Slice?</strong></p>
+  <p>Use <code>Slice</code>: lighter and faster when total pages not needed.</p>
+
+  <p><strong>16. Real-world: You have 1 million rows — how to paginate efficiently?</strong></p>
+  <ul>
+    <li>Use keyset pagination (id &gt; lastSeenId)</li>
+    <li>Avoid OFFSET for large skips</li>
+    <li>Index the sort field</li>
+    <li>Project only required fields</li>
+  </ul>
+
+  <hr class="my-4">
+
+  <h3 class="text-xl font-semibold mt-6">🧾 Summary Table</h3>
+  <table>
+    <tr><th>Scenario</th><th>Approach</th></tr>
+    <tr><td>Page number-based</td><td>OFFSET + FETCH / ROWNUM</td></tr>
+    <tr><td>Cursor/keyset pagination</td><td>WHERE id &gt; :lastSeenId</td></tr>
+    <tr><td>Filtering + pagination</td><td>JPA methods or @Query</td></tr>
+    <tr><td>Large datasets</td><td>Index + keyset + projection</td></tr>
+    <tr><td>Frontend metadata</td><td>Return Page&lt;T&gt;</td></tr>
+  </table>
+  `
+},'SQL Pagination Real World Ex': {
+  "id": "pagination-interview-usecases",
+  "html": `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Advanced & Tricky Pagination Interview Questions</h2>
+
+<p><strong>Q1: What is the performance drawback of OFFSET in pagination for large datasets?</strong></p>
+<p><strong>Answer:</strong> OFFSET causes the database to scan and skip rows even if not returned, so high offsets result in slower queries.</p>
+
+<p><strong>Q2: How would you paginate if the dataset keeps changing (new rows inserted during pagination)?</strong></p>
+<p><strong>Answer:</strong> Use keyset (cursor-based) pagination to ensure consistent results across pages by tracking the last record ID.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT * FROM orders 
+WHERE id &gt; :lastSeenId 
+ORDER BY id 
+FETCH NEXT 10 ROWS ONLY;</code></pre>
+</div>
+
+<p><strong>Q3: What is keyset pagination and how is it different from OFFSET-FETCH?</strong></p>
+<p><strong>Answer:</strong> Keyset uses a WHERE clause to continue from the last seen record, avoiding row scans and maintaining consistency.</p>
+
+<p><strong>Q4: Can you combine filtering, sorting, and pagination in a single query?</strong></p>
+<p><strong>Answer:</strong> Yes, Spring Data JPA supports combining all three using the <code>Pageable</code> object.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>Page&lt;Order&gt; findByStatusOrderByDateDesc(String status, Pageable pageable);</code></pre>
+</div>
+
+<p><strong>Q5: How can you paginate using composite keys?</strong></p>
+<p><strong>Answer:</strong> Track both keys and apply them in the WHERE clause to support proper ordering.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>WHERE (key1, key2) &gt; (:k1, :k2)</code></pre>
+</div>
+
+<p><strong>Q6: How do you implement infinite scroll with Spring Data JPA?</strong></p>
+<p><strong>Answer:</strong> Use <code>Slice&lt;T&gt;</code> instead of <code>Page&lt;T&gt;</code> to only load the current chunk and reduce overhead.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>Slice&lt;Order&gt; findByStatus(String status, Pageable pageable);</code></pre>
+</div>
+
+<p><strong>Q7: How do you prevent duplicate records in keyset pagination?</strong></p>
+<p><strong>Answer:</strong> Always order by a unique column (e.g., ID) to ensure stable results between pages.</p>
+
+<p><strong>Q8: How to paginate if the sorting field is not unique?</strong></p>
+<p><strong>Answer:</strong> Combine the non-unique field with a unique field like ID to avoid repeating or missing rows.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>ORDER BY created_at DESC, id DESC</code></pre>
+</div>
+
+<p><strong>Q9: How do you paginate using a stored procedure in Oracle?</strong></p>
+<p><strong>Answer:</strong> Use <code>SYS_REFCURSOR</code> with input parameters like offset/limit inside a procedure.</p>
+
+<p><strong>Q10: How would you paginate a huge table (500M+ rows) efficiently?</strong></p>
+<ul class="list-disc ml-6">
+  <li>Prefer keyset pagination over OFFSET</li>
+  <li>Use filtering and indexed columns</li>
+  <li>Fetch only required fields (no <code>SELECT *</code>)</li>
+  <li>Use partitioned tables or materialized views</li>
+</ul>
+
+<hr class="my-6">
+
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">Real-World Pagination Use Cases (with Explanation)</h2>
+
+<p><strong>Scenario 1: OFFSET very high (e.g., page 100000)</strong></p>
+<p><strong>Issue:</strong> Oracle still scans 999,999 rows before giving results → slow!</p>
+<p><strong>Solution:</strong> Use keyset pagination to skip directly to desired ID</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT * FROM employee 
+WHERE emp_id &gt; :lastSeenId 
+ORDER BY emp_id 
+FETCH NEXT 20 ROWS ONLY;</code></pre>
+</div>
+
+<p><strong>Scenario 2: Filtering + pagination causes unstable results</strong></p>
+<p><strong>Issue:</strong> New records added while browsing cause duplicates/missing entries</p>
+<p><strong>Solution:</strong> Combine filter + keyset to preserve consistency</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT * FROM orders 
+WHERE status = 'DELIVERED' AND order_id &gt; :lastSeenOrderId 
+ORDER BY order_id 
+FETCH NEXT 10 ROWS ONLY;</code></pre>
+</div>
+
+<p><strong>Scenario 3: Paginate a join query with filters</strong></p>
+<p><strong>Issue:</strong> OFFSET on JOIN queries is slow due to row construction cost</p>
+<p><strong>Solution:</strong> Use indexed columns in WHERE/ORDER, avoid SELECT *</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT o.id, o.date, c.name 
+FROM orders o 
+JOIN customers c ON o.customer_id = c.id 
+WHERE o.date &gt; TO_DATE('2024-01-01','YYYY-MM-DD') 
+ORDER BY o.date DESC 
+OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;</code></pre>
+</div>
+
+<p><strong>Scenario 4: Pageable via Spring Data JPA</strong></p>
+<p><strong>Explanation:</strong> Backend can create Pageable with page number, size, sort — passed directly to JPA</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
+Page&lt;Order&gt; orders = orderRepo.findByStatus("SHIPPED", pageable);</code></pre>
+</div>
+
+<p><strong>Scenario 5: Oracle Stored Procedure with pagination</strong></p>
+<p><strong>Explanation:</strong> Use ROWNUM inside nested subqueries to simulate offset + limit in Oracle PL/SQL</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE OR REPLACE PROCEDURE fetch_page(p_offset IN NUMBER, p_limit IN NUMBER, p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+  OPEN p_cursor FOR
+  SELECT * FROM (
+    SELECT a.*, ROWNUM rnum FROM (
+      SELECT * FROM employee ORDER BY emp_id
+    ) a WHERE ROWNUM &lt;= p_offset + p_limit
+  ) WHERE rnum &gt; p_offset;
+END;</code></pre>
+</div>
+`
+}
+
 
 
     };
