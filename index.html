@@ -136,7 +136,24 @@
     'Delete Vs Truncate': 'Delete Vs Truncate',
     'Subqueries vs Joins': 'Subqueries vs Joins',
     'SQL Pagination': 'SQL Pagination',
-    'SQL Pagination Real World Ex': 'SQL Pagination Real World Ex'
+    'SQL Pagination Real World Ex': 'SQL Pagination Real World Ex',
+    'Data Types': 'Data Types',
+    'Contraints': 'Contraints',
+    'Indexes': 'Indexes',
+    'Views vs Materialized Views': 'Views vs Materialized Views',
+    'Triggers': 'Triggers',
+    'Synonyms': 'Synonyms',
+    'Sequences': 'Sequences',
+    'Performance Optimization': 'Performance Optimization',
+    'Functions': 'Functions',
+    'Normalization': 'Normalization',
+    'De-Normalization': 'De-Normalization'
+	
+  },
+  'PL/SQL': {
+    'PL/SQL Basics': 'PL/SQL Basics',
+    'Custom Function': 'Custom Function'
+	
   }
 };
 
@@ -4844,8 +4861,1551 @@ BEGIN
 END;</code></pre>
 </div>
 `
-}
+},'Data Types': {
+  id: 'oracle-datatypes',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Oracle Data Types</h2>
 
+  <p><strong>Key Data Types (with Explanation, Differences, and Examples):</strong></p>
+	<br>
+  <ul class="list-disc list-inside">
+    <li><strong>VARCHAR2(n)</strong>: Variable-length character string. Stores only the actual input length, not padded. Best for dynamic data such as names, addresses.<br/>
+    Example: <code>VARCHAR2(20)</code> can store 'John', 'Christopher', etc. without wasting space.<br/>
+    Java Mapping: <code>String</code></li><br/>
+
+    <li><strong>CHAR(n)</strong>: Fixed-length string. Always stores n bytes. Pads with spaces if input is shorter. Used for things like country codes, where uniform length is expected.<br/>
+    Example: <code>CHAR(10)</code> storing 'HR' becomes 'HR        '.<br/>
+    <strong>Difference</strong>: CHAR is fixed-size; VARCHAR2 is space-optimized for variable-length input.<br/>
+    Java Mapping: <code>String</code></li><br/>
+
+    <li><strong>VARCHAR</strong>: ANSI-compliant but deprecated in Oracle. Always prefer VARCHAR2.</li><br/>
+  </ul>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>| Feature        | CHAR            | VARCHAR        | VARCHAR2        |
+| -------------- | --------------- | -------------- | --------------- |
+| Length Type    | Fixed           | Variable       | Variable        |
+| Padding        | Yes (spaces)    | No             | No              |
+| Max Size       | 2000 bytes      | 4000 bytes     | 4000 bytes      |
+| Use Case       | Uniform codes   | Avoid (legacy) | Dynamic strings |
+| Oracle Support | Fully supported | Deprecated     | Fully supported |</code></pre>
+  </div>
+
+  <ul class="list-disc list-inside">
+    <li><strong>NUMBER(p,s)</strong>: Precision (p) is total digits, scale (s) is digits after decimal. Used for prices, percentages, etc.<br/>
+    Example: <code>NUMBER(5,2)</code> allows 123.45.<br/>
+    Java Mapping: <code>BigDecimal</code>, <code>int</code>, <code>long</code>, <code>double</code></li><br/>
+
+    <li><strong>FLOAT</strong>: Approximate binary floating point. Less accurate. Used when exact precision isn’t critical.<br/>
+    Java Mapping: <code>float</code>, <code>double</code></li><br/>
+
+    <li><strong>DATE</strong>: Stores date and time (to the second). Format: <code>DD-MON-YY HH:MI:SS</code>.<br/>
+    Example: '26-JUL-25 03:12:45'<br/>
+    Java Mapping: <code>java.sql.Date</code>, <code>java.sql.Timestamp</code></li><br/>
+
+    <li><strong>TIMESTAMP</strong>: Like DATE but with fractional seconds (up to 9 digits). Useful for logs.<br/>
+    Example: '26-JUL-25 03:12:45.123456'<br/>
+    Java Mapping: <code>java.sql.Timestamp</code></li><br/>
+
+    <li><strong>CLOB</strong>: Character Large Object. For large text data (up to 4GB).<br/>
+    Java Mapping: <code>java.sql.Clob</code>, <code>String</code></li><br/>
+
+    <li><strong>NCLOB</strong>: Like CLOB but Unicode. For multilingual text.<br/>
+    Java Mapping: <code>java.sql.NClob</code></li><br/>
+
+    <li><strong>BLOB</strong>: Binary Large Object. Stores images, audio, etc.<br/>
+    Java Mapping: <code>java.sql.Blob</code>, <code>byte[]</code></li><br/>
+
+    <li><strong>BFILE</strong>: Points to external binary file (read-only). Not stored inside DB.<br/>
+    Java Mapping: Usually handled through <code>oracle.sql.BFILE</code> or custom streaming</li><br/>
+  </ul>
+
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>| Data Type   | Fixed/Variable | Max Size        | Use Case                        | Java Mapping          |
+| ----------- | -------------- | --------------- | ------------------------------- | --------------------- |
+| CHAR(n)     | Fixed          | 2000 bytes      | Codes, fixed identifiers        | String                |
+| VARCHAR2(n) | Variable       | 4000 bytes      | Names, addresses                | String                |
+| NUMBER(p,s) | N/A            | Up to 38 digits | Prices, counts, percentages     | BigDecimal, int       |
+| DATE        | Fixed          | 7 bytes         | Timestamps                      | java.sql.Date         |
+| TIMESTAMP   | Fixed          | 11 bytes        | Logs, high-precision time       | java.sql.Timestamp    |
+| CLOB        | Variable       | Up to 4GB       | Long text like articles         | String, java.sql.Clob |
+| BLOB        | Variable       | Up to 4GB       | Media, binary data              | byte[], java.sql.Blob |</code></pre>
+  </div>
+
+  <p><strong>Interview Tips:</strong></p>
+  <ul class="list-disc list-inside">
+    <li>Use <code>VARCHAR2</code> for strings; prefer over CHAR unless fixed-length is necessary.</li><br/>
+    <li>Use <code>TIMESTAMP</code> instead of DATE when fractional seconds or high precision is required.</li><br/>
+    <li>Avoid <code>FLOAT</code> for currency-related values due to precision errors. Use <code>NUMBER(p,s)</code> instead.</li><br/>
+    <li>Use <code>CLOB</code> for large textual content like articles, logs, descriptions, etc.</li><br/>
+    <li>For multi-language or Unicode content, use <code>NCLOB</code> instead of CLOB.</li><br/>
+    <li>Use <code>BLOB</code> for storing binary data like images, documents, and audio files.</li><br/>
+    <li>Use <code>BFILE</code> when you need to access binary data stored outside the DB (read-only).</li><br/>
+    <li>Always define appropriate precision and scale for NUMBER to avoid over-allocating space.</li><br/>
+    <li>Remember DATE in Oracle includes time by default. Use trunc(date) if only date is needed in queries.</li><br/>
+    <li>VARCHAR is deprecated in Oracle. Always use VARCHAR2 for variable-length character data.</li><br/>
+  </ul>`
+},'Contraints': {
+  id: "oracle-sql-constraints",
+  html: `
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Oracle SQL Interview Guide</h1>
+<br>
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-6">Oracle Constraints</h2>
+<br>
+<p><strong>Why Constraints are Used:</strong><br>
+Constraints in Oracle SQL enforce rules at the table level to ensure data integrity and consistency. They help prevent invalid or inconsistent data from being entered into the database, ensuring correctness and reducing the need for manual checks in application code.</p>
+<br>
+<h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-4">Types of Constraints with Explanations and Examples</h3>
+<br>
+<p><strong>1. PRIMARY KEY</strong><br>
+Ensures each row has a unique, non-null value. A table can have only one primary key.<br>
+<strong>Example:</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE employees (
+  emp_id NUMBER PRIMARY KEY,
+  name VARCHAR2(100)
+);</code></pre></div>
+<br>
+<p><strong>2. UNIQUE</strong><br>
+Ensures all values in a column or group of columns are unique across rows. Unlike PRIMARY KEY, multiple UNIQUE constraints are allowed and NULLs are permitted.<br>
+<strong>Important:</strong> Oracle allows multiple <code>NULL</code> values in a column with a UNIQUE constraint because <code>NULL</code> is treated as an unknown value and does not violate uniqueness.<br>
+<strong>Example:</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE users (
+  user_id NUMBER,
+  email VARCHAR2(100) UNIQUE
+);</code></pre></div>
+<br>
+<p><strong>3. NOT NULL</strong><br>
+Ensures a column cannot have NULL values. Typically used alongside other constraints.<br>
+<strong>Example:</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE products (
+  product_id NUMBER,
+  name VARCHAR2(50) NOT NULL
+);</code></pre></div>
+<br>
+<p><strong>4. CHECK</strong><br>
+Ensures that all values in a column satisfy a specific condition. If the condition fails, Oracle will raise an error and reject the operation.<br>
+<strong>Example:</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE accounts (
+  account_id NUMBER,
+  balance NUMBER CHECK (balance >= 0)
+);</code></pre></div>
+<br>
+<p><strong>5. FOREIGN KEY</strong><br>
+Ensures that values in one table must match existing values in another, maintaining data consistency between related tables. This is critical for preserving referential integrity.<br>
+<strong>Example:</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE orders (
+  order_id NUMBER PRIMARY KEY,
+  customer_id NUMBER,
+  CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);</code></pre></div>
+<br>
+<h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-6">✅ Interview Tip Explanations</h3>
+<br><br>
+<ul class="list-disc list-inside space-y-2 mt-2">
+  <li>
+    <strong>Explain the difference between PRIMARY KEY and UNIQUE</strong><br>
+    👉 <strong>What to say:</strong><br>
+    - <code>PRIMARY KEY</code> enforces uniqueness <strong>and</strong> non-nullability.<br>
+    - <code>UNIQUE</code> enforces only uniqueness — it <strong>allows multiple NULLs</strong>.<br>
+    - A table can have <strong>only one PRIMARY KEY</strong>, but can have <strong>multiple UNIQUE</strong> constraints.<br>
+    📌 <em>Interview example:</em><br>
+    "The PRIMARY KEY is a combination of UNIQUE and NOT NULL. For instance, email may be UNIQUE but can be NULL — not acceptable for a primary identifier."
+  </li><br>
+
+  <li>
+    <strong>Can FOREIGN KEY reference a UNIQUE column</strong><br>
+    👉 <strong>What to say:</strong><br>
+    - In Oracle, a <code>FOREIGN KEY</code> can reference a column with a <code>UNIQUE</code> constraint — it doesn't always need to be the <code>PRIMARY KEY</code>.<br>
+    📌 <em>Interview scenario:</em><br>
+    "If the <code>customers</code> table uses <code>email</code> as a UNIQUE key, another table can use that column as a foreign key."
+  </li><br>
+
+  <li>
+    <strong>CHECK constraints are often overlooked but useful for enforcing domain rules</strong><br>
+    👉 <strong>What to say:</strong><br>
+    - <code>CHECK</code> is ideal for business rules (e.g., salary > 0, age >= 18).<br>
+    - They prevent invalid data even before it reaches application logic.<br>
+    📌 <em>Example:</em><br>
+    <div class="code-block"><button class="copy-btn">Copy</button><pre><code>CHECK (age >= 18)</code></pre></div>
+    "This ensures only adults are registered, adding a layer of validation at DB level."
+  </li><br>
+
+  <li>
+    <strong>Is NOT NULL a constraint by default in all database systems</strong><br>
+    👉 <strong>What to say:</strong><br>
+    - Some databases don’t consider <code>NOT NULL</code> a formal "constraint", but Oracle does treat it as one.<br>
+    - It ensures that a column <strong>must always have a value</strong>.<br>
+    📌 <em>Clarification to interviewer:</em><br>
+    "In Oracle, NOT NULL is treated as a constraint, but in others like MySQL, it's more of a column attribute."
+  </li>
+</ul>
+`
+}
+,'Indexes': {
+  id: 'oracle-indexes-detailed',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Indexes in Oracle SQL</h2>
+
+  <h3 class="text-xl font-bold mt-4 text-blue-700">✅ 1. B-Tree Index (Default)</h3>
+  <p><strong>What it is:</strong> Balanced Tree structure for fast lookup.</p>
+  <p><strong>Use case:</strong> Ideal for OLTP systems where quick read/write is needed.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE INDEX idx_emp_name ON employee(name);
+SELECT * FROM employee WHERE name = 'John';</code></pre>
+  </div>
+  <p><strong>Pros:</strong><br/>
+  - Fast for exact match queries.<br/>
+  - Supports range scans.<br/>
+  - Automatically maintained.</p>
+  <p><strong>Cons:</strong><br/>
+  - Slower for columns with few distinct values (low cardinality).<br/>
+  - Extra overhead during INSERT/UPDATE/DELETE.</p>
+  <p><strong>OLTP Suitability:</strong> ✅ Best suited for high transaction systems.</p>
+
+  <h3 class="text-xl font-bold mt-4 text-blue-700">✅ 2. Bitmap Index</h3>
+  <p><strong>What it is:</strong> Stores index entries as bitmaps.</p>
+  <p><strong>Use case:</strong> Best for columns with low cardinality (few distinct values).</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE BITMAP INDEX idx_gender ON employee(gender);
+SELECT COUNT(*) FROM employee WHERE gender = 'F';</code></pre>
+  </div>
+  <p><strong>Pros:</strong><br/>
+  - Extremely efficient for low-cardinality columns (e.g., gender, status).<br/>
+  - Performs well in complex, multi-column filters.</p>
+  <p><strong>Cons:</strong><br/>
+  - Not suitable for concurrent updates (OLTP).<br/>
+  - Best for read-heavy OLAP systems.</p>
+  <p><strong>OLTP Suitability:</strong> ❌ Avoid in high-concurrency systems.</p>
+
+  <h3 class="text-xl font-bold mt-4 text-blue-700">✅ 3. Composite Index</h3>
+  <p><strong>What it is:</strong> Index built on multiple columns.</p>
+  <p><strong>Use case:</strong> When queries filter/sort on multiple fields.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE INDEX idx_emp_dept ON employee(dept_id, name);
+SELECT * FROM employee WHERE dept_id = 10 AND name = 'John';</code></pre>
+  </div>
+  <p><strong>Pros:</strong><br/>
+  - Helps in covering queries involving multiple columns.<br/>
+  - Reduces table access if all query columns are in index.</p>
+  <p><strong>Cons:</strong><br/>
+  - Order matters – if not used left to right, index may not help.</p>
+  <p><strong>OLTP Suitability:</strong> ✅ Works well if designed carefully.</p>
+
+  <h3 class="text-xl font-bold mt-4 text-blue-700">✅ 4. Function-Based Index</h3>
+  <p><strong>What it is:</strong> Index on expressions or functions.</p>
+  <p><strong>Use case:</strong> Used when query uses functions in WHERE clause.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE INDEX idx_upper_name ON employee(UPPER(name));
+SELECT * FROM employee WHERE UPPER(name) = 'JOHN';</code></pre>
+  </div>
+  <p><strong>Pros:</strong><br/>
+  - Helps when filtering via functions.</p>
+  <p><strong>Cons:</strong><br/>
+  - Consumes space and must be explicitly created.</p>
+  <p><strong>OLTP Suitability:</strong> ✅ Useful for optimized filtering.</p>
+
+  <h3 class="text-xl font-bold mt-6 text-green-700">🔍 Cardinality (Bonus Concept)</h3>
+  <p><strong>What is Cardinality?</strong><br/>
+  Number of distinct values in a column.</p>
+  <table class="w-full mt-2 border border-collapse text-sm">
+    <thead>
+      <tr class="bg-gray-200 dark:bg-gray-800">
+        <th class="border px-2 py-1">Type</th>
+        <th class="border px-2 py-1">Meaning</th>
+        <th class="border px-2 py-1">Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-2 py-1">High Cardinality</td>
+        <td class="border px-2 py-1">Many unique values</td>
+        <td class="border px-2 py-1">Email, Emp_ID</td>
+      </tr>
+      <tr>
+        <td class="border px-2 py-1">Medium Cardinality</td>
+        <td class="border px-2 py-1">Moderate unique values</td>
+        <td class="border px-2 py-1">City</td>
+      </tr>
+      <tr>
+        <td class="border px-2 py-1">Low Cardinality</td>
+        <td class="border px-2 py-1">Few unique values</td>
+        <td class="border px-2 py-1">Gender, Status</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="mt-2"><strong>Index Strategy:</strong></p>
+  <ul class="list-disc ml-6">
+    <li>High Cardinality → <strong>B-Tree Index</strong></li>
+    <li>Low Cardinality → <strong>Bitmap Index</strong></li>
+  </ul>
+  <p class="mt-2"><strong>Example:</strong><br/>
+  Gender: Only 'M' or 'F' → Low Cardinality<br/>
+  Email: Unique per person → High Cardinality</p>
+
+  <h3 class="text-xl font-bold mt-4 text-red-600">💡 Interview Tips</h3>
+  <ul class="list-disc ml-6">
+    <li>Always prefer B-Tree for OLTP systems.</li>
+    <li>Bitmap Index can cause locks — avoid in concurrent systems.</li>
+    <li>Function-based index only works if function is used exactly as defined in query.</li>
+    <li>Composite index only helps if left-most column is used.</li>
+  </ul>
+  <br>
+  <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">🔐 Unique Index in Oracle (Interview Perspective)</h2>
+
+  <p><strong>✅ What is a Unique Index?</strong><br>
+  A <code>Unique Index</code> in Oracle ensures that the values in one or more columns are <strong>always unique</strong>. It prevents duplicate entries and is often used to maintain data integrity — especially for columns like <code>email</code>, <code>username</code>, or <code>employee_id</code>.</p>
+
+  <p><strong>✅ Why is it Important?</strong><br>
+  - Helps enforce business rules (e.g., no two users should have the same email)<br>
+  - Improves query performance by indexing unique values<br>
+  - Automatically created when you define a <code>UNIQUE</code> constraint on a column</p>
+
+  <p><strong>✅ Real-World Example:</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE UNIQUE INDEX emp_email_idx ON employees(email);</code></pre>
+  </div>
+  <p>This ensures that no two employees can have the same <code>email</code> address.</p>
+
+  <p><strong>✅ Behind the Scenes:</strong><br>
+  When you create a table like this:</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE TABLE employees (
+  emp_id NUMBER PRIMARY KEY,
+  email VARCHAR2(100) UNIQUE
+);</code></pre>
+  </div>
+  <p>Oracle automatically creates a <strong>unique index</strong> on the <code>email</code> column to enforce the uniqueness.</p>
+
+  <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4">🎯 Interview Questions & Tricky Concepts</h3>
+
+  <p><strong>Q1: Can a column with a unique index contain multiple NULLs?</strong><br>
+  ✅ <strong>Yes.</strong> Oracle treats each NULL as a distinct value, so multiple NULLs are allowed in a column with a unique index.</p>
+
+  <p><strong>Q2: What error do you get when inserting a duplicate value?</strong><br>
+  ❌ You’ll get: <code>ORA-00001: unique constraint violated</code></p>
+
+  <p><strong>Q3: Can you create a unique index on multiple columns?</strong><br>
+  ✅ <strong>Yes.</strong> This enforces uniqueness across the combination of values.</p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE UNIQUE INDEX emp_name_dept_idx ON employees(name, department_id);</code></pre>
+  </div>
+  <p>Now, the same <code>name</code> can exist in different departments, but not the same <code>name</code> in the same <code>department_id</code>.</p>
+
+  <p><strong>Q4: Does a unique index improve performance?</strong><br>
+  ✅ Yes, especially for queries that filter by the indexed column. But it also adds overhead during inserts/updates due to uniqueness checks.</p>
+
+  <p><strong>Q5: Can you drop a unique index without dropping the constraint?</strong><br>
+  ❌ No. If the index was created by a <code>UNIQUE</code> constraint, dropping it will also drop the constraint.</p>
+
+  <p><strong>Q6: What’s the difference between a unique index and a primary key?</strong><br>
+  - Both enforce uniqueness<br>
+  - <code>PRIMARY KEY</code> also enforces <strong>NOT NULL</strong><br>
+  - A table can have multiple unique indexes but only one primary key</p>
+
+  <p><strong>✅ Summary:</strong><br>
+  Unique indexes are essential for maintaining clean, reliable data. They’re automatically created with <code>UNIQUE</code> constraints and help enforce business rules while improving query performance. Understanding how they work — especially with NULLs and composite columns — is key for interviews and real-world database design.</p>`
+},'Views vs Materialized Views': {
+  id: 'views-vs-materialized-views',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+  Views & Materialized Views (MV) — For Interview Preparation
+</h2>
+
+<p><strong>View:</strong> A <em>virtual table</em> based on an SQL query that doesn't store data. It fetches <strong>real-time data</strong> from base tables when queried.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE VIEW emp_dept_view AS
+SELECT e.emp_id, e.name, d.dept_name
+FROM employee e
+JOIN department d ON e.dept_id = d.dept_id;
+
+-- Usage
+SELECT * FROM emp_dept_view WHERE dept_name = 'HR';</code></pre>
+</div>
+
+<p><strong>Java/JPA:</strong> Use native queries on views with projections or DTOs.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>@Query(value = "SELECT * FROM emp_dept_view WHERE dept_name = :deptName", nativeQuery = true)
+List&lt;EmployeeDeptDTO&gt; findByDeptName(@Param("deptName") String deptName);</code></pre>
+</div>
+
+<p><strong>Materialized View:</strong> Stores data physically. Improves performance on complex joins and aggregates. Needs refresh to stay updated.</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE MATERIALIZED VIEW mv_emp_dept AS
+SELECT e.emp_id, e.name, d.dept_name
+FROM employee e
+JOIN department d ON e.dept_id = d.dept_id;
+
+-- Usage
+SELECT * FROM mv_emp_dept WHERE dept_name = 'IT';</code></pre>
+</div>
+
+<p><strong>Refresh Options:</strong></p>
+<ul>
+  <li><strong>ON COMMIT</strong> – refreshes automatically on DB commit.</li>
+  <li><strong>ON DEMAND</strong> – needs manual or scheduled refresh.</li>
+</ul>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>-- ON COMMIT
+CREATE MATERIALIZED VIEW mv_emp_dept_commit
+REFRESH FAST ON COMMIT
+AS
+SELECT e.emp_id, e.name, d.dept_name
+FROM employee e
+JOIN department d ON e.dept_id = d.dept_id;
+
+-- ON DEMAND
+CREATE MATERIALIZED VIEW mv_emp_dept_demand
+REFRESH FAST ON DEMAND
+AS
+SELECT e.emp_id, e.name, d.dept_name
+FROM employee e
+JOIN department d ON e.dept_id = d.dept_id;
+
+-- Manual refresh
+BEGIN
+  DBMS_MVIEW.REFRESH('MV_EMP_DEPT_DEMAND');
+END;
+
+-- Scheduled refresh example
+CREATE MATERIALIZED VIEW mv_sales_summary
+BUILD IMMEDIATE
+REFRESH COMPLETE
+START WITH SYSDATE
+NEXT SYSDATE + 1/24
+AS
+SELECT region, SUM(sales) total_sales
+FROM sales
+GROUP BY region;</code></pre>
+</div>
+
+<p><strong>Java/JPA:</strong> Same usage as View:</p>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>@Query(value = "SELECT * FROM mv_emp_dept WHERE dept_name = :deptName", nativeQuery = true)
+List&lt;EmployeeDeptDTO&gt; fetchMVData(@Param("deptName") String deptName);</code></pre>
+</div>
+
+<h3 class="text-xl font-semibold mt-4 mb-2">Key Differences</h3>
+
+<div class="code-block">
+  <button class="copy-btn">Copy</button>
+  <pre><code>| Feature     | View           | Materialized View         |
+|-------------|----------------|----------------------------|
+| Storage     | No             | Yes (physical)             |
+| Performance | Slower         | Faster (precomputed)       |
+| Real-time   | Yes            | No (unless refreshed)      |
+| Use Case    | Abstraction    | Performance, reporting     |</code></pre>
+</div>
+
+<h3 class="text-xl font-semibold mt-4 mb-2">Interview Questions & Answers</h3>
+
+<ul class="list-disc pl-5 space-y-1">
+  <li><strong>Does view show updated data if base table changes?</strong> ✅ Yes, always real-time.</li>
+  <li><strong>When does view fetch data?</strong> 👉 At query time.</li>
+  <li><strong>Does MV auto-update?</strong> ❌ No, unless ON COMMIT is used.</li>
+  <li><strong>Can you use WHERE in JPA with views/MVs?</strong> ✅ Yes.</li>
+  <li><strong>Can views/MVs use joins/group by?</strong> ✅ Yes.</li>
+  <li><strong>Need entity for views/MVs?</strong> ❌ Not if using DTO/projections.</li>
+  <li><strong>Tricky: MV shows outdated data?</strong> 👉 Refresh might be pending.</li>
+  <li><strong>Pass params in MV?</strong> ❌ Not directly, but queries can filter.</li>
+  <li><strong>How does MV help performance?</strong> ✅ Stores precomputed results.</li>
+  <li><strong>Can you modify data in view/MV?</strong> 🔸 View: Sometimes; MV: No.</li>
+  <li><strong>Which is faster — view or MV?</strong> 👉 MV if refreshed; else view is still faster than rewriting queries.</li>
+  <li><strong>ON COMMIT vs ON DEMAND?</strong> ✅ ON COMMIT is auto-refresh; ON DEMAND needs manual/scheduled refresh.</li>
+</ul>
+`
+}
+,'Triggers': {
+  id: 'triggers',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">🔔 Triggers in Oracle DB</h2>
+
+<p><strong>Definition:</strong> A trigger is a stored PL/SQL block or stored procedure that automatically executes when a specific DML event (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) occurs on a table or view.</p>
+
+<h4 class="text-lg font-semibold mt-4">Types of Triggers</h4>
+<ul class="list-disc ml-6">
+  <li><strong>BEFORE Trigger:</strong> Executes before the DML operation.</li>
+  <li><strong>AFTER Trigger:</strong> Executes after the DML operation.</li>
+  <li><strong>INSTEAD OF Trigger:</strong> Used for views to allow DML indirectly.</li>
+  <li><strong>ROW-level Trigger:</strong> Executes once per affected row.</li>
+  <li><strong>STATEMENT-level Trigger:</strong> Executes once per SQL statement.</li>
+  <li><strong>Compound Trigger:</strong> Combines multiple timing points (BEFORE, AFTER, INSTEAD OF).</li>
+</ul>
+
+<p class="mt-4 font-semibold">Example: BEFORE DELETE Trigger</p>
+<div class="code-block mb-6">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE OR REPLACE TRIGGER emp_delete_log
+BEFORE DELETE ON employees
+FOR EACH ROW
+BEGIN
+  INSERT INTO emp_delete_audit(emp_id, deleted_on)
+  VALUES (:OLD.emp_id, SYSDATE);
+END;</code></pre>
+</div>
+
+<p class="mt-4 font-semibold">Example: AFTER INSERT Trigger</p>
+<div class="code-block mb-6">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE TRIGGER trg_emp_audit
+AFTER INSERT ON employee
+FOR EACH ROW
+BEGIN
+  INSERT INTO audit_log(emp_id, action) VALUES(:NEW.emp_id, 'INSERT');
+END;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">Use Cases</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li>Auditing data changes</li>
+  <li>Enforcing business logic</li>
+  <li>Auto-updating related tables</li>
+  <li>Logging user actions or timestamps</li>
+  <li>Sync data to backup/history tables</li>
+  <li>Validate or block unwanted data changes</li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">Java Use Case</h4>
+<p>Triggers work behind the scenes. No changes are needed in JPA code, but they’re useful when the database enforces logic automatically.</p>
+<ul class="list-disc ml-6 mt-2 mb-6">
+  <li>Auto-fill <code>last_updated_by</code> in DB on <code>UPDATE</code></li>
+  <li>Log to audit tables on <code>DELETE</code></li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">Constraints/Notes</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li>Cannot use COMMIT/ROLLBACK inside trigger</li>
+  <li>Do not fire on TRUNCATE</li>
+  <li>May cause performance overhead if overused</li>
+  <li>Avoid putting heavy logic inside triggers — better in app/business layer</li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">Interview Questions</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: Can triggers modify data on other tables?</strong><br>✅ Yes, but should be used cautiously to avoid infinite loops.</li>
+  <li><strong>Q: What’s the difference between BEFORE and AFTER trigger?</strong><br>✅ BEFORE: Executes before DML action.<br>✅ AFTER: Executes after DML action.</li>
+  <li><strong>Q: What’s a compound trigger?</strong><br>✅ A trigger with multiple timing points (BEFORE, AFTER, INSTEAD OF).</li>
+  <li><strong>Q: Can a trigger call a stored procedure?</strong><br>✅ Yes. Logic can be moved to reusable procedures/functions.</li>
+  <li><strong>Q: Are triggers suitable for complex logic?</strong><br>⚠️ Better to keep complex logic in the business layer.</li>
+  <li><strong>Q: Do triggers fire on TRUNCATE?</strong><br>❌ No</li>
+  <li><strong>Q: Can we use triggers on views?</strong><br>✅ Yes, with INSTEAD OF triggers</li>
+  <li><strong>Q: What’s the difference between row-level and statement-level?</strong><br>✅ One per row vs one per statement</li>
+  <li><strong>Q: Can we block updates using triggers?</strong><br>✅ Yes, using BEFORE triggers with exception</li>
+</ul>
+`
+},'Synonyms': {
+  id: 'synonyms',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🔹 Synonyms</h2>
+
+<p>A Synonym is an alias for a database object like a table, view, sequence, or procedure. It allows users to reference objects without needing to specify the full schema name.</p>
+
+<p class="mt-4 font-semibold">-- Private Synonym (only for current user)</p>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE SYNONYM emp_syn FOR hr.employee;</code></pre>
+</div>
+
+<p class="font-semibold">-- Public Synonym (accessible to all users)</p>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE PUBLIC SYNONYM emp_pub FOR hr.employee;</code></pre>
+</div>
+
+<p class="font-semibold">-- Usage</p>
+<div class="code-block mb-6">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT * FROM emp_syn;
+SELECT * FROM emp_pub;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">✅ Use Cases:</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li>Hide object owner/schema (like hr.employee → emp_syn)</li>
+  <li>Provide simpler object names across applications</li>
+  <li>Allow cross-schema access without rewriting SQL logic</li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🔸 Java/JPA Use Case:</h4>
+<p>When a synonym exists for a table or view, you can access it via JPA just like a normal table using entity or native queries:</p>
+
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>@Query(value = "SELECT * FROM emp_syn WHERE status = 'ACTIVE'", nativeQuery = true)
+List&lt;Employee&gt; findActiveEmployees();</code></pre>
+</div>
+
+<p>No need to change entity mappings if synonym name is same as table.</p>
+<p>Useful in multi-schema environments or for abstracting data sources.</p>
+
+<h4 class="text-md font-semibold mt-4">🧠 Interview Questions:</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: Can we create a synonym for another synonym?</strong><br>✅ Yes, but it creates confusion — avoid nested synonyms.</li>
+  <li><strong>Q: Are public synonyms accessible to all users?</strong><br>✅ Yes, if proper privileges are granted.</li>
+  <li><strong>Q: Can synonyms reference objects in other schemas?</strong><br>✅ Yes, that’s one of their primary purposes.</li>
+  <li><strong>Q: What’s the difference between private and public synonym?</strong><br>🔹 Private: available only to creator. 🔹 Public: accessible by all users.</li>
+  <li><strong>Q: If underlying object of synonym is dropped, what happens?</strong><br>❌ Query fails. Synonym must be recreated or repointed.</li>
+</ul>
+`
+},'Sequences': {
+  id: 'sequences',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🔢 Sequences in Oracle DB</h2>
+
+<p><strong>Definition:</strong> A <code>Sequence</code> is a database object used to generate unique numeric values, commonly for auto-incrementing primary keys. It ensures that each value is distinct, even across multiple sessions.</p>
+
+<h4 class="text-md font-semibold mt-4">📌 Basic Syntax</h4>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>CREATE SEQUENCE emp_seq START WITH 1 INCREMENT BY 1;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">🧪 Usage Example</h4>
+<p>Use the sequence to insert a new employee with a unique ID:</p>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>INSERT INTO employee(emp_id, name) VALUES(emp_seq.NEXTVAL, 'John');</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">☕ Java/JPA Integration</h4>
+<p>Sequences are commonly used with JPA annotations to auto-generate primary keys:</p>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>@Id
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emp_seq")
+@SequenceGenerator(name = "emp_seq", sequenceName = "emp_seq", allocationSize = 1)
+private Long empId;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">✅ Why Use Sequences?</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li>Guarantees uniqueness across transactions and sessions</li>
+  <li>Efficient for generating surrogate keys</li>
+  <li>Works independently of table logic</li>
+  <li>Can be customized with START, INCREMENT, MIN/MAX values, caching, cycling</li>
+</ul>
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🔁 CURRVAL vs NEXTVAL in Oracle</h2>
+
+<p>In Oracle, <code>CURRVAL</code> and <code>NEXTVAL</code> are <strong>pseudocolumns</strong> used to interact with <strong>sequences</strong>—objects that generate unique, sequential numbers, often for primary keys.</p>
+
+<h4 class="text-md font-semibold mt-4">🚀 NEXTVAL</h4>
+<ul class="list-disc ml-6 mb-4">
+  <li>Increments the sequence and returns the next available value.</li>
+  <li>First call returns the <code>START WITH</code> value; subsequent calls increment by <code>INCREMENT BY</code>.</li>
+</ul>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT my_sequence.NEXTVAL FROM dual;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">🔄 CURRVAL</h4>
+<ul class="list-disc ml-6 mb-4">
+  <li>Returns the current value of the sequence in the current session.</li>
+  <li>Does <strong>not</strong> increment the sequence.</li>
+  <li>Can only be used <strong>after</strong> <code>NEXTVAL</code> has been called in the same session.</li>
+</ul>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>SELECT my_sequence.CURRVAL FROM dual;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">📌 Key Interview Points</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>CURRVAL is session-specific</strong>: It reflects the last value generated by <code>NEXTVAL</code> in that session, not globally.</li>
+  <li><strong>CURRVAL throws an error</strong> if used before <code>NEXTVAL</code> in the same session.</li>
+  <li><strong>Both must be qualified</strong> with the sequence name: <code>sequence_name.CURRVAL</code>, <code>sequence_name.NEXTVAL</code>.</li>
+  <li><strong>Common use case:</strong> Auto-generating unique IDs for primary keys.</li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🧠 Tricky Interview Questions</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: Can CURRVAL be used before NEXTVAL?</strong><br>
+    ❌ No. CURRVAL is undefined until NEXTVAL is called in the session.
+  </li>
+
+  <li><strong>Q: Is CURRVAL always the highest value of the sequence?</strong><br>
+    ❌ No. It only reflects the last value fetched in the current session.
+  </li>
+
+  <li><strong>Q: Can CURRVAL be shared across sessions?</strong><br>
+    ❌ No. CURRVAL is session-specific. Each session maintains its own CURRVAL.
+  </li>
+
+  <li><strong>Q: What happens if a transaction using NEXTVAL rolls back?</strong><br>
+    ✅ The value is lost; sequences are independent of transactions.
+  </li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🧩 Real-World Tip</h4>
+<p>Use <code>NEXTVAL</code> in <code>INSERT</code> statements or triggers to auto-generate IDs. Use <code>CURRVAL</code> when you need to reference the same value later in the session (e.g., inserting into child tables).</p>
+<h4 class="text-md font-semibold mt-4">🧠 Interview Questions & Explanations</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: What happens if two sessions use the same sequence?</strong><br>
+    ✅ Each session gets a unique value. Sequences are globally managed and thread-safe.
+  </li>
+
+  <li><strong>Q: Can a sequence generate gaps?</strong><br>
+    ✅ Yes. Gaps can occur due to rollbacks, caching, or unused values. For example, if a transaction fetches <code>NEXTVAL</code> but rolls back, that number is lost.
+  </li>
+
+  <li><strong>Q: Can we use a sequence in a composite key?</strong><br>
+    ✅ Technically yes, but sequences are best suited for surrogate keys. Composite keys often involve business logic or multiple fields.
+  </li>
+
+  <li><strong>Q: Can we reset a sequence?</strong><br>
+    ✅ Yes, by dropping and recreating it or using <code>ALTER SEQUENCE</code> with <code>RESTART</code> in newer Oracle versions.
+  </li>
+
+  <li><strong>Q: What’s the difference between CURRVAL and NEXTVAL?</strong><br>
+    ✅ <code>NEXTVAL</code> increments and returns the next value. <code>CURRVAL</code> returns the last value fetched in the current session.<br>
+    🔍 <strong>Example:</strong><br>
+    <code>SELECT emp_seq.NEXTVAL FROM dual;</code> → returns 1<br>
+    <code>SELECT emp_seq.CURRVAL FROM dual;</code> → returns 1 (same session)<br>
+    ❗ <strong>Important:</strong> CURRVAL can only be used after NEXTVAL has been called in the same session. Otherwise, it throws an error.
+  </li>
+
+  <li><strong>Q: Can a sequence be shared across multiple tables?</strong><br>
+    ✅ Yes. For example, a global sequence can be used for IDs in multiple tables to ensure uniqueness across the system.
+  </li>
+
+  <li><strong>Q: What is the impact of caching in sequences?</strong><br>
+    ✅ Cached sequences improve performance but may lose values if the database crashes before cache is flushed.
+  </li>
+
+  <li><strong>Q: Can we use sequences in triggers?</strong><br>
+    ✅ Absolutely. You can assign <code>NEXTVAL</code> inside a <code>BEFORE INSERT</code> trigger to auto-populate primary keys.
+  </li>
+
+  <li><strong>Q: Tricky — Can CURRVAL be used before calling NEXTVAL?</strong><br>
+    ❌ No. CURRVAL is only available after NEXTVAL has been called in the session.
+  </li>
+
+  <li><strong>Q: Tricky — Can a sequence generate duplicate values?</strong><br>
+    ❌ No, unless manually reset or misused. Oracle sequences are designed to avoid duplication.
+  </li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🧩 Real-World Tip</h4>
+<p>In high-concurrency systems, sequences are preferred over application-generated IDs because they scale better and avoid race conditions.</p>
+`
+},'PL/SQL Basics': {
+  id: 'plsql_basics',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🧠 PL/SQL Basics (Oracle Procedural Language)</h2>
+
+<p><strong>PL/SQL</strong> stands for <em>Procedural Language extensions to SQL</em>. It allows you to write procedural code (like loops, conditions, and error handling) directly inside Oracle Database. It's used to create powerful scripts, stored procedures, functions, and triggers.</p>
+
+<h4 class="text-md font-semibold mt-4">📦 PL/SQL Block Structure</h4>
+<p>Every PL/SQL program is made of blocks. A block has four optional sections:</p>
+<ul class="list-disc ml-6 mb-4">
+  <li><strong>DECLARE</strong> – Declare variables, cursors, constants</li>
+  <li><strong>BEGIN</strong> – Main executable code</li>
+  <li><strong>EXCEPTION</strong> – Error handling logic</li>
+  <li><strong>END</strong> – Marks the end of the block</li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🧪 Simple Example</h4>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>BEGIN
+  DBMS_OUTPUT.PUT_LINE('Hello from PL/SQL');
+END;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">🔧 What Can You Build with PL/SQL?</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Procedures</strong> – Reusable blocks that perform actions</li>
+  <li><strong>Functions</strong> – Return a value and can be used in SQL queries</li>
+  <li><strong>Triggers</strong> – Automatically execute on table events (INSERT, UPDATE, DELETE)</li>
+  <li><strong>Packages</strong> – Group related procedures/functions together</li>
+</ul>
+<br>
+
+<h4 class="text-md font-semibold mt-4">📋 PL/SQL Features Overview</h4>
+<table class="table-auto border-collapse border border-gray-400 mb-6">
+  <thead class="bg-gray-200 dark:bg-gray-700">
+    <tr>
+      <th class="border border-gray-400 px-4 py-2 text-left">Feature</th>
+      <th class="border border-gray-400 px-4 py-2 text-left">Category</th>
+      <th class="border border-gray-400 px-4 py-2 text-left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="border px-4 py-2">Block Structure</td><td class="border px-4 py-2">Core Syntax</td><td class="border px-4 py-2">Consists of DECLARE, BEGIN, EXCEPTION, and END sections</td></tr>
+    <tr><td class="border px-4 py-2">Variables & Constants</td><td class="border px-4 py-2">Data Handling</td><td class="border px-4 py-2">Supports scalar, composite, reference, and large object types</td></tr>
+    <tr><td class="border px-4 py-2">Control Structures</td><td class="border px-4 py-2">Flow Control</td><td class="border px-4 py-2">Includes IF, CASE, LOOP, WHILE, FOR, and EXIT statements</td></tr>
+    <tr><td class="border px-4 py-2">Cursors</td><td class="border px-4 py-2">Data Access</td><td class="border px-4 py-2">Used to fetch multiple rows from a query; supports explicit and implicit</td></tr>
+    <tr><td class="border px-4 py-2">Exception Handling</td><td class="border px-4 py-2">Error Management</td><td class="border px-4 py-2">Handles runtime errors using EXCEPTION block with predefined or custom errors</td></tr>
+    <tr><td class="border px-4 py-2">Procedures</td><td class="border px-4 py-2">Modular Programming</td><td class="border px-4 py-2">Named blocks that perform actions; reusable and parameterized</td></tr>
+    <tr><td class="border px-4 py-2">Functions</td><td class="border px-4 py-2">Modular Programming</td><td class="border px-4 py-2">Similar to procedures but return a value; can be used in SQL queries</td></tr>
+    <tr><td class="border px-4 py-2">Triggers</td><td class="border px-4 py-2">Event Handling</td><td class="border px-4 py-2">Automatically execute code on DML events like INSERT, UPDATE, DELETE</td></tr>
+    <tr><td class="border px-4 py-2">Packages</td><td class="border px-4 py-2">Code Organization</td><td class="border px-4 py-2">Group related procedures/functions; support public/private scope</td></tr>
+    <tr><td class="border px-4 py-2">Records & Collections</td><td class="border px-4 py-2">Data Structures</td><td class="border px-4 py-2">Support for RECORD, TABLE, VARRAY, and ASSOCIATIVE ARRAY types</td></tr>
+    <tr><td class="border px-4 py-2">PL/SQL Tables</td><td class="border px-4 py-2">Data Structures</td><td class="border px-4 py-2">Index-by tables (associative arrays) for in-memory data manipulation</td></tr>
+    <tr><td class="border px-4 py-2">Bulk Processing</td><td class="border px-4 py-2">Performance</td><td class="border px-4 py-2">BULK COLLECT and FORALL for efficient multi-row operations</td></tr>
+    <tr><td class="border px-4 py-2">Dynamic SQL</td><td class="border px-4 py-2">Flexibility</td><td class="border px-4 py-2">Use EXECUTE IMMEDIATE to run SQL statements dynamically</td></tr>
+    <tr><td class="border px-4 py-2">DBMS_OUTPUT</td><td class="border px-4 py-2">Debugging</td><td class="border px-4 py-2">Displays output from PL/SQL blocks (mainly for development/debugging)</td></tr>
+    <tr><td class="border px-4 py-2">Autonomous Transactions</td><td class="border px-4 py-2">Transaction Control</td><td class="border px-4 py-2">Allows independent commits/rollbacks within a block</td></tr>
+    <tr><td class="border px-4 py-2">Savepoints</td><td class="border px-4 py-2">Transaction Control</td><td class="border px-4 py-2">Marks logical points in a transaction for partial rollback</td></tr>
+    <tr><td class="border px-4 py-2">Nested Blocks</td><td class="border px-4 py-2">Modularity</td><td class="border px-4 py-2">PL/SQL blocks can be nested inside others for structured logic</td></tr>
+    <tr><td class="border px-4 py-2">Triggers on Views</td><td class="border px-4 py-2">Advanced Features</td><td class="border px-4 py-2">INSTEAD OF triggers allow DML operations on views</td></tr>
+    <tr><td class="border px-4 py-2">Security Features</td><td class="border px-4 py-2">Access Control</td><td class="border px-4 py-2">Supports AUTHID CURRENT_USER, roles, and privilege management</td></tr>
+    <tr><td class="border px-4 py-2">Compiler Optimization</td><td class="border px-4 py-2">Performance</td><td class="border px-4 py-2">Native compilation and optimization levels for faster execution</td></tr>
+    <tr><td class="border px-4 py-2">PL/SQL Engine</td><td class="border px-4 py-2">Architecture</td><td class="border px-4 py-2">Executes procedural code inside Oracle Database (server-side)</td></tr>
+  </tbody>
+</table>
+
+
+<br>
+<h4 class="text-md font-semibold mt-4">🧠 Interview Questions & Explanations</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: What is the difference between a procedure and a function?</strong><br>
+    ✅ A <strong>function</strong> returns a value and can be used in SQL statements. A <strong>procedure</strong> performs an action but does not return a value directly.
+  </li>
+  <li><strong>Q: Can we use DML (INSERT/UPDATE/DELETE) inside PL/SQL?</strong><br>
+    ✅ Yes. PL/SQL supports full SQL operations inside blocks.
+  </li>
+  <li><strong>Q: What is the use of the EXCEPTION block?</strong><br>
+    ✅ It handles runtime errors gracefully. You can catch and respond to specific exceptions like <code>NO_DATA_FOUND</code> or <code>TOO_MANY_ROWS</code>.
+  </li>
+  <li><strong>Q: Can PL/SQL be used to write triggers?</strong><br>
+    ✅ Yes. Triggers are written in PL/SQL and execute automatically on table events.
+  </li>
+  <li><strong>Q: What is DBMS_OUTPUT?</strong><br>
+    ✅ It's a built-in package used to display output from PL/SQL blocks, mainly for debugging.
+  </li>
+  <li><strong>Q: Can we nest PL/SQL blocks?</strong><br>
+    ✅ Yes. You can write blocks inside other blocks for modular logic.
+  </li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🧩 Tricky Questions</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: Can a function modify database tables?</strong><br>
+    ⚠️ Technically yes, but it's discouraged. Functions used in SQL queries should be free of side effects.
+  </li>
+  <li><strong>Q: What happens if you forget the END keyword?</strong><br>
+    ❌ Compilation error. Every block must be properly closed with <code>END;</code>.
+  </li>
+  <li><strong>Q: Can you use COMMIT inside a PL/SQL block?</strong><br>
+    ✅ Yes, but it's best practice to control transactions outside procedures unless explicitly needed.
+  </li>
+  <li><strong>Q: What is the default behavior if no EXCEPTION block is defined?</strong><br>
+    ❌ The error propagates to the calling environment and may terminate execution.
+  </li>
+  <li><strong>Q: Can you call a procedure from inside a function?</strong><br>
+    ✅ Yes, but be cautious if the procedure performs DML, especially if the function is used in SQL.
+  </li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">🧠 Example with DECLARE and EXCEPTION</h4>
+<div class="code-block mb-4">
+  <button class="copy-btn">Copy</button>
+  <pre><code>DECLARE
+  v_name VARCHAR2(20);
+BEGIN
+  v_name := 'Oracle';
+  DBMS_OUTPUT.PUT_LINE('Welcome to ' || v_name);
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('An error occurred');
+END;</code></pre>
+</div>
+
+<h4 class="text-md font-semibold mt-4">🧩 Real-World Scenario-Based Interview Questions</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li><strong>Q: Insert into parent and child tables using same ID?</strong><br>
+    ✅ Use <code>NEXTVAL</code> for parent, <code>CURRVAL</code> for child.
+    <div class="code-block mt-2 mb-2">
+      <pre><code>INSERT INTO orders(order_id, customer_id) VALUES(order_seq.NEXTVAL, 101);
+INSERT INTO order_items(order_id, item_name) VALUES(order_seq.CURRVAL, 'Laptop');</code></pre>
+    </div>
+  </li>
+
+  <li><strong>Q: Prevent partial updates on error?</strong><br>
+    ✅ Use EXCEPTION block and let caller handle COMMIT/ROLLBACK.
+    <div class="code-block mt-2 mb-2">
+      <pre><code>BEGIN
+  UPDATE employees SET salary = salary * 1.10 WHERE department_id = 10;
+EXCEPTION
+  WHEN OTHERS THEN
+    RAISE;
+END;</code></pre>
+    </div>
+  </li>
+
+  <li><strong>Q: Trigger fails silently during DELETE?</strong><br>
+    ✅ Use <code>:OLD</code> not <code>:NEW</code>; enable DBMS_OUTPUT.
+    <div class="code-block mt-2 mb-2">
+      <pre><code>CREATE OR REPLACE TRIGGER log_delete
+BEFORE DELETE ON employees
+FOR EACH ROW
+BEGIN
+  INSERT INTO audit_log(emp_id, deleted_on)
+  VALUES (:OLD.emp_id, SYSDATE);
+END;</code></pre>
+    </div>
+  </li>
+
+  <li><strong>Q: Validate input before insert?</strong><br>
+    ✅ Use BEFORE INSERT trigger.
+    <div class="code-block mt-2 mb-2">
+      <pre><code>CREATE OR REPLACE TRIGGER validate_age
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+  IF :NEW.age < 18 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'User must be at least 18 years old');
+  END IF;
+END;</code></pre>
+    </div>
+  </li>
+
+  <li><strong>Q: Function to return total sales?</strong><br>
+    ✅ Avoid DML; use SELECT logic.
+    <div class="code-block mt-2 mb-2">
+      <pre><code>CREATE OR REPLACE FUNCTION get_total_sales(p_product_id NUMBER)
+RETURN NUMBER IS
+  v_total NUMBER;
+BEGIN
+  SELECT SUM(amount) INTO v_total FROM sales WHERE product_id = p_product_id;
+  RETURN v_total;
+END;</code></pre>
+    </div>
+  </li>
+
+  <li><strong>Q: Optimize bulk row updates?</strong><br>
+    ✅ Use BULK COLLECT and FORALL.
+    <div class="code-block mt-2 mb-2">
+      <pre><code>DECLARE
+  TYPE t_ids IS TABLE OF employees.emp_id%TYPE;
+  v_ids t_ids;
+BEGIN
+  SELECT emp_id BULK COLLECT INTO v_ids FROM employees WHERE department_id = 10;
+
+  FORALL i IN v_ids.FIRST .. v_ids.LAST
+    UPDATE employees SET salary = salary * 1.05 WHERE emp_id = v_ids(i);
+END;</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h4 class="text-md font-semibold mt-4">💡 Real-World Tip</h4>
+<br>
+<p>Use PL/SQL for business logic that must run close to the data—like validations, batch processing, or audit logging. It reduces network overhead and improves performance.</p>
+`
+},'Performance Optimization': {
+  id: 'sql-performance-optimization',
+  html: `
+<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-8">🚀 SQL Performance & Optimization (Oracle)</h2>
+
+<p>Optimizing SQL queries is essential for building fast, scalable applications and for acing technical interviews. Below are key techniques, examples, and explanations to help you master SQL performance tuning.</p>
+
+<h4 class="text-md font-semibold mt-4">📘 Key Techniques with Examples</h4>
+
+<p><strong>1. EXPLAIN PLAN</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>EXPLAIN PLAN FOR SELECT * FROM employees WHERE department_id = 10;
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);</code></pre></div>
+<p><em>Explanation:</em> Shows how Oracle will execute the query — helps identify full scans, index usage, and join methods.</p>
+
+<p><strong>2. Avoid SELECT *</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>-- Bad
+SELECT * FROM employees;
+
+-- Good
+SELECT emp_id, name FROM employees;</code></pre></div>
+<p><em>Explanation:</em> Fetching all columns increases I/O and memory usage. Always select only the columns you need.</p>
+
+<p><strong>3. Use Indexes</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE INDEX emp_dept_idx ON employees(department_id);
+SELECT * FROM employees WHERE department_id = 10;</code></pre></div>
+<p><em>Explanation:</em> Indexes speed up WHERE clause filtering by avoiding full table scans.</p>
+
+<p><strong>4. Oracle HINTS</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT /*+ INDEX(employees emp_dept_idx) */ * FROM employees WHERE department_id = 10;</code></pre></div>
+<p><em>Explanation:</em> Hints guide the optimizer to use specific indexes or join methods when default plans are suboptimal.</p>
+
+<p><strong>5. Autotrace (SQL Developer & SQL*Plus)</strong></p>
+<p><em>SQL Developer Example:</em></p>
+<ul class="list-disc ml-6">
+  <li>Open SQL Developer</li>
+  <li>Go to <code>Tools → Preferences → Database → Autotrace</code></li>
+  <li>Enable “Autotrace” and choose “Explain Plan + Statistics”</li>
+  <li>Run your query: <code>SELECT * FROM employees WHERE department_id = 10;</code></li>
+  <li>View execution plan and statistics in the Autotrace tab</li>
+</ul>
+
+<p><em>SQL*Plus Example:</em></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SET AUTOTRACE ON
+SELECT * FROM employees WHERE department_id = 10;
+SET AUTOTRACE OFF</code></pre></div>
+<p><em>Explanation:</em> Autotrace provides execution plan and performance statistics like rows processed, logical reads, and cost — useful for pinpointing bottlenecks.</p>
+
+<p><strong>6. SQL*Plus EXPLAIN PLAN</strong></p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>EXPLAIN PLAN FOR SELECT * FROM employees;
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);</code></pre></div>
+<p><em>Explanation:</em> Command-line tool to analyze query execution in SQL*Plus or scripts.</p>
+
+<h4 class="text-md font-semibold mt-4">🧠 Real-Time Scenario-Based Interview Questions</h4>
+
+<p><strong>Q: A query runs fast in dev but slow in prod. Why?</strong><br>
+✅ Check for missing indexes, outdated stats, or larger data volume. Use <code>EXPLAIN PLAN</code> to compare environments.</p>
+
+<p><strong>Q: You added an index but Oracle still does a full scan. Why?</strong><br>
+✅ Possible reasons: function on column, optimizer decision, or stale stats.<br>
+✅ Fix: Use function-based index or HINT.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE INDEX emp_name_idx ON employees(UPPER(name));
+SELECT /*+ INDEX(employees emp_name_idx) */ name FROM employees WHERE UPPER(name) = 'JOHN';</code></pre></div>
+
+<p><strong>Q: How do you ensure your query uses an index?</strong><br>
+✅ Use <code>EXPLAIN PLAN</code> or <code>DBMS_XPLAN.DISPLAY</code>. Add HINT if needed.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT /*+ INDEX(employees emp_dept_idx) */ * FROM employees WHERE department_id = 10;</code></pre></div>
+
+<p><strong>Q: What’s the impact of SELECT * in a large table?</strong><br>
+❌ It increases memory usage, slows down network transfer, and may prevent index-only scans.</p>
+
+<p><strong>Q: How do you find which part of a query is slow?</strong><br>
+✅ Use Autotrace or SQL Developer’s execution plan viewer to analyze cost and row counts.</p>
+
+<h4 class="text-md font-semibold mt-4">💡 Pro Tips</h4>
+<ul class="list-disc ml-6 mb-6">
+  <li>Keep statistics up to date using <code>DBMS_STATS</code></li>
+  <li>Use WHERE clause filters that match indexed columns</li>
+  <li>Avoid functions on indexed columns unless using function-based indexes</li>
+  <li>Use bind variables to improve plan reuse and reduce parsing</li>
+</ul>
+`
+},'Functions': {
+  id: 'sql-window-functions',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">SQL Window Functions & Expressions</h2>
+
+<p><strong>✅ RANK()</strong><br>
+Definition: Assigns ranks with gaps for ties.<br>
+Use Case: Leaderboards, salary ranking.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT name, salary, RANK() OVER (ORDER BY salary DESC) AS rnk FROM employees;</code></pre></div>
+<p>Explanation: Equal values share the same rank; next rank is skipped.<br>
+Tricky Q: Salaries: 5000, 5000, 4500, 4000 → What is RANK?</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>5000 → 1
+5000 → 1
+4500 → 3
+4000 → 4</code></pre></div>
+
+<p><strong>✅ DENSE_RANK()</strong><br>
+Definition: Ranks with no gaps between tied values.<br>
+Use Case: Prize distribution where all winners get next immediate rank.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT name, salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS drnk FROM employees;</code></pre></div>
+<p>Explanation: Same rank for ties; next is +1.<br>
+Tricky Q: Salaries: 7000, 7000, 6000, 6000 → What is DENSE_RANK?</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>7000 → 1
+7000 → 1
+6000 → 2
+6000 → 2</code></pre></div>
+
+<p><strong>✅ ROW_NUMBER()</strong><br>
+Definition: Unique sequential number for each row.<br>
+Use Case: Pagination, removing duplicates.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT name, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn FROM employees;</code></pre></div>
+<p>Explanation: No ties — every row has unique number.<br>
+Tricky Q: How to get 3rd highest salary?</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT salary FROM (
+  SELECT salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn
+  FROM employees
+) WHERE rn = 3;</code></pre></div>
+
+<p><strong>✅ NTILE(n)</strong><br>
+Definition: Divides rows into n roughly equal buckets.<br>
+Use Case: Quartile analysis, data segmentation.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT name, salary, NTILE(4) OVER (ORDER BY salary) AS quartile FROM employees;</code></pre></div>
+<p>Explanation: Distributes rows evenly into groups.<br>
+Tricky Q: 10 rows with NTILE(3) → how are groups divided?<br>
+Answer: Groups of sizes 4, 3, 3 (or 3, 3, 4).</p>
+
+<p><strong>✅ LAG() / LEAD()</strong><br>
+Definition: LAG: previous row value; LEAD: next row value.<br>
+Use Case: Comparing current and previous/next values.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT name, hire_date, salary,
+       LAG(salary) OVER (ORDER BY hire_date) AS prev_salary,
+       LEAD(salary) OVER (ORDER BY hire_date) AS next_salary
+FROM employees;</code></pre></div>
+<p>Explanation: No self joins required.<br>
+Tricky Q: What happens at row boundaries?<br>
+Answer: Returns NULL. Use NVL() for defaults.</p>
+
+<p><strong>✅ FIRST_VALUE() / LAST_VALUE()</strong><br>
+Definition: Gets first/last value in partitioned window.<br>
+Use Case: Top performers, last activity.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT department_id, name,
+       FIRST_VALUE(name) OVER (
+         PARTITION BY department_id
+         ORDER BY salary DESC
+       ) AS top_emp
+FROM employees;</code></pre></div>
+<p>Tricky Q: One row in partition — what is FIRST/LAST?<br>
+Answer: Both return same value.</p>
+
+<p><strong>🧮 Conditional Expressions</strong></p>
+
+<p><strong>✅ CASE</strong><br>
+Definition: SQL’s IF-THEN-ELSE.<br>
+Use Case: Classify rows by condition.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT name,
+       CASE
+         WHEN salary > 10000 THEN 'High'
+         WHEN salary BETWEEN 5000 AND 10000 THEN 'Medium'
+         ELSE 'Low'
+       END AS salary_band
+FROM employees;</code></pre></div>
+<p>Tricky Q: Why prefer CASE over DECODE?<br>
+Answer: CASE supports ranges & complex logic; DECODE doesn't.</p>
+
+<p><strong>✅ DECODE() (Oracle-specific)</strong><br>
+Definition: Oracle's shorthand for conditional logic.<br>
+Use Case: Map numeric/code values to readable labels.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT employee_id, department_id,
+       DECODE(department_id, 10, 'HR', 20, 'Finance', 'Other') AS dept_name
+FROM employees;</code></pre></div>
+<p>Explanation:<br>
+If department_id = 10 → 'HR'<br>
+If department_id = 20 → 'Finance'<br>
+Else → 'Other'<br>
+Sample Output:<br>
+101 → HR<br>
+102 → Finance<br>
+103 → Other<br>
+104 → Other</p>
+<p>Interview Tip: DECODE is compact but limited — only supports equality checks.</p>
+
+<p><strong>🎯 Tricky Interview Question:</strong><br>
+Q: What will be the output of this query?<br>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT DECODE(department_id, 10, 'HR', 20, 'Finance', 'Other') FROM employees;</code></pre></div>
+Answer: 'HR' for 10, 'Finance' for 20, 'Other' for others including NULL.<br>
+Tricky Q: What if no match & no default?<br>
+Answer: Returns NULL.</p>
+
+<p><strong>✅ NVL() / COALESCE()</strong><br>
+Definition:<br>
+NVL(expr1, expr2): Replace NULL with expr2.<br>
+COALESCE(expr1, expr2, ...): Return first non-null.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT NVL(commission_pct, 0),
+       COALESCE(commission_pct, bonus_pct, 0)
+FROM employees;</code></pre></div>
+<p>Tricky Q: What does NVL('123', '0') return?<br>
+Answer: '123' — because it's already non-null.</p>
+
+<p><strong>✅ NULLIF()</strong><br>
+Definition: Returns NULL if two expressions are equal.<br>
+Use Case: Prevent divide-by-zero errors.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT salary / NULLIF(bonus, 0) AS ratio FROM employees;</code></pre></div>
+<p>Tricky Q: Bonus = 0, Salary = 5000 → Ratio?<br>
+Answer: NULL</p> 
+  
+<br> <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">📄 Pagination & Top‑N Queries</h2>
+
+<p><strong>✅ ROWNUM</strong><br>
+Definition: Oracle pseudo-column for row limits.<br>
+Use Case: Top-N before Oracle 12c.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT * FROM (
+  SELECT * FROM employees ORDER BY salary DESC
+) WHERE ROWNUM <= 5;</code></pre></div>
+<p><strong>Tricky Q:</strong> Why not use ROWNUM directly with ORDER BY?<br>
+<strong>Answer:</strong> ROWNUM applies before sorting.</p>
+
+<p><strong>✅ FETCH FIRST / OFFSET-FETCH (Oracle 12c+)</strong><br>
+Definition: ANSI-compliant row limiting.<br>
+Use Case: Pagination in UI.</p>
+<div class="code-block"><button class="copy-btn">Copy</button><pre><code>SELECT * FROM employees
+ORDER BY salary DESC
+FETCH FIRST 5 ROWS ONLY;
+
+SELECT * FROM employees
+ORDER BY salary
+OFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY;</code></pre></div>
+<p><strong>Tricky Q:</strong> Difference between OFFSET 0 vs FETCH FIRST?<br>
+<strong>Answer:</strong> Practically same, but OFFSET is clearer in paged queries.</p>`
+}
+,'Custom Function': {
+  id: 'oracle-functions-complete',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">🧠 Oracle Functions – Complete Guide (Interview Style)</h2>
+
+  <p><strong>✅ What is a Function in Oracle?</strong><br>
+  A <code>FUNCTION</code> is a named PL/SQL block that performs a task and <strong>returns a value</strong>. It can be called from SQL statements, procedures, or triggers. Functions help modularize logic and improve code reuse.</p>
+
+  <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4">📌 Syntax Breakdown</h3>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE [OR REPLACE] FUNCTION function_name (
+  param1 datatype,
+  param2 datatype
+) RETURN return_datatype IS
+  -- Variable declarations
+BEGIN
+  -- Logic
+  RETURN value;
+END function_name;</code></pre>
+  </div>
+  <p><strong>Explanation:</strong><br>
+  - <code>CREATE OR REPLACE</code>: Updates function if it already exists<br>
+  - <code>function_name</code>: Name of the function<br>
+  - <code>RETURN</code>: Specifies the data type of the return value<br>
+  - <code>IS</code>: Begins the declaration section<br>
+  - <code>BEGIN...END</code>: Contains executable logic</p>
+
+  <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4">🧩 Types of Functions in Oracle</h3>
+  <ul class="list-disc ml-6">
+    <li><strong>1. Scalar Functions</strong> – Return a single value (e.g., number, string)</li>
+    <li><strong>2. Table Functions</strong> – Return a set of rows using <code>PIPELINED</code></li>
+    <li><strong>3. Deterministic Functions</strong> – Always return same output for same input</li>
+    <li><strong>4. Nested Functions</strong> – Defined inside another function or block</li>
+    <li><strong>5. Standalone Functions</strong> – Stored independently in the database</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4">📌 Examples with Explanation</h3>
+
+  <p><strong>🔹 Scalar Function – Calculate Bonus</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE OR REPLACE FUNCTION calc_bonus (
+  p_salary NUMBER
+) RETURN NUMBER IS
+BEGIN
+  RETURN p_salary * 0.10;
+END;</code></pre>
+  </div>
+  <p><em>Returns 10% of salary as bonus.</em></p>
+
+  <p><strong>🔹 Deterministic Function – Square of a Number</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>CREATE OR REPLACE FUNCTION square_num (
+  n NUMBER
+) RETURN NUMBER DETERMINISTIC IS
+BEGIN
+  RETURN n * n;
+END;</code></pre>
+  </div>
+  <p><em>Same input always gives same output. Useful for query optimization.</em></p>
+
+  <p><strong>🔹 Table Function – Return List of Numbers</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>-- Step 1: Create a collection type
+CREATE OR REPLACE TYPE num_table AS TABLE OF NUMBER;
+
+-- Step 2: Create a pipelined function
+CREATE OR REPLACE FUNCTION get_numbers RETURN num_table PIPELINED IS
+BEGIN
+  FOR i IN 1..5 LOOP
+    PIPE ROW(i); -- Sends each row to the calling SQL
+  END LOOP;
+  RETURN;
+END;</code></pre>
+  </div>
+  <p><em>This function returns a virtual table of numbers from 1 to 5. You can query it like:</em><br>
+  <code>SELECT * FROM TABLE(get_numbers);</code><br>
+  <em>Useful for dynamic row generation, reporting, or transforming collections.</em></p>
+
+  <p><strong>🔹 Nested Function – Defined Inside Another Block</strong></p>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>DECLARE
+  FUNCTION inner_func(x NUMBER) RETURN NUMBER IS
+  BEGIN
+    RETURN x * 2;
+  END;
+BEGIN
+  DBMS_OUTPUT.PUT_LINE(inner_func(10));
+END;</code></pre>
+  </div>
+  <p><em>Nested functions are local to the block and not stored in the database. Useful for encapsulating helper logic.</em></p>
+
+  <p><strong>🔹 Standalone Function – Stored in Schema</strong></p>
+  <p><em>Any function created using <code>CREATE FUNCTION</code> at schema level is a standalone function.</em><br>
+  ✅ Can be reused across procedures, triggers, and packages.<br>
+  ✅ Can be granted to other users.</p>
+
+  <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4">📌 Usage in SQL Queries</h3>
+  <div class="code-block">
+    <button class="copy-btn">Copy</button>
+    <pre><code>SELECT name, calc_bonus(salary) AS bonus FROM employees;
+
+SELECT * FROM employees WHERE square_num(age) > 100;
+
+SELECT * FROM TABLE(get_numbers);</code></pre>
+  </div>
+  <p><em>Functions can be used in SELECT, WHERE, and even FROM clauses (for table functions).</em></p>
+
+  <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-4">🎯 Interview Questions & Tricky Concepts</h3>
+  <ul class="list-disc ml-6">
+    <li><strong>Q1:</strong> What’s the difference between a procedure and a function?<br>
+      ✅ Function returns a value and can be used in SQL. Procedure performs actions but doesn’t return a value directly.</li>
+
+    <li><strong>Q2:</strong> Can a function perform DML operations like INSERT or UPDATE?<br>
+      ⚠️ Technically yes, but not recommended inside SQL queries due to side effects.</li>
+
+    <li><strong>Q3:</strong> What is a deterministic function?<br>
+      ✅ A function that always returns the same result for the same input. Use <code>DETERMINISTIC</code> keyword.</li>
+
+    <li><strong>Q4:</strong> How do you return multiple rows from a function?<br>
+      ✅ Use <code>PIPELINED</code> table functions or <code>REF CURSOR</code>.</li>
+
+    <li><strong>Q5:</strong> Can you use a function in a WHERE clause?<br>
+      ✅ Yes, if it returns a scalar value.</li>
+
+    <li><strong>Q6:</strong> Can you call a function from a trigger?<br>
+      ✅ Yes. Useful for validations or calculations during DML events.</li>
+  </ul>
+
+  <p><strong>✅ Summary:</strong><br>
+  Oracle functions are powerful tools for encapsulating logic, improving code reuse, and enhancing query capabilities. Mastering their types, syntax, and use cases is key for both development and interviews.</p>`
+}
+,'Normalization': {
+  id: 'normalization-sql',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">What Is Normalization?</h2>
+  <p>Normalization is the process of organizing data in a relational database to:</p>
+  <ul>
+    <li>Eliminate redundancy</li>
+    <li>Prevent anomalies (insertion, update, deletion)</li>
+    <li>Ensure data integrity</li>
+    <li>Improve query performance</li>
+  </ul>
+  <p>It involves decomposing large tables into smaller, related tables.</p>
+
+  <h3 class="text-xl font-semibold mt-4">🧩 Types of Normalization (Normal Forms)</h3>
+
+  <h4 class="font-semibold mt-2">🔹 1NF – First Normal Form</h4>
+  <p><strong>Rule:</strong> Each column must contain atomic values (no lists or arrays), and each row must be unique.</p>
+  <p><strong>Real-World Example:</strong> Library System</p>
+  <p><em>Before 1NF (violates atomicity):</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>BookID | Title                     | Borrowers
+-----------------------------------------------------
+1      | To Kill a Mockingbird     | John, Jane, James
+2      | The Lord of the Rings     | Emily, David</code></pre></div>
+
+  <p><em>After 1NF (atomic values):</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>BookID | Title                     | Borrower
+-----------------------------------------------------
+1      | To Kill a Mockingbird     | John
+1      | To Kill a Mockingbird     | Jane
+1      | To Kill a Mockingbird     | James
+2      | The Lord of the Rings     | Emily
+2      | The Lord of the Rings     | David</code></pre></div>
+
+  <h4 class="font-semibold mt-4">🔹 2NF – Second Normal Form</h4>
+  <p><strong>Rule:</strong> Must be in 1NF, and no partial dependencies (non-key attributes must depend on the whole primary key).</p>
+  <p><strong>Real-World Example:</strong> Student-Course Enrollment</p>
+  <p><em>Before 2NF (violates partial dependency):</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>StudentID | CourseID | StudentName | CourseName | Instructor
+-------------------------------------------------------------
+1         | C101     | Alice       | Math       | Dr. Smith
+1         | C102     | Alice       | Physics    | Dr. Johnson</code></pre></div>
+
+  <p><strong>Primary Key:</strong> (StudentID, CourseID)</p>
+  <ul>
+    <li>StudentName depends only on StudentID</li>
+    <li>CourseName and Instructor depend only on CourseID</li>
+  </ul>
+  <p><em>After 2NF (split into separate tables):</em></p>
+
+  <p><strong>Students Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>StudentID | StudentName
+------------------------
+1         | Alice</code></pre></div>
+
+  <p><strong>Courses Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>CourseID | CourseName | Instructor
+----------------------------------
+C101     | Math       | Dr. Smith
+C102     | Physics    | Dr. Johnson</code></pre></div>
+
+  <p><strong>Enrollments Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>StudentID | CourseID
+---------------------
+1         | C101
+1         | C102</code></pre></div>
+
+  <h4 class="font-semibold mt-4">🔹 3NF – Third Normal Form</h4>
+  <p><strong>Rule:</strong> Must be in 2NF, and no transitive dependencies (non-key attributes should not depend on other non-key attributes).</p>
+  <p><strong>Real-World Example:</strong> Employee Details</p>
+  <p><em>Before 3NF (violates transitive dependency):</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>EmpID | EmpName | DeptID | DeptName | Manager
+----------------------------------------------
+1     | Alice   | D01    | Sales    | John
+2     | Bob     | D01    | Sales    | John</code></pre></div>
+
+  <p>- Manager depends on DeptName, which depends on DeptID</p>
+  <p><em>After 3NF (split into two tables):</em></p>
+
+  <p><strong>Employees Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>EmpID | EmpName | DeptID
+-------------------------
+1     | Alice   | D01
+2     | Bob     | D01</code></pre></div>
+
+  <p><strong>Departments Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>DeptID | DeptName | Manager
+----------------------------
+D01    | Sales    | John</code></pre></div>
+
+  <h4 class="font-semibold mt-4">🔹 BCNF – Boyce-Codd Normal Form</h4>
+  <p><strong>Rule:</strong> Must be in 3NF, and every determinant must be a candidate key.</p>
+  <p><strong>Real-World Example:</strong> Course-Instructor Assignment</p>
+  <p><em>Before BCNF (violates superkey rule):</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>CourseID | Instructor | Room
+-----------------------------
+C101     | Dr. Smith  | R101
+C101     | Dr. Johnson| R102</code></pre></div>
+
+  <p>- Instructor → Room but Instructor is not a candidate key</p>
+  <p><em>After BCNF (split into two tables):</em></p>
+
+  <p><strong>CourseInstructor Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>CourseID | Instructor
+----------------------
+C101     | Dr. Smith
+C101     | Dr. Johnson</code></pre></div>
+
+  <p><strong>InstructorRoom Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>Instructor | Room
+------------------
+Dr. Smith  | R101
+Dr. Johnson| R102</code></pre></div>
+
+  <h4 class="font-semibold mt-4">🔹 4NF – Fourth Normal Form</h4>
+  <p><strong>Rule:</strong> Must be in BCNF, and no multi-valued dependencies</p>
+  <p><strong>Real-World Example:</strong> Student Languages & Hobbies</p>
+  <p><em>Before 4NF (multi-valued dependency):</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>StudentID | Language | Hobby
+-----------------------------
+1         | English  | Reading
+1         | French   | Reading
+1         | English  | Swimming</code></pre></div>
+
+  <p><em>After 4NF (split into two tables):</em></p>
+
+  <p><strong>StudentLanguages Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>StudentID | Language
+---------------------
+1         | English
+1         | French</code></pre></div>
+
+  <p><strong>StudentHobbies Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>StudentID | Hobby
+------------------
+1         | Reading
+1         | Swimming</code></pre></div>
+
+ <h4 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">🔹 5NF – Fifth Normal Form</h4>
+  <p><strong>Rule:</strong> Must be in 4NF, and no join dependencies (data should be reconstructible from smaller tables without redundancy)</p>
+  <p><strong>Real-World Example:</strong> Product-Supplier-Location</p>
+  <p><em>Before 5NF:</em></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>Product | Supplier | Location
+------------------------------
+P1      | S1       | L1
+P1      | S1       | L2</code></pre></div>
+
+  <p>- If each combination is valid independently, split into:</p>
+
+  <p><strong>ProductSupplier Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>Product | Supplier
+-------------------
+P1      | S1</code></pre></div>
+
+  <p><strong>ProductLocation Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>Product | Location
+-------------------
+P1      | L1
+P1      | L2</code></pre></div>
+
+  <p><strong>SupplierLocation Table:</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>Supplier | Location
+--------------------
+S1       | L1
+S1       | L2</code></pre></div>
+
+  <h2 class="text-2xl font-semibold mt-6 text-gray-800 dark:text-gray-100">✅ Summary Table</h2>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>| Normal Form | Eliminates               | Key Rule                                      | Real-World Example              |
+|-------------|--------------------------|-----------------------------------------------|----------------------------------|
+| 1NF         | Repeating groups         | Atomic values only                            | Book borrowers                   |
+| 2NF         | Partial dependencies     | Full dependency on entire primary key         | Student-course enrollment        |
+| 3NF         | Transitive dependencies  | Non-key attributes depend only on primary key | Employee-department-manager      |
+| BCNF        | Non-superkey dependencies| Determinant must be a candidate key           | Instructor-room assignment       |
+| 4NF         | Multi-valued dependencies| No independent multi-valued facts             | Student languages and hobbies    |
+| 5NF         | Join dependencies        | No lossless join dependencies                 | Product-supplier-location        |</code></pre></div>`
+}
+,'De-Normalization': {
+  id: 'denormalization-interview-guide',
+  html: `<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">🎯 Interview Perspective: Full Denormalization in SQL</h2>
+
+  <h3 class="text-xl font-semibold mt-4 text-gray-700 dark:text-gray-200">✅ Definition You Should Know</h3>
+  <p><strong>Denormalization</strong> is the process of optimizing a normalized database by introducing redundancy to reduce joins and improve read performance—especially in analytical or reporting systems.</p>
+
+  <h3 class="text-xl font-semibold mt-4 text-gray-700 dark:text-gray-200">🧠 Why Interviewers Ask About It</h3>
+  <ul class="list-disc list-inside">
+    <li>To assess your understanding of performance trade-offs</li>
+    <li>To evaluate your ability to design scalable systems</li>
+    <li>To test your grasp of real-world use cases beyond textbook normalization</li>
+  </ul>
+
+  <h3 class="text-xl font-semibold mt-4 text-gray-700 dark:text-gray-200">💬 Common Interview Questions & Sample Answers</h3>
+
+  <p><strong>1. What is denormalization, and why would you use it?</strong></p>
+  <p><em>Answer:</em> Denormalization is the process of combining normalized tables to reduce joins and improve query performance. I’d use it in read-heavy environments like reporting dashboards or OLAP systems where speed is more critical than strict data integrity.</p>
+
+  <p><strong>2. Can you give a real-world example of denormalization?</strong></p>
+  <p><em>Answer:</em> In an e-commerce system, instead of joining <code>Orders</code>, <code>OrderDetails</code>, and <code>Products</code>, I might create a denormalized table that includes <code>CustomerName</code>, <code>ProductName</code>, and <code>TotalPrice</code>. This speeds up reporting and simplifies queries.</p>
+
+  <p><strong>3. What are the pros and cons of denormalization?</strong></p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>| ✅ Pros         | ❌ Cons              |
+|----------------|---------------------|
+| Faster queries | Data redundancy     |
+| Fewer joins    | Harder updates      |
+| Easier for BI  | Risk of inconsistency |</code></pre></div>
+
+  <p><strong>4. How would you implement denormalization in SQL?</strong></p>
+  <p><em>Answer:</em> I’d use a <code>CREATE TABLE AS SELECT</code> statement to combine data from multiple normalized tables. Optionally, I’d use triggers or scheduled jobs to keep the denormalized data in sync.</p>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>CREATE TABLE DenormOrders AS
+SELECT 
+  o.OrderID,
+  c.Name AS CustomerName,
+  p.Name AS ProductName,
+  od.Quantity,
+  od.Quantity * p.Price AS TotalPrice
+FROM Orders o
+JOIN Customers c ON o.CustomerID = c.CustomerID
+JOIN OrderDetails od ON o.OrderID = od.OrderID
+JOIN Products p ON od.ProductID = p.ProductID;</code></pre></div>
+
+  <p><strong>5. When should you avoid denormalization?</strong></p>
+  <p><em>Answer:</em> In transactional systems (OLTP), where data integrity and consistency are critical, denormalization can introduce maintenance challenges. I’d avoid it unless performance bottlenecks justify the trade-off.</p>
+
+  <h3 class="text-xl font-semibold mt-4 text-gray-700 dark:text-gray-200">🧭 Bonus: When to Normalize vs Denormalize</h3>
+  <div class="code-block"><button class="copy-btn">Copy</button><pre><code>| Use Case              | Normalize | Denormalize |
+|-----------------------|-----------|-------------|
+| OLTP (e.g., banking)  | ✅        | ❌          |
+| OLAP (e.g., dashboards)| ❌        | ✅          |
+| Small datasets        | ✅        | ❌          |
+| Real-time analytics   | ❌        | ✅          |</code></pre></div>
+
+  <h3 class="text-xl font-semibold mt-4 text-gray-700 dark:text-gray-200">🧩 Final Tip for Interviews</h3>
+  <p>Always emphasize that <strong>denormalization is a strategic decision</strong>—not a shortcut. Show that you understand <strong>when and why</strong> to use it, and how to <strong>maintain data integrity</strong> despite redundancy.</p>`
+}
 
 
     };
